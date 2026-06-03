@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CGI Morristown — Staff Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     STICKY HEADER — always visible when authenticated.
+     Logo on left is clickable → home. Nav links have labels, not just icons.
+     ============================================================ -->
+<header class="site-header hidden" id="siteHeader">
+  <div class="inner">
+    <!-- Clickable logo returns to home -->
+    <a href="#/home" class="logo-link" id="logoLink">
+      <div class="logo-badge">🏕️</div>
+      <div class="logo-text">
+        <div class="logo-brand">CGI Morristown</div>
+        <div class="logo-sub" id="logoSub">Staff Portal</div>
+      </div>
+    </a>
+    <nav class="header-nav">
+      <a href="#/home" class="nav-item" id="navHome">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </a>
+      <a href="#" class="nav-item" id="navLogout">
+        <span class="nav-icon">↩</span>
+        <span class="nav-label">Sign out</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- View-as banner (shown when admin is previewing a staff dashboard) -->
+<div class="view-as-banner hidden" id="viewAsBanner">
+  <div class="inner">
+    <span>👁️ Viewing as <strong id="viewAsName">—</strong></span>
+    <a href="#/admin" class="btn-tiny">← Back to Admin</a>
+  </div>
+</div>
+
+<!-- Progress bar (staff dashboard only) -->
+<div class="progress-under-header hidden" id="progressBar">
+  <div class="inner">
+    <div class="label">
+      <span id="progressLabel">Your progress</span>
+      <span id="progressCount">0 of 0</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<main id="mainContent">
+
+  <!-- LOGIN VIEW -->
+  <section id="viewLogin" class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">🏕️</div>
+      <h1>Welcome to Camp</h1>
+      <p class="subtitle">Sign in to access your staff onboarding portal.</p>
+
+      <form id="loginForm">
+        <label for="loginCode">Your login code</label>
+        <input
+          type="text"
+          id="loginCode"
+          placeholder="e.g. aaron-2026"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          autofocus
+        />
+        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+      </form>
+
+      <p class="login-foot">Trouble signing in? Contact the camp office.</p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD VIEW (rendered by app.js) -->
+  <section id="viewDashboard" class="container hidden"></section>
+
+  <!-- MODULE VIEW (rendered by app.js) -->
+  <section id="viewModule" class="container hidden"></section>
+
+  <!-- ADMIN VIEW (rendered by app.js) -->
+  <section id="viewAdmin" class="container hidden"></section>
+
+</main>
+
+<!-- Toast container for non-blocking notifications -->
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="data-live.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

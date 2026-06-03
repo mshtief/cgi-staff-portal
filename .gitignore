@@ -1,0 +1,19 @@
+# Real staff data (PII) — never publish
+data-live.js
+data-live.enc
+
+# Internal planning / research docs — not for the public site
+RESEARCH-AND-RECOMMENDATIONS.md
+OOT-VIDEO-SCRIPT.md
+STAFF-GOLIVE-EMAIL.md
+LICENSING-TRAINING-REPORT.md
+SELF-AUDIT.md
+VIDEO-STRATEGY.md
+
+# Backend (contains sheet ID + logic) — deployed separately to Apps Script
+backend/
+
+# Local / build junk
+node_modules/
+screenshots/
+.DS_Store
