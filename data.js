@@ -141,12 +141,12 @@ const TRAININGS = {
     id: "fingerprints-identogo",
     title: "Fingerprint Appointment (IdentoGO)",
     category: "paperwork",
-    description: "Required for US staff 18+ who haven't fingerprinted with us in the last 5 years. Schedule and complete an IdentoGO appointment using the codes below, then upload your receipt.",
+    description: "You'll need a fresh fingerprint-based background check. Complete an IdentoGO appointment using the codes below, then upload your receipt.",
     type: "external-task",
     duration: "~45 min",
     provider: "IdentoGO (NJ-approved vendor)",
     action: "Follow the steps below to book and complete your appointment, then upload the receipt.",
-    appliesIf: { is18Plus: true, isFromUS: true, isReturning: false },
+    appliesIf: { fpStatus: "new" },
     completionMethod: "receipt-upload",
     externalUrl: "https://uenroll.identogo.com",
     serviceCode: "2F1329",
@@ -167,6 +167,21 @@ const TRAININGS = {
     resources: []
   },
 
+  "fingerprints-renewal": {
+    id: "fingerprints-renewal",
+    title: "Fingerprint Renewal (sign to certify)",
+    category: "paperwork",
+    description: "Since you were fingerprinted with us within the last 3 years, you don't need a new appointment — just certify nothing has changed. Fill out the form below; we'll print it, notarize it, and file it.",
+    type: "fillable-form",
+    formKind: "renewal-letter",
+    duration: "3 min",
+    provider: "Camp",
+    appliesIf: { fpStatus: "renew" },
+    completionMethod: "submit-form",
+    certifyText: "I hereby certify that the results of my fingerprint-based criminal history record remain unchanged from the date they were performed.",
+    resources: []
+  },
+
   "bg-check-invite": {
     id: "bg-check-invite",
     title: "Background Check (email invite)",
@@ -176,7 +191,7 @@ const TRAININGS = {
     duration: "10 min",
     provider: "Camp (external service)",
     action: "Watch for the invite email from a no-reply address → click the link → complete the form. Check spam if it hasn't arrived within 48 hours of being hired.",
-    appliesIf: { is18Plus: true, isFromUS: true, isReturning: false },
+    appliesIf: { bgStatus: "new" },
     completionMethod: "auto-confirmed",
     resources: []
   },
@@ -185,12 +200,12 @@ const TRAININGS = {
     id: "bg-renewal-letter",
     title: "Background Check Renewal Letter",
     category: "paperwork",
-    description: "Since you fingerprinted with us in the last 5 years, you just need to certify nothing has changed. Fill out the form below — we'll print it, notarize it, and file it.",
+    description: "Since we have a background check on file for you from the last 3 years, you just need to certify nothing has changed. Fill out the form below — we'll print it, notarize it, and file it.",
     type: "fillable-form",
     formKind: "renewal-letter",
     duration: "3 min",
     provider: "Camp",
-    appliesIf: { is18Plus: true, isFromUS: true, isReturning: true },
+    appliesIf: { bgStatus: "renew" },
     completionMethod: "submit-form",
     certifyText: "I hereby certify that the results of my criminal history status remain unchanged from the date they were performed.",
     resources: []
@@ -479,9 +494,10 @@ const BASELINE_REQUIRED = [
   "video-kiddie",
   // Legal/background pool — appliesIf picks the right items per staff:
   "working-papers-nj",         // under-18 US
-  "fingerprints-identogo",     // US 18+ new
-  "bg-check-invite",           // US 18+ new
-  "bg-renewal-letter",         // US 18+ returning
+  "fingerprints-identogo",     // US 18+ — needs new fingerprints (upload receipt)
+  "fingerprints-renewal",      // US 18+ — fingerprinted in last 3 yrs (sign to certify)
+  "bg-check-invite",           // US 18+ — needs a new background check
+  "bg-renewal-letter",         // US 18+ — bg on file in last 3 yrs (sign to certify)
   "home-country-bg-check",     // international 18+
   "watchdog-clearance"         // admin-only (filtered out of staff view)
 ];
@@ -542,6 +558,14 @@ function passesAppliesIf(t, staff) {
   if (c.minCompensation !== undefined && !((staff.compensation || 0) > c.minCompensation)) return false;
   if (c.division !== undefined && c.division !== staff.division) return false;
   if (c.outOfTown !== undefined && c.outOfTown !== !!staff.outOfTown) return false;
+  if (c.fpStatus !== undefined) {
+    const fp = staff.fpStatus || ((staff.is18Plus && staff.isFromUS) ? "new" : "na");
+    if (c.fpStatus !== fp) return false;
+  }
+  if (c.bgStatus !== undefined) {
+    const bg = staff.bgStatus || ((staff.is18Plus && staff.isFromUS) ? "new" : "na");
+    if (c.bgStatus !== bg) return false;
+  }
   return true;
 }
 
