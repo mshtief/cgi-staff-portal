@@ -1172,8 +1172,9 @@ function wireModuleHandlers(t, isDone) {
     });
     const confirmBtn = document.getElementById("uploadConfirmBtn");
     confirmBtn.addEventListener("click", () => {
-      toast("Uploaded ✓", "success");
-      setTimeout(() => markTrainingComplete(t.id), 600);
+      const file = uploadInput.files[0];
+      if (!file) { toast("Pick a file first.", "error"); return; }
+      uploadFileToBackend(file, t.id);
     });
   }
 
@@ -1203,6 +1204,40 @@ function wireModuleHandlers(t, isDone) {
       setTimeout(() => markTrainingComplete(t.id), 400);
     });
   }
+}
+
+// Send an uploaded file to the backend, which saves it to the staffer's Drive
+// folder and flips their hiring-sheet row to "Yes". Falls back to local-complete
+// if there's no backend (e.g., reviewing on your computer).
+function uploadFileToBackend(file, trainingId) {
+  const url = backendUrl();
+  const user = state.viewingAsStaff || state.currentUser;
+  if (!url || !user || !user.email) {
+    toast("Uploaded ✓", "success");
+    setTimeout(() => markTrainingComplete(trainingId), 400);
+    return;
+  }
+  toast("Uploading…", "info");
+  const reader = new FileReader();
+  reader.onload = () => {
+    const data = String(reader.result).split(",")[1] || "";   // strip "data:...;base64,"
+    fetch(url, {
+      method: "POST",
+      body: new URLSearchParams({
+        action: "upload", email: user.email, name: user.name || "",
+        trainingId, filename: file.name,
+        mimeType: file.type || "application/octet-stream", data
+      })
+    })
+      .then(r => r.json())
+      .then(res => {
+        if (res && res.ok) { toast("Uploaded ✓", "success"); markTrainingComplete(trainingId); }
+        else { toast("Upload failed — try again, or email the office.", "error"); }
+      })
+      .catch(() => toast("Upload failed — check your connection.", "error"));
+  };
+  reader.onerror = () => toast("Couldn't read that file.", "error");
+  reader.readAsDataURL(file);
 }
 
 function markTrainingComplete(trainingId) {
