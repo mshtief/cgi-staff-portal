@@ -1,4 +1,5 @@
-# Real staff data (PII) — never publish
+# Real staff data — NEVER publish (real names incl. minors + login codes).
+# Lives on your machine only; the live site pulls staff securely from the sheet.
 data-live.js
 data-live.enc
 

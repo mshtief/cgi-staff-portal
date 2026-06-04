@@ -19,25 +19,50 @@ function backendUrl() {
   return (window.PORTAL_CONFIG && window.PORTAL_CONFIG.backendUrl) || "";
 }
 
-// Pull live staff from the Google Sheet backend (Apps Script web app).
-// Falls back silently to seed data if no URL is set or the fetch fails.
-async function loadBackendStaff() {
+// "Online mode" = the portal is on a real web address (not file:// or localhost).
+// In online mode the page holds NO staff data: it's locked, and each person's
+// info is fetched from the sheet only when they log in. On your own computer it
+// stays in local mode and uses the real roster in data-live.js for review.
+function isOnline() {
+  if (window.PORTAL_CONFIG && typeof window.PORTAL_CONFIG.online === "boolean") {
+    return window.PORTAL_CONFIG.online;        // explicit override (set on the live deploy)
+  }
+  const h = location.hostname;
+  return location.protocol !== "file:" && h !== "localhost" && h !== "127.0.0.1" && h !== "";
+}
+
+// Fetch ONE staffer by their private token/code (action=me).
+async function fetchMe(token) {
   const url = backendUrl();
-  if (!url) return; // prototype mode — use seed data
+  if (!url || !token) return null;
   try {
     const sep = url.includes("?") ? "&" : "?";
-    const res = await fetch(url + sep + "action=staff");
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    const res = await fetch(url + sep + "action=me&token=" + encodeURIComponent(token));
+    if (!res.ok) return null;
+    const s = await res.json();
+    return (s && s.id && !s.error) ? s : null;
+  } catch (e) { return null; }
+}
+
+// Fetch the FULL roster for admin, using the admin key (action=staff&key).
+async function fetchAll(key) {
+  const url = backendUrl();
+  if (!url || !key) return null;
+  try {
+    const sep = url.includes("?") ? "&" : "?";
+    const res = await fetch(url + sep + "action=staff&key=" + encodeURIComponent(key));
+    if (!res.ok) return null;
     const data = await res.json();
-    if (Array.isArray(data) && data.length) {
-      STAFF = data;
-      window.PORTAL_DATA.STAFF = data;
-      console.log(`Loaded ${data.length} staff from backend.`);
-    }
-  } catch (e) {
-    console.warn("Backend fetch failed — using seed data:", e);
-    toast("Couldn't reach the live staff list; showing cached data.", "info");
-  }
+    return (Array.isArray(data) && data.length) ? data : null;
+  } catch (e) { return null; }
+}
+
+// Local mode with a backend configured: preload the roster for offline review.
+async function loadBackendStaff() {
+  if (isOnline()) { STAFF = []; window.PORTAL_DATA.STAFF = []; return; } // locked online
+  const url = backendUrl();
+  if (!url) return; // prototype mode — use seed/real data already loaded
+  // (local + backend is optional; real local review uses data-live.js)
 }
 
 // Write a completion back to the sheet (best-effort; localStorage stays the cache).
@@ -66,31 +91,29 @@ const state = {
 function saveProgress(staffId, completed) {
   localStorage.setItem(`progress-${staffId}`, JSON.stringify(completed));
 }
-function loadProgress(staffId) {
+function loadProgress(staffId, fallback) {
   const stored = localStorage.getItem(`progress-${staffId}`);
   if (stored) return JSON.parse(stored);
+  if (fallback) return [...fallback];
   const staff = STAFF.find(s => s.id === staffId);
   return staff ? [...staff.completed] : [];
 }
 function saveSession(user) {
   if (!user) { sessionStorage.removeItem("session"); return; }
-  sessionStorage.setItem("session", JSON.stringify({
-    id: user.id || null,
-    isAdmin: !!user.isAdmin
-  }));
+  // Store the whole record so an online session (no in-page roster) survives reload.
+  sessionStorage.setItem("session", JSON.stringify(user));
 }
 function loadSession() {
   try {
     const raw = sessionStorage.getItem("session");
     if (!raw) return null;
-    const { id, isAdmin } = JSON.parse(raw);
-    if (isAdmin) return { isAdmin: true, name: "Mendel (Admin)" };
-    const staff = STAFF.find(s => s.id === id);
-    if (staff) {
-      staff.completed = loadProgress(staff.id);
-      return staff;
-    }
-    return null;
+    const u = JSON.parse(raw);
+    if (u.isAdmin) return { isAdmin: true, name: u.name || "Admin" };
+    if (!u.id) return null;
+    // Local mode: prefer the in-page record; online: use the stored one.
+    const staff = STAFF.find(s => s.id === u.id) || u;
+    staff.completed = loadProgress(staff.id, u.completed);
+    return staff;
   } catch { return null; }
 }
 
@@ -282,27 +305,56 @@ function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 // =============================================================================
 // LOGIN
 // =============================================================================
-document.getElementById("loginForm").addEventListener("submit", (e) => {
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const code = document.getElementById("loginCode").value.trim().toLowerCase();
+  const raw = document.getElementById("loginCode").value.trim();
+  const code = raw.toLowerCase();
 
-  if (code === "admin") {
-    state.currentUser = { isAdmin: true, name: "Mendel (Admin)" };
+  // LOCAL mode (your computer): validate against the real roster in the page.
+  if (!isOnline()) {
+    if (code === "admin") {
+      state.currentUser = { isAdmin: true, name: "Mendel (Admin)" };
+      saveSession(state.currentUser);
+      navigate("#/admin");
+      return;
+    }
+    const staff = STAFF.find(s => s.loginCode.toLowerCase() === code);
+    if (!staff) {
+      toast("Login not recognized. Please use the link from your email, or contact the camp office.", "error");
+      return;
+    }
+    staff.completed = loadProgress(staff.id);
+    state.currentUser = staff;
+    saveSession(staff);
+    toast(`Welcome back, ${staff.name.split(" ")[0]}!`, "success");
+    navigate("#/home");
+    return;
+  }
+
+  // ONLINE mode (live site): the page holds nothing — ask the sheet.
+  if (!backendUrl()) {
+    toast("The portal isn't connected to the office yet. Please check back shortly.", "info");
+    return;
+  }
+  toast("Signing you in…", "info");
+  const me = await fetchMe(raw);
+  if (me) {
+    me.completed = loadProgress(me.id, me.completed);
+    state.currentUser = me;
+    saveSession(me);
+    toast(`Welcome, ${me.name.split(" ")[0]}!`, "success");
+    navigate("#/home");
+    return;
+  }
+  const roster = await fetchAll(raw);          // maybe this is the admin key
+  if (roster) {
+    STAFF = roster; window.PORTAL_DATA.STAFF = roster;
+    state.currentUser = { isAdmin: true, name: "Admin" };
     saveSession(state.currentUser);
     navigate("#/admin");
     return;
   }
-
-  const staff = STAFF.find(s => s.loginCode.toLowerCase() === code);
-  if (!staff) {
-    toast("Login not recognized. Please use the link from your email, or contact the camp office.", "error");
-    return;
-  }
-  staff.completed = loadProgress(staff.id);
-  state.currentUser = staff;
-  saveSession(staff);
-  toast(`Welcome back, ${staff.name.split(" ")[0]}!`, "success");
-  navigate("#/home");
+  toast("Login not recognized. Please use the link from your email, or contact the camp office.", "error");
 });
 
 // Header nav
@@ -1309,28 +1361,46 @@ function escapeHTML(s) {
 // =============================================================================
 // Magic-link auto-login: a staffer taps a link like  …/?code=THEIRCODE  and is
 // logged straight in — no password to type. Returns true if it handled login.
-function tryMagicLink() {
+async function tryMagicLink() {
   let code = "";
-  try { code = new URLSearchParams(location.search).get("code") || ""; } catch (e) {}
+  try {
+    const q = new URLSearchParams(location.search);
+    code = q.get("code") || q.get("token") || "";
+  } catch (e) {}
   if (!code) {
-    const m = (location.hash || "").match(/[?&]code=([^&]+)/);
+    const m = (location.hash || "").match(/[?&](?:code|token)=([^&]+)/);
     if (m) code = decodeURIComponent(m[1]);
   }
   if (!code) return false;
-  code = code.trim().toLowerCase();
+  const raw = code.trim();
   // strip the code from the URL so the link isn't left in history/bookmarks
   try { history.replaceState(null, "", location.pathname); } catch (e) {}
-  if (code === "admin") {
+
+  // ONLINE: resolve the token against the sheet (page holds no roster).
+  if (isOnline()) {
+    const me = await fetchMe(raw);
+    if (me) {
+      me.completed = loadProgress(me.id, me.completed);
+      state.currentUser = me; saveSession(me);
+      navigate("#/home", { replace: true });
+      return true;
+    }
+    navigate("#/login", { replace: true });
+    return false;
+  }
+
+  // LOCAL: resolve against the in-page roster.
+  const lc = raw.toLowerCase();
+  if (lc === "admin") {
     state.currentUser = { isAdmin: true, name: "Mendel (Admin)" };
     saveSession(state.currentUser);
     navigate("#/admin", { replace: true });
     return true;
   }
-  const staff = STAFF.find(s => s.loginCode.toLowerCase() === code);
+  const staff = STAFF.find(s => s.loginCode.toLowerCase() === lc);
   if (!staff) { navigate("#/login", { replace: true }); return false; }
   staff.completed = loadProgress(staff.id);
-  state.currentUser = staff;
-  saveSession(staff);
+  state.currentUser = staff; saveSession(staff);
   navigate("#/home", { replace: true });
   return true;
 }
@@ -1338,7 +1408,8 @@ function tryMagicLink() {
 // When the live site is running on sample data (no real roster loaded), show a
 // clear banner so it's never mistaken for the real staff list.
 function maybeShowPreviewBanner() {
-  const isDemo = !STAFF.length || STAFF.every(s => /example\.com$/i.test(s.email || ""));
+  if (isOnline()) return;  // live site is the real locked portal, not a sample
+  const isDemo = STAFF.length && STAFF.every(s => /example\.com$/i.test(s.email || ""));
   if (!isDemo || document.getElementById("previewBanner")) return;
   const bar = document.createElement("div");
   bar.id = "previewBanner";
@@ -1352,7 +1423,7 @@ function maybeShowPreviewBanner() {
 async function init() {
   await loadBackendStaff();
   maybeShowPreviewBanner();
-  if (tryMagicLink()) return;
+  if (await tryMagicLink()) return;
   const restored = loadSession();
   if (restored) {
     state.currentUser = restored;
