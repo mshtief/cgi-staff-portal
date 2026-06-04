@@ -731,10 +731,15 @@ const STAFF = [
 // division where relevant. Per Mendel's rule: no personal names on the portal —
 // use "the camp office" / "Camp Directors".
 // =============================================================================
-// Division theme-calendar images (the JPEG parents receive). Drop the files in
-// assets/ and set the paths here (e.g. "assets/calendar-boys.jpg"). Empty = a
-// placeholder note shows instead.
-const CALENDAR_IMAGES = { boys: "", girls: "", kiddie: "" };
+// Division theme-calendar images — the actual 2026 JPEGs parents receive,
+// hotlinked from the camp's public parent-portal asset folder (ganisrael.org/app/).
+// These are stable, public URLs; if a calendar is ever revised, the staff portal
+// reflects it automatically. Empty = a placeholder note shows instead.
+const CALENDAR_IMAGES = {
+  boys: "https://ganisrael.org/app/calendar-boys-2026.jpg",
+  girls: "https://ganisrael.org/app/calendar-girls-2026.jpg",
+  kiddie: "https://ganisrael.org/app/calendar-kiddie-2026.jpg"
+};
 
 const INFO_PAGES = [
   { id: "job-description", title: "Your Job Description", icon: "🧑‍🏫", blurb: "Exactly what your role does, day to day" },
