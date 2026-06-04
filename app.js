@@ -470,7 +470,7 @@ function renderDashboard(forceStaff) {
       <div class="section-title">📘 Camp Info &amp; Resources</div>
       <p style="font-size:13px;color:var(--text-muted);margin:-6px 4px 12px;">Good to know — reference anytime. Nothing to complete here.</p>
       <div class="training-grid">
-        ${INFO_PAGES.filter(p => !p.ootOnly || user.outOfTown).map(p => `
+        ${INFO_PAGES.filter(p => (!p.ootOnly || user.outOfTown) && (!p.photoAccessOnly || hasPhotoAccess(user))).map(p => `
           <a href="#/info/${p.id}" class="training-card">
             <div class="status-icon" style="background:#eef2ff;color:var(--navy);">${p.icon}</div>
             <div class="body">
@@ -892,6 +892,22 @@ function renderHandbookTopic(i) {
 // =============================================================================
 // Which job-description key applies to a staffer (role + division + position).
 // The backend supplies user.jdKey; this is the fallback for local/seed data.
+// Who sees the Camp Photos upload page: all leadership (kiddie director + teachers
+// + assistant teachers; boys & girls assistant directors + head counselors), plus
+// the art/crafts instructor (all divisions), plus admins/directors.
+const PHOTO_ACCESS_JDKEYS = [
+  "kiddie-director", "kiddie-lead-teacher", "kiddie-assistant",
+  "boys-assistant-director", "boys-head-counselor",
+  "girls-assistant-director", "girls-head-counselor"
+];
+const PHOTO_ACCESS_EMAILS = ["tranydeutsch@gmail.com"]; // Trany Deitch — art/crafts, all divisions
+function hasPhotoAccess(user) {
+  if (!user) return false;
+  if (user.isAdmin) return true;
+  if (PHOTO_ACCESS_EMAILS.includes((user.email || "").toLowerCase().trim())) return true;
+  return PHOTO_ACCESS_JDKEYS.includes(jdKeyFor(user));
+}
+
 function jdKeyFor(user) {
   if (user.jdKey) return user.jdKey;
   const d = user.division, r = user.role, pos = (user.position || "").toLowerCase();
@@ -994,6 +1010,66 @@ function renderInfo(id) {
         : `<p>Your division's full <strong>theme calendar</strong> (weekly themes, trip days, dress-up days, and special events) will be posted right here — the same one parents receive. Your Head Counselor will walk you through each week.</p>`) +
       sec("🎨 Each week", `<p>Every week has a dress-up day and a Friday Shabbat Party. Your Head Counselor will share the specifics and how to prep.</p>`) +
       sec("🚌 Trips", `<p>Each division goes on trips throughout the summer. <strong>Wear your camp shirt on trip days.</strong> Your Head Counselor will give you each week's trip details.</p>`);
+  }
+
+  else if (id === "photos") {
+    const email = user.email ? escapeHTML(user.email) : "your camp email address";
+    const _pe = (user.email || "").toLowerCase().trim();
+    const _allDiv = user.isAdmin || PHOTO_ACCESS_EMAILS.includes(_pe);
+    const _divName = { boys: "Boys", girls: "Girls", kiddie: "Kiddie" }[user.division];
+    const divLine = _allDiv
+      ? "When you upload, pick the correct division each time (<strong>Boys, Girls, or Kiddie</strong>) for the photos you took."
+      : (_divName ? `When you upload, your division is <strong>${_divName}</strong> — choose it each time.` : "Choose your division when you upload.");
+    const _pin = (user.photoPin || "").trim();
+    const pinBlock = _pin
+      ? `<p>Sign in with your <strong>email address</strong> (${email}) and this 6-digit PIN:</p>
+         <div style="font-size:30px;font-weight:800;letter-spacing:6px;color:var(--navy);background:#eef2ff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;text-align:center;margin:6px 0;">${escapeHTML(_pin)}</div>
+         <p style="font-size:13px;color:var(--text-muted);">Keep this PIN private — it's just for you. Lost it or it stops working? Email <strong>office@ganisrael.org</strong> for a reset.</p>`
+      : `<p>Sign in with your <strong>email address</strong> (${email}) and your <strong>6-digit PIN</strong>.</p>
+         <p><strong>Your PIN is sent to you privately by the camp office.</strong> If you don't have it yet — or you've lost it — contact <strong>office@ganisrael.org</strong> and they'll set one up or reset it.</p>`;
+    body = !hasPhotoAccess(user)
+      ? sec("📸 Camp Photos", "<p>Photo-upload access is set up for the camp leadership team. If you believe you should have access, please contact the camp office at <strong>office@ganisrael.org</strong>.</p>")
+      :
+      sec("📸 You're set up to upload camp photos", `<p>As part of the leadership team, you can upload camp photos and videos that flow into the parent gallery. Good photos help parents feel the <strong>life, warmth, safety, and excitement</strong> of camp — it's one of the most valued things we do for families.</p><p>${divLine}</p>`) +
+      sec("🔑 Your upload login", `
+        <p>Upload here: <a href="https://ganisrael.org/upload" target="_blank" rel="noopener"><strong>ganisrael.org/upload</strong></a><br>
+        <span style="font-size:13px;color:var(--text-muted);">Backup link if the main site is ever down: <a href="https://camp-photo-app.cgi-photos.workers.dev/upload" target="_blank" rel="noopener">camp-photo-app.cgi-photos.workers.dev/upload</a></span></p>
+        ${pinBlock}
+        <p style="font-size:13px;color:var(--text-muted);">Note: this photo-upload login is <strong>separate</strong> from your Staff Portal login here.</p>`) +
+      sec("📷 What makes a great camp photo", `
+        <p>Take photos that show campers <em>doing</em> something — art, sports, trips, learning, swimming, lineup, bunk activities, ruach, staff helping campers.</p>` +
+        ul([
+          "Clear, bright, and in focus",
+          "Real smiles and real activity; faces visible when appropriate",
+          "A mix of close-ups, small groups, and wider \"what's happening\" shots",
+          "A variety of campers and bunks — not the same few children every time",
+          "Original photos straight from your phone camera (not WhatsApp-compressed copies or screenshots)"
+        ])) +
+      sec("🚫 What to avoid", ul([
+        "Blurry, dark, awkward, or duplicate photos",
+        "Any photo where a child looks upset, embarrassed, injured, disciplined, or uncomfortable",
+        "Bathroom, changing-area, or locker-room photos — or anything not tznius",
+        "Anything showing private paperwork, medical info, name lists, or sensitive camper/parent information",
+        "<strong>Never stop supervising a camper to get a photo — safety always comes first</strong>",
+        "Personal phone use during camp; phones are for camp needs only, per your role"
+      ])) +
+      sec("⬆️ How to upload", `<ol style="padding-left:20px;line-height:1.7;margin:0;">
+        <li>Open <strong>ganisrael.org/upload</strong> on your phone and sign in with your email + PIN.</li>
+        <li>Choose the correct <strong>camp week</strong> (it usually auto-selects the current week — double-check it).</li>
+        <li>Tap your <strong>division</strong>: Boys, Girls, Kiddie, or Specialty Week.</li>
+        <li>Tap <strong>"Pick photos &amp; videos"</strong> and select up to 100 files.</li>
+        <li>If your iPhone says photos are "preparing," wait 10–30 seconds and keep the page open.</li>
+        <li>Review the count, then tap <strong>"Upload."</strong></li>
+        <li><strong>Keep the page open until every file shows a check mark</strong> — closing it can stop uploads still in progress.</li>
+        <li>When you see <strong>"photos sent for review,"</strong> you're done. Approved photos move into the parent gallery automatically.</li>
+      </ol>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">If an upload fails, check your connection and tap "Upload more" to retry. If you upload to the wrong week or division, just tell the camp office.</p>`) +
+      sec("💡 First-time tips", ul([
+        "Add the upload page to your iPhone Home Screen for faster access",
+        "Upload during the day or right after camp, while the photos are still easy to find",
+        "Upload originals directly from your phone — don't send through WhatsApp first",
+        "Use your own account only; uploads are tracked by uploader"
+      ]));
   }
 
   else if (id === "key-policies") {

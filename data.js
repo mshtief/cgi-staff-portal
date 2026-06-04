@@ -747,6 +747,7 @@ const INFO_PAGES = [
   { id: "daily-schedule", title: "The Camp Day",           icon: "🕘", blurb: "How a typical day flows, start to finish" },
   { id: "camp-calendar",  title: "Calendar & Themes",      icon: "📅", blurb: "Season dates, days off, and this summer's themes" },
   { id: "key-policies",   title: "Key Policies",           icon: "📋", blurb: "Phone, dress, boundaries, reporting, food" },
+  { id: "photos",         title: "Camp Photos — Upload Access", icon: "📸", blurb: "Your photo-upload login and how to take great camp photos", photoAccessOnly: true },
   { id: "out-of-town",    title: "Out-of-Town Staff",      icon: "✈️", blurb: "Housing, food, arrival, Shabbos — all handled", ootOnly: true },
   { id: "contacts",       title: "Who to Contact",         icon: "📞", blurb: "Chain of command and the camp office" }
 ];
