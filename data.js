@@ -6,7 +6,7 @@
 //     kiddie-assistant
 //   • Baseline (EVERYONE): employment history, handbook, Kudan child-safety
 //     video, in-person staff training (attendance), Watchdog (admin-run),
-//     1099 ONLY if compensation > $1,500
+//     1099 form: shown only to staff the office designates (internal criteria)
 //   • Background check by age + origin:
 //       under 18 (any origin) ........ Watchdog only
 //       US 18+ (incl. OOT) new ....... IdentoGO fingerprints + bg-check invite
@@ -19,8 +19,9 @@
 //       OPTIONAL but recommended .... Difficult Camper (everyone),
 //                                     Head Counselor course (head counselors only)
 //   • Head Counselor Expectations (camp doc) — mandatory for head counselors
-//   • Optional/recommended (NOT counted): First Aid/CPR & Mandated Reporter →
-//     "I'm interested" emails Chana@ganisrael.org
+//   • Optional/recommended (NOT counted): First Aid/CPR →
+//     "I'm interested" emails Chana@ganisrael.org  (mandated reporting is part of
+//     in-person training — intentionally NOT a portal item)
 //
 // Maps to Google Sheet CGI_Morristown_Staff_Hiring_2026_MASTER_v1.
 // Backend plan (v2): portal datastore of record (uploads + inspection export)
@@ -113,7 +114,7 @@ const TRAININGS = {
     id: "1099-form",
     title: "W-9 / 1099 Tax Form",
     category: "paperwork",
-    description: "Because your summer pay is over $1,500, we need a W-9 on file to issue your 1099 at year end. Download the form below, fill out and sign page 1, then upload it.",
+    description: "We'll need a W-9 on file so we can issue your 1099 at year-end. Download the form below, fill out and sign page 1, then upload it.",
     type: "upload",
     duration: "5 min",
     provider: "Camp",
@@ -444,9 +445,9 @@ const TRAININGS = {
   // ─── Optional / encouraged (NEVER counts toward required progress) ─────────
   "first-aid-mandated-reporter": {
     id: "first-aid-mandated-reporter",
-    title: "First Aid / CPR & Mandated Reporter (Free)",
+    title: "First Aid / CPR (Free)",
     category: "optional",
-    description: "Optional but highly encouraged! We offer a free Zoom course for First Aid/CPR and Mandated Reporter training. The camp covers the cost for anyone 16+. Tap below and Chana will reach out to schedule you.",
+    description: "Optional but highly encouraged! We offer a free First Aid/CPR Zoom course, and the camp covers the cost for anyone 16+. Tap below and the office will reach out to schedule you.",
     type: "optional-request",
     duration: "Optional",
     provider: "Camp (free Zoom course)",
@@ -454,7 +455,7 @@ const TRAININGS = {
     recommended: true,
     optionalRoles: "all",
     requestEmail: CHANA_EMAIL,
-    requestSubject: "First Aid/CPR & Mandated Reporter — sign me up",
+    requestSubject: "First Aid/CPR — sign me up",
     completionMethod: "request",
     resources: []
   }
@@ -723,30 +724,177 @@ const INFO_PAGES = [
 // read-&-acknowledge. No personal names per the portal rule.
 // =============================================================================
 const HANDBOOK_TOPICS = [
-  { title: "Welcome & Our Mission", html:
-    "<p>Camp Gan Israel is a Chabad day camp built on one idea: <em>awaken the spark, fan the flame, and create an inferno of Judaism in every Jewish child.</em> Our mission is a safe, fun, uplifting summer where love for Yiddishkeit is taught through joy.</p><p>You're not signing up for an hourly summer job — you have a real opportunity to change a child's life. This summer's theme is <strong>\"Flying — Lighting Up the World.\"</strong></p>" },
-  { title: "Our Campers", html:
-    "<p>Campers are ages 3–11: <strong>Kiddie Camp (3–5)</strong> and the <strong>older divisions (6–11)</strong>, grouped by age. They come from a wide range of backgrounds and observance levels. Every camper is treated fairly and with respect — we only speak nicely about others in this camp.</p>" },
-  { title: "Supervision & Ratios", html:
-    "<p>Campers are supervised <strong>at all times</strong> — a camper may never wander off without a staff member, under any circumstance.</p><ul style='padding-left:20px;line-height:1.7;'><li>Ratios are legal minimums: older divisions <strong>1:8</strong>, Kiddie <strong>1:7</strong></li><li>At least <strong>two staff</strong> at: swim, trips, sports fields, electives, baking with appliances, archery</li><li>Changing rooms: at least two staff present</li></ul>" },
-  { title: "How We Talk to Campers", html:
-    "<p>Every kid wants to feel important in your eyes. The basics:</p><ul style='padding-left:20px;line-height:1.7;'><li>Listen and use first names</li><li>Never scream — a calm, low voice is total control</li><li>Praise constantly (younger campers publicly, older ones privately)</li><li>Avoid labels; keep your word</li><li>Offer choices about <em>how</em>, not <em>whether</em></li><li>About to blow up? Walk away, get water, come back calm.</li></ul>" },
-  { title: "Discipline", html:
-    "<p>We use positive guidance — redirection and prevention, never punishment. The <strong>CPR of Discipline: Consistent, Prompt, Reasonable.</strong> The behavior is the problem, not the camper.</p><p><strong>Always inform the Camp Directors of any disciplinary measure.</strong></p><p>Never deprive a camper of sleep, food, or bathroom; never isolate a camper unsupervised; never use ridicule, shaming, threats, physical contact, or exercise as punishment.</p>" },
-  { title: "Bullying & Sensitive Issues", html:
-    "<p>Intervene early, separate, support the camper who was hurt, and report up the chain. Teach the difference between <strong>reporting</strong> (getting someone out of danger) and tattling.</p><p>For sensitive topics (family situations, observance level, etc.), consult the Camp Directors and never discuss your own personal life with campers.</p>" },
-  { title: "Boundaries, Safety & Harassment Prevention", html:
-    "<p><strong>The Rule of Three:</strong> never be alone one-on-one with a camper in a private space — always two staff, or staff + a group. Only high-fives or brief side-hugs.</p><ul style='padding-left:20px;line-height:1.7;'><li><strong>Never</strong> private-message a camper (Instagram, WhatsApp, Snapchat, etc.) or share personal contact info</li><li>Every staff member is a <strong>mandatory reporter</strong> under NJ law</li><li>Reporting chain: your Head Counselor → Assistant Director → Camp Directors</li><li>If you ever suspect a child is being harmed, NJ law requires an <strong>immediate</strong> report to the state child-abuse hotline: <strong>1-877-652-2873</strong> (1-877-NJ-ABUSE) — then notify the Camp Directors</li></ul><p>Self-check: <em>\"Would I be comfortable if a parent or director saw this interaction?\"</em></p>" },
-  { title: "Daily Conduct & Work Rules", html:
-    "<ul style='padding-left:20px;line-height:1.7;'><li><strong>Phones:</strong> no personal use during camp — emergencies and camp photos only; communicate by walkie-talkie</li><li><strong>Dress:</strong> neat, clean, and consistent with camp standards (see your role's dress code)</li><li>Participate fully in activities and dress-up days; be a role model (Kiddush Hashem)</li><li>Route camper/parent/staff issues through your direct supervisor — not parents directly</li><li>Smoke-free, alcohol/drug-free, weapon-free campus</li></ul>" },
-  { title: "Health & Emergencies", html:
-    "<ul style='padding-left:20px;line-height:1.7;'><li><strong>Daily health check:</strong> keep an eye on your campers each morning for signs of illness or anything concerning, and report it</li><li>Medication goes to the nurse's office; know your bunk's allergies on Day 1</li><li>Wash hands often (before food, after bathroom) — basic infection control keeps everyone healthy</li><li>After any injury or serious incident, complete an <strong>incident report</strong></li><li>Every trip group carries a radio; epi-pens/inhalers travel with the group</li><li><strong>Never lose track of a camper.</strong> Do regular head counts; know the lost-camper and lost-swimmer procedures, and raise the alarm immediately if a camper is missing</li><li>Know your emergency exits and the plan for fire / evacuation / lockdown (covered at in-person training)</li><li>In an emergency, call <strong>Hatzoloh / 911 first</strong>, then notify leadership</li></ul>" },
-  { title: "Food Policy", html:
-    "<p>This is a <strong>nut-free and meat-free</strong> camp. Camper lunches must be dairy or parve — no meat, no nuts, no glass containers. Help campers at lunch and enforce these rules.</p>" },
-  { title: "Pickup, Dismissal & Buses", html:
-    "<p>Supervise campers until they're picked up. Children are only released to <strong>authorized pickup people</strong> — no child is released to an unauthorized driver without director permission. On buses: campers stay seated, arms in, follow the driver; report any issue.</p>" },
-  { title: "Before Camp Starts", html:
-    "<p>Complete your online requirements before camp: background checks and the Rabbi Kudan ChinuchTools course(s) — forward your certificate to the camp office. Attend your division's in-person training, and read this handbook. Your onboarding checklist in this portal lists exactly what you need.</p>" }
+  { id: "welcome-mission", title: "Welcome & Our Mission", html:
+    `<p>Welcome to Camp Gan Israel, and <strong>thank you for giving your time, energy, and talent to our campers this summer.</strong> You are joining a team that takes one idea seriously: <em>to awaken the spark, fan the flame, and create an inferno of Judaism in every Jewish child.</em></p>
+<p>Our mission is simple to say and big to live: <strong>provide a safe, fun, and uplifting summer where a love for Yiddishkeit is taught through joy, warmth, and genuine care</strong> for every camper, every family, and every staff member. Camp is the most natural place in the world to be a positive influence on a child, because it is fun. The "down times" — sitting next to a camper at lunch, on the bus, between activities — are often where the real connection happens. Take advantage of them.</p>
+<p>This is not just an hourly summer job. You have a real chance to change a child's life. A camper who does one more mitzvah, who feels seen and valued for one summer, carries that with them long after camp ends. When you show up rested, on time, prepared, and in a good mood, you give yourself the foundation to make that happen.</p>
+<p><strong>If you ever have a question, or something doesn't feel right, reach out.</strong> Contact the camp office at <strong>office@ganisrael.org</strong> or <strong>(862) 244-3420</strong>. The only bad question is the one you didn't ask — please ask us before a small thing becomes a big one.</p>` },
+
+  { id: "our-campers", title: "Our Campers", html:
+    `<p>Our campers are <strong>ages 3 to 11</strong>, grouped by age. The youngest, ages 3–5, are in <strong>Kiddie Camp</strong>. Ages 6–11 are in our <strong>older divisions</strong>. Each group does activities that fit where the children are developmentally, always wrapped in the love and care that is the heart of what we do.</p>
+<p>Our campers come from a <strong>wide range of Jewish backgrounds</strong> — Chabad families, other observant families, and families not affiliated with any particular community. Some campers have one Jewish parent. Some attend Jewish schools, others public school. That mix is one of the best things about our camp: it creates a warm, welcoming place where every child can learn, grow, and make new Jewish friends that last well beyond the summer.</p>
+<p><strong>Every camper is treated fairly and with respect.</strong> In this camp, we only speak nicely about others. Each child has the right to experience and grow in a safe, friendly place, free of any teasing about appearance, interests, or behavior, with caring adults helping make the summer meaningful and memorable. That is the standard, and you are one of those caring adults.</p>` },
+
+  { id: "supervision-ratios", title: "Supervision & Ratios", html:
+    `<p>This is the most important rule at camp, so we put it first: <strong>campers must be supervised at all times.</strong> A camper may never wander away from the group without a staff member, under any circumstance. You are responsible for knowing <strong>where every one of your campers is, all day long</strong> — and that means taking attendance and doing head counts at every transition, not just in the morning.</p>
+<p>New Jersey sets minimum staff-to-camper ratios, and we always meet or exceed them:</p>
+<ul>
+  <li><strong>Older divisions (ages 6+):</strong> at least <strong>1 staff member for every 8 campers</strong>.</li>
+  <li><strong>Kiddie Camp (ages 5 and under):</strong> at least <strong>1 staff member for every 7 campers</strong>.</li>
+  <li><strong>On trips:</strong> extra coverage — at least 2 staff for every 16 campers in the older divisions, and 2 staff for every 10 campers in the younger division.</li>
+</ul>
+<p>There are specific times and places where <strong>at least two staff members must always be present</strong>. Never run these alone:</p>
+<ul>
+  <li>Swim and any water activities</li>
+  <li>Field trips</li>
+  <li>Sports fields</li>
+  <li>Elective and Olympic-style activities</li>
+  <li>Baking when electric appliances are used</li>
+  <li>Specialty activities such as archery, bubble soccer, and the foam machine</li>
+  <li><strong>Any time campers are changing</strong> (e.g., before or after swim), there must be two staff in the room</li>
+</ul>
+<p>If staffing ever gets thin and you cannot keep proper coverage, <strong>tell leadership immediately.</strong> Safety always comes before anything else.</p>` },
+
+  { id: "talking-to-campers", title: "How We Talk to Campers", html:
+    `<p>The heart of working with children is simple: <strong>let every camper know that he or she is important in your eyes.</strong> A child who feels heard and cared about will give you their best. Here is how we do that, every day:</p>
+<ul>
+  <li><strong>Listen, and show that you're listening.</strong> When a camper tells you something, reflect it back: "So you didn't like being left out of that game." Often a child just needs to feel heard, and the issue resolves on its own.</li>
+  <li><strong>Use first names.</strong> A person's favorite word is their own name. First names show connection; last names sound like authority.</li>
+  <li><strong>Be polite.</strong> Use "please" and "thank you" with campers, every time. It teaches by example and shows respect.</li>
+  <li><strong>Praise constantly.</strong> Catch campers doing things right and say so. Praise <strong>younger campers publicly</strong>; take <strong>older campers aside and compliment them privately.</strong> When kids get attention for the good, they stop seeking it through misbehavior.</li>
+  <li><strong>Avoid labels.</strong> Never call a child "my terror" or "always late." Kids live up (or down) to the labels we give them. If a camper labels himself ("I'm a troublemaker"), counter it with the good you see in him.</li>
+  <li><strong>Give choices about <em>how</em>, not <em>whether</em>.</strong> "Do you want to clean up the Legos with your hands or the scoop?" gives a child ownership without a power struggle.</li>
+  <li><strong>Lead by example, not by command.</strong> Instead of "Everyone bentch now," start bentching yourself and let them follow. Instead of telling kids to be quiet, put a finger to your lips and wait.</li>
+</ul>
+<p><strong>And the golden rule for hard moments: never scream.</strong> Yelling shows a loss of control, and campers often hear only the yelling, not the message. A calm, low voice shows you are completely in control. <strong>If you feel like you're about to blow up, walk away.</strong> Get a drink of water, take a breath, ask a head staff member to step in, and come back when you're calm. Nothing a camper does is worth damaging your relationship with them.</p>` },
+
+  { id: "discipline", title: "Discipline", html:
+    `<p>Our approach to discipline is <strong>positive guidance</strong> — we emphasize encouragement, redirection, prevention, and helping campers build self-control. We are not in the business of punishment. The most important mindset: <strong>the behavior is the problem, not the camper.</strong></p>
+<p>Remember the <strong>CPR of Discipline — Consistent, Prompt, and Reasonable.</strong></p>
+<ul>
+  <li><strong>Consistent:</strong> Decide your expectations and consequences up front and stick to them, fairly, for every camper. No favorites. Kids deeply respect fairness.</li>
+  <li><strong>Prompt:</strong> Address behavior in the moment, calmly — but never out of rage. If you're too angry, separate the campers, let everyone cool off, and handle the consequence a bit later.</li>
+  <li><strong>Reasonable:</strong> Match the consequence to the behavior, and only promise what you can actually follow through on. Empty threats make a joke of all your rules.</li>
+</ul>
+<p>Some practical tools that work: give one clear warning, let the camper explain (they may have a real reason), discipline privately rather than embarrassing a child, and when you can, let the camper help choose a fair consequence. Often the best move is simply to <strong>keep campers busy</strong> — most behavior problems disappear when kids are engaged.</p>
+<p><strong>One firm rule: always inform the Directors of any disciplinary measure you take.</strong> We need to know what's happening with our campers so we can support you and keep families informed appropriately.</p>
+<p>The following are <strong>never</strong> acceptable, under any circumstances:</p>
+<ul>
+  <li>Depriving a camper of <strong>sleep, food, or bathroom</strong> access</li>
+  <li>Leaving a camper <strong>alone and unsupervised</strong> as a consequence</li>
+  <li><strong>Ridicule, shaming, threats, or name-calling</strong></li>
+  <li><strong>Any physical contact</strong> as punishment — striking, grabbing, squeezing, etc. (this is grounds for immediate dismissal)</li>
+  <li>Using <strong>physical exercise or restraint</strong> as a punishment</li>
+</ul>` },
+
+  { id: "bullying-sensitive-issues", title: "Bullying & Sensitive Issues", html:
+    `<p><strong>Bullying is any intentional hurtful act</strong> — by one or more campers against another — where there's an imbalance of power. It shows up in three main forms: <strong>physical</strong> (hitting, shoving, taking things), <strong>verbal</strong> (name-calling, taunting, hurtful teasing), and <strong>relational</strong> (excluding, humiliating, manipulating friendships). Bullies often look like confident, well-liked leaders, so stay alert — especially for the camper who is quietly being left out.</p>
+<p>Your role here is to be a <strong>hero</strong>. When you see bullying of any kind:</p>
+<ul>
+  <li><strong>Step in and separate</strong> the children involved.</li>
+  <li><strong>Support the camper who was hurt</strong> and keep an eye on the situation.</li>
+  <li><strong>Report it up the chain</strong> to your leadership right away.</li>
+</ul>
+<p>Because bullying usually happens when staff aren't looking, <strong>make it a regular topic with your campers</strong> so they know you take it seriously. Teach them the difference between <strong>reporting</strong> (getting someone out of danger and into safety) and tattling (trying to get someone in trouble) — and praise campers who speak up to protect a friend. Campers follow what you <em>do</em> far more than what you say, so never play favorites.</p>
+<p><strong>Sensitive topics</strong> need extra care. Our campers come from every kind of family and level of observance. If a camper brings up something socially sensitive or inappropriate — or speaks badly about another person or group — gently but immediately redirect: <strong>"We only speak nicely about others in this camp. At Gan Israel everyone is treated fairly and with respect."</strong> Do it without drawing extra attention to the child.</p>
+<p>Be especially thoughtful around topics known to be sensitive in our community — <strong>divorce, intermarriage, sexuality, and level of religious observance.</strong> If you're ever unsure how to handle one of these, <strong>consult the Directors.</strong> And as a rule, <strong>never discuss your own personal life with campers.</strong></p>` },
+
+  { id: "boundaries-safety", title: "Boundaries, Safety & Harassment Prevention", html:
+    `<p>The physical, emotional, and spiritual safety of every camper is our highest priority. That starts with <strong>clear personal boundaries from every staff member.</strong></p>
+<p>The single most important boundary is the <strong>Rule of Three: never be alone, one-on-one, with a camper in a private or closed space.</strong> Always keep a second staff member, or the group, present. The only appropriate physical contact is a <strong>high-five or a brief side-hug</strong> when needed — nothing more.</p>
+<p><strong>These behaviors are strictly prohibited:</strong></p>
+<ul>
+  <li>Being alone one-on-one with a camper in a private space</li>
+  <li>Sharing a bed, sleeping area, or tent with a camper</li>
+  <li>Any inappropriate physical contact</li>
+  <li>Sexual, suggestive, or adult language around campers</li>
+  <li>Sharing your personal contact info with a camper</li>
+  <li>Showing favoritism, gift-giving, or forming an exclusive relationship with an individual camper</li>
+</ul>
+<p><strong>Never private-message a camper</strong> — no Instagram, WhatsApp, Snapchat, texting, or any direct messaging, during or after the summer. The only exceptions are when a <strong>parent is present or copied</strong>, or it's part of an organized, camp-sanctioned program. If you're not sure whether a form of contact is okay, <strong>ask the Directors first.</strong></p>
+<p><strong>Every staff member is a mandatory reporter under New Jersey law.</strong> If you ever observe, suspect, or hear about abuse (physical, emotional, or sexual), inappropriate staff behavior toward a camper, or a serious boundary violation, <strong>you are legally required to report it.</strong> (This is covered in depth at in-person training.)</p>
+<ul>
+  <li><strong>Reporting chain:</strong> first notify your direct supervisor (Head Counselor / division head); if it's unresolved or you're uncomfortable, go straight to the Directors via <strong>office@ganisrael.org</strong> or <strong>(862) 244-3420</strong>.</li>
+  <li><strong>If you suspect a child is being harmed, New Jersey law requires an immediate report to the State Central Registry child-abuse hotline: <em>1-877-NJ-ABUSE (1-877-652-2873)</em>.</strong> Then notify the Directors.</li>
+</ul>
+<p>We hold a <strong>zero-tolerance policy</strong> for any harassment, abuse, or misconduct toward campers or fellow staff. When in doubt, ask yourself one question: <strong>"Would I be comfortable if a parent or director saw this interaction?"</strong> If the answer is no — pause, adjust, or ask for help.</p>` },
+
+  { id: "daily-conduct", title: "Daily Conduct & Work Rules", html:
+    `<p>You are a role model from the moment you arrive until the last camper leaves. Campers notice what you <em>do</em> far more than what you say, so <strong>everything you do is a Kiddush Hashem.</strong> Here are the work rules that keep camp running and keep you at your best:</p>
+<ul>
+  <li><strong>Be there, on time, every day.</strong> When you agreed to your position, you agreed to be present for the whole season. If you're sick or unavoidably delayed, <strong>notify the camp office as early as possible</strong> so coverage can be arranged.</li>
+  <li><strong>Be fully engaged.</strong> Stay with your group, be attentive, and jump into activities, songs, bus games, and dress-up days with real energy. Your enthusiasm sets the tone for your campers.</li>
+  <li><strong>Dress neatly and according to camp standards.</strong> Clean, modest, camp-appropriate clothing, and your division's dress code (see your role and contract). Wear your camp shirt on trip days.</li>
+  <li><strong>Use the chain of command.</strong> Bring any camper or staff issue to your direct supervisor promptly. <strong>Do not take issues directly to parents</strong>; route them through leadership.</li>
+  <li><strong>Keep your spaces clean</strong> and return all supplies and equipment to their proper place, treating camp property with care.</li>
+  <li><strong>Our campus is smoke-free, alcohol-free, drug-free, and weapon-free</strong> at all times. Bringing alcohol, drugs, or weapons onto camp property is grounds for immediate dismissal.</li>
+</ul>
+<p><strong>Phone policy — this depends on your role, so please read carefully:</strong></p>
+<ul>
+  <li><strong>Counselors and Junior Counselors may not have a phone on them at all during camp.</strong> All communication happens by walkie-talkie. If an emergency comes up, ask your supervisor to cover your group while you step away to handle it.</li>
+  <li><strong>Head Counselors, Kiddie Lead Teachers, and Kiddie Assistant Teachers may keep a phone, but use it only for emergencies</strong> — not for personal calls, texting, or scrolling during the camp day, and never during swim or water activities.</li>
+</ul>` },
+
+  { id: "health-emergencies", title: "Health & Emergencies", html:
+    `<p>Keeping campers healthy and safe is part of your job every single day. The basics go a long way:</p>
+<ul>
+  <li><strong>Do a quick daily health check.</strong> Each morning, keep an eye on your campers for any sign of illness, injury, or something that seems off, and report anything concerning.</li>
+  <li><strong>Know your bunk's allergies and medical needs on Day 1.</strong> All medication is kept and administered through the <strong>nurse's office</strong> — never hold or give out medication yourself.</li>
+  <li><strong>Encourage frequent handwashing</strong> — before eating and after the bathroom.</li>
+  <li><strong>Never lose track of a camper.</strong> Do regular head counts, especially at every transition and around swim. Learn the <strong>lost-camper and lost-swimmer procedures</strong>, and if a camper is ever missing, <strong>raise the alarm immediately</strong> — do not wait.</li>
+  <li><strong>On trips,</strong> every group carries a radio, and any epi-pens or inhalers travel with the group.</li>
+</ul>
+<p><strong>If a camper is injured or there's a serious incident, complete an incident report.</strong> For any fight involving real contact (hitting, kicking, biting), both campers visit the nurse to be checked, and an incident report is filed.</p>
+<p><strong>In a true emergency, get help first.</strong> Call <strong>Hatzoloh / 911 immediately</strong>, then notify camp leadership. Stay calm, take command of your group, and give clear instructions.</p>
+<p>You'll learn the camp's <strong>emergency procedures — fire, evacuation, and lockdown — at in-person training.</strong> Know your nearest exits and the plan before camp begins so that if anything ever happens, you can act without hesitation.</p>` },
+
+  { id: "food-policy", title: "Food Policy", html:
+    `<p>We are a <strong>nut-free camp</strong> — this is a serious safety matter, because some campers have severe allergies. Please help enforce it carefully at lunch and snack time.</p>
+<p>A quick word on meat, since it sometimes causes confusion: <strong>we ask that the food campers bring from home be meat-free</strong> — dairy or parve only. This keeps lunchtime simple and avoids any kashrus mix-ups with the food kids bring in. <strong>Camp itself does serve meat at our own meals and events</strong> — so the meat-free rule is just about what comes from home, not about the food we provide.</p>
+<p>To sum up the rules for food brought from home:</p>
+<ul>
+  <li><strong>No nuts</strong> (we are a nut-free camp)</li>
+  <li><strong>No meat</strong> — dairy or parve only</li>
+  <li><strong>No glass containers</strong></li>
+</ul>
+<p>Please help your campers at lunch, keep an eye out for anything that doesn't fit these rules, and make mealtime a warm, pleasant part of the day.</p>` },
+
+  { id: "pickup-dismissal", title: "Pickup & Dismissal", html:
+    `<p>Dismissal is one of the most safety-sensitive parts of the day, and parents judge how well-run camp is by how it feels. <strong>Supervise your campers until they are physically picked up</strong> — never let a child drift off on their own at the end of the day.</p>
+<p><strong>Children are released only to authorized pickup people.</strong> If someone you don't recognize comes to pick up a camper, or a child is supposed to leave with someone not on the authorized list, <strong>do not release the camper</strong> — get a director's confirmation first.</p>
+<p>At drop-off and pickup, <strong>greet campers, parents, and fellow staff with a smile.</strong> Keep these touchpoints warm and friendly. <strong>Save any serious conversation about a camper for during the day, through leadership</strong> — not at the curb at pickup.</p>
+<p><em>(Bus-specific procedures are covered in the "Bus Counselors" section.)</em></p>` },
+
+  { id: "bus-counselors", title: "Bus Counselors", html:
+    `<p><strong>Details for bus counselors will be provided by the camp office.</strong> If you are assigned as a bus counselor, you'll receive your route, conduct rules, and head-count procedure before camp begins.</p>` },
+
+  { id: "dates-hours", title: "Camp Dates, Hours & Training", html:
+    `<p>Here are the dates and times to lock in now. <strong>Camp runs Monday, June 29 through Friday, August 14, 2026, and camp is closed on Friday, July 3.</strong></p>
+<p><strong>Daily hours depend on your division:</strong></p>
+<ul>
+  <li><strong>Boys division:</strong> Monday–Thursday <strong>8:30 AM – 4:00 PM</strong>; Friday <strong>8:30 AM – 2:30 PM</strong>.</li>
+  <li><strong>Girls division & Kiddie Camp:</strong> Monday–Thursday <strong>9:00 AM – 3:30 PM</strong> (arrive by <strong>8:45 AM</strong>, leave by <strong>3:45 PM</strong>); Friday <strong>9:00 AM – 2:00 PM</strong> (leave by <strong>2:15 PM</strong>).</li>
+</ul>
+<p>On top of the posted hours, plan to <strong>arrive early to set up and greet campers</strong>, and <strong>stay until every camper is picked up.</strong></p>
+<p><strong>In-person staff training is mandatory.</strong> This is where we walk through day-to-day operations, your role, the daily flow, emergency procedures, and mandated reporting. Training times depend on your division:</p>
+<ul>
+  <li><strong>Boys division:</strong> Sunday, <strong>12:00 PM – 6:00 PM</strong>. (<strong>Junior Counselors attend 12:00 PM – 3:00 PM only.</strong>)</li>
+  <li><strong>Girls division:</strong> two sessions — <strong>Friday, June 26 and Sunday, June 28.</strong></li>
+  <li><strong>Kiddie Camp:</strong> <strong>Friday, June 26, 9:00 AM – 2:00 PM.</strong></li>
+</ul>
+<p><strong>Where to go on your first training day — Boys division:</strong> when you arrive at camp, head to the <strong>picnic area</strong>. (Girls and Kiddie staff: report to the location given by the camp office for your session.)</p>
+<p>If you are ever sick or running late, <strong>let the camp office know as early as possible</strong> at office@ganisrael.org or (862) 244-3420.</p>` },
+
+  { id: "before-camp-starts", title: "Before Camp Starts", html:
+    `<p>A great summer starts with good preparation. <strong>Your onboarding checklist in this portal lists exactly what you need to complete</strong> — work through it, and aim to finish your online items <strong>at least two weeks before camp begins.</strong> Here's the big picture of what's expected before Day 1:</p>
+<ul>
+  <li><strong>Finish your paperwork and background screening.</strong> This includes your employment history, the background-check steps for your situation, and (for certain staff we'll let you know) a W-9. The portal walks you through each item that applies to you.</li>
+  <li><strong>Complete your required online training.</strong> Every staff member takes Rabbi Zalmy Kudan's <strong>"Making Camp Safe – Child Abuse Prevention"</strong> course on ChinuchTools, and counselor staff also complete the Pickle / behavioral-management course. <strong>Forward your completion certificate to the camp office (office@ganisrael.org).</strong></li>
+  <li><strong>Read this handbook</strong> and acknowledge it.</li>
+  <li><strong>Attend your division's in-person training</strong> (see the Camp Dates, Hours & Training section for your day and time).</li>
+</ul>
+<p>A few optional-but-encouraged extras are available too, including additional Rabbi Kudan courses and a <strong>free First Aid/CPR Zoom course</strong> that camp covers for staff 16 and up. You'll find these in the portal — we highly recommend them.</p>
+<p>If anything on your checklist is unclear or an email hasn't arrived when you expected it, <strong>reach out to the camp office</strong> — don't let an item sit. We want you walking into camp confident and ready.</p>` }
 ];
 
 // =============================================================================

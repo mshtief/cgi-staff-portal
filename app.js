@@ -378,7 +378,8 @@ function renderDashboard(forceStaff) {
   if (!user || user.isAdmin) return;
 
   // Locked account — contract not yet returned. Show a friendly hold screen.
-  if (user.locked) {
+  // Admins (viewing as a staffer) bypass the lock so they can review everything.
+  if (user.locked && !(state.currentUser && state.currentUser.isAdmin)) {
     document.getElementById("viewDashboard").innerHTML = `
       <div class="welcome-banner">
         <h2>Hi ${escapeHTML(user.name.split(" ")[0])} 👋</h2>
@@ -788,8 +789,11 @@ function renderModule() {
     } else if (d === "kiddie") {
       when = "Training &amp; setup: <strong>Friday, June 26 · 9:00 AM – 2:00 PM</strong>";
     } else {
-      when = "Training &amp; setup: <strong>Sunday, June 28</strong>" +
-             (user.outOfTown ? "<br><span style='font-size:14px;'>Out-of-town: arrive <strong>Sunday morning, June 28</strong> · setup 10:00 AM – 1:00 PM</span>" : "");
+      const jc = user.role === "junior-counselor";
+      when = "Staff training: <strong>Sunday, June 28 · " + (jc ? "12:00 PM – 3:00 PM" : "12:00 PM – 6:00 PM") + "</strong>" +
+             (jc ? "<br><span style='font-size:14px;'>Junior Counselors: 12:00–3:00. All other boys staff stay until 6:00.</span>"
+                 : "<br><span style='font-size:14px;'>Boys staff training runs 12:00–6:00 PM.</span>") +
+             (user.outOfTown ? "<br><span style='font-size:14px;'>Out-of-town: arrive <strong>Sunday morning, June 28</strong>.</span>" : "");
     }
     html += `
       <div class="card">
@@ -805,7 +809,7 @@ function renderModule() {
 
   // ─── Optional request (First Aid / Mandated Reporter) ───
   if (t.type === "optional-request") {
-    const mailto = `mailto:${encodeURIComponent(t.requestEmail)}?subject=${encodeURIComponent(t.requestSubject)}&body=${encodeURIComponent(`Hi Chana,\n\nI'd like to sign up for the free First Aid/CPR & Mandated Reporter training.\n\nName: ${user.name}\nRole: ${ROLE_TEMPLATES[user.role].label}\n\nThanks!`)}`;
+    const mailto = `mailto:${encodeURIComponent(t.requestEmail)}?subject=${encodeURIComponent(t.requestSubject)}&body=${encodeURIComponent(`Hi Chana,\n\nI'd like to sign up for the free First Aid/CPR training.\n\nName: ${user.name}\nRole: ${ROLE_TEMPLATES[user.role].label}\n\nThanks!`)}`;
     html += `
       <div class="card" style="background:#fffbeb;border-color:#fde68a;">
         <h3 style="color:#92400e;">✨ Want in? It's free.</h3>
@@ -905,7 +909,7 @@ function renderInfo(id) {
       ? "<strong>Kiddie Camp is at the Rabbinical College (RCA campus).</strong> Head to your classroom and get it set up."
       : div === "girls"
       ? "<strong>Girls Division is at the Sussex Avenue School, 226 Sussex Avenue</strong> (about a minute from the Rabbinical College)."
-      : "<strong>Boys Division is at the Rabbinical College (RCA campus).</strong> Morning lineup is at the baseball field; afternoon pickup is at the First Circle by the Boys' Cheder.";
+      : "<strong>Boys Division is at the Rabbinical College (RCA campus).</strong> When you arrive, head to the <strong>picnic area</strong> for morning lineup; afternoon pickup is at the First Circle by the Boys' Cheder.";
     const arrive = isHead ? "8:30 AM" : "8:45 AM";
     body =
       sec("🎉 Welcome!", `<p>Camp starts <strong>Monday, June 29, 2026</strong>. We're so glad you're on the team.</p>`) +
@@ -917,7 +921,7 @@ function renderInfo(id) {
         "Learn your bunk's allergies and any medical notes",
         "Have your charged walkie-talkie and the day's schedule on you"
       ])) +
-      sec("🎒 Come prepared", `<p>Daven and eat breakfast before camp, dress for the weather, and bring a water bottle. Phones are for emergencies and camp photos only — you'll communicate by walkie-talkie.</p>`);
+      sec("🎒 Come prepared", `<p>Daven and eat breakfast before camp, dress for the weather, and bring a water bottle. <strong>Phone policy depends on your role:</strong> Counselors and Junior Counselors don't carry a phone during camp (you'll use a walkie-talkie); Head Counselors and Kiddie staff may keep a phone for emergencies only.</p>`);
   }
 
   else if (id === "daily-schedule") {
@@ -943,7 +947,7 @@ function renderInfo(id) {
           : "Boys swim at the <strong>Rabbinical College campus</strong>."
       } Swim days <strong>vary by division and week</strong> (for example, none during the Nine Days) — check your weekly schedule, and remind campers to bring a suit &amp; towel on swim days.</p>`) +
       sec("💡 Good to know", ul([
-        "Lunch and the Group Jam are the two fixed anchors of every day",
+        "Lunch is at noon, and the day ends with a short camp-wide \"Group Jam\" (song &amp; dance) before dismissal",
         "Fridays end early (2:00 PM) for Shabbos",
         "After dismissal, review the day and prep for tomorrow before you leave"
       ]));
