@@ -14,5 +14,5 @@
 // See backend/DEPLOY.md for the 5-minute deployment steps.
 // =============================================================================
 window.PORTAL_CONFIG = {
-  backendUrl: ""
+  backendUrl: "https://script.google.com/macros/s/AKfycbx0Hq7pLHyb6r3sb9OExh8ULw4b3cgxBTpdGjqxfn_HoLN-AUhuDKWG19Rel4Qbkyyxlg/exec"
 };
