@@ -731,6 +731,11 @@ const STAFF = [
 // division where relevant. Per Mendel's rule: no personal names on the portal —
 // use "the camp office" / "Camp Directors".
 // =============================================================================
+// Division theme-calendar images (the JPEG parents receive). Drop the files in
+// assets/ and set the paths here (e.g. "assets/calendar-boys.jpg"). Empty = a
+// placeholder note shows instead.
+const CALENDAR_IMAGES = { boys: "", girls: "", kiddie: "" };
+
 const INFO_PAGES = [
   { id: "job-description", title: "Your Job Description", icon: "🧑‍🏫", blurb: "Exactly what your role does, day to day" },
   { id: "first-day",      title: "Your First Day",         icon: "📍", blurb: "Where to go, when to arrive, what to do first" },
@@ -759,6 +764,19 @@ const HANDBOOK_TOPICS = [
     `<p>Our campers are <strong>ages 3 to 11</strong>, grouped by age. The youngest, ages 3–5, are in <strong>Kiddie Camp</strong>. Ages 6–11 are in our <strong>older divisions</strong>. Each group does activities that fit where the children are developmentally, always wrapped in the love and care that is the heart of what we do.</p>
 <p>Our campers come from a <strong>wide range of Jewish backgrounds</strong> — Chabad families, other observant families, and families not affiliated with any particular community. Some campers have one Jewish parent. Some attend Jewish schools, others public school. That mix is one of the best things about our camp: it creates a warm, welcoming place where every child can learn, grow, and make new Jewish friends that last well beyond the summer.</p>
 <p><strong>Every camper is treated fairly and with respect.</strong> In this camp, we only speak nicely about others. Each child has the right to experience and grow in a safe, friendly place, free of any teasing about appearance, interests, or behavior, with caring adults helping make the summer meaningful and memorable. That is the standard, and you are one of those caring adults.</p>` },
+  { id: "caring-for-campers", title: "Caring for Your Campers — What Parents Count On", html:
+    `<p>Above everything else, your most important job is the <strong>safety and care of every camper — physically and emotionally.</strong> We love your energy, creativity, and dedication, and we need all of it — but a camper's safety and wellbeing always comes first. Parents trust us with the most precious thing in their world, and the way we care for their child is what they remember most.</p>
+<p><strong>Physical care &amp; safety:</strong></p>
+<ul>
+<li>Always know where every one of your campers is, and supervise constantly.</li>
+<li><strong>Make sure every camper actually eats their snack and lunch.</strong> On a busy, fun day this is easy to forget — but a hungry child is a real problem, and parents care about it deeply. Check that each camper has eaten.</li>
+<li>Keep campers hydrated, sun-safe, and comfortable.</li>
+</ul>
+<p><strong>Swimming is a top priority for parents.</strong> One of the biggest reasons families send their children to camp is so they swim and get swim lessons. Make sure your campers participate, listen to the instructors, and get the most out of every swim — and never take your eyes off a camper near the water.</p>
+<p><strong>Go easy on sugar.</strong> Parents do <em>not</em> want their children loaded up with candy and sweets. <strong>Don't hand out sugar or treats on your own — always clear it with the leadership team first.</strong></p>
+<p><strong>Emotional care.</strong> Every camper should feel seen, included, and cared for. Watch for the child who is quiet, left out, or having a hard day, and make sure no one slips through the cracks.</p>
+<p><strong>Keep parents in the know — through leadership.</strong> Parents deeply value knowing what's going on with their child. If anything comes up — a bump, an upset, a struggle, anything physical or emotional — <strong>bring it to your Head Counselor or the Directors</strong> so the family can be kept informed appropriately. Never let something a parent would want to know about go unreported.</p>
+<p>In short: bring your best energy and spirit — and let the safety, health, and emotional care of every camper guide everything you do.</p>` },
 
   { id: "supervision-ratios", title: "Supervision & Ratios", html:
     `<p>This is the most important rule at camp, so we put it first: <strong>campers must be supervised at all times.</strong> A camper may never wander away from the group without a staff member, under any circumstance. You are responsible for knowing <strong>where every one of your campers is, all day long</strong> — and that means taking attendance and doing head counts at every transition, not just in the morning.</p>
@@ -3072,6 +3090,7 @@ window.PORTAL_DATA = {
   BASELINE_REQUIRED,
   OPTIONAL_OFFERED,
   INFO_PAGES,
+  CALENDAR_IMAGES,
   HANDBOOK_TOPICS,
   JOB_DESCRIPTIONS,
   STAFF,

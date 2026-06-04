@@ -479,6 +479,14 @@ header.site-header .inner {
   font-size: 15px; margin-bottom: 14px; color: var(--navy);
   font-weight: 700;
 }
+/* Readable spacing for rich content inside cards (handbook, job descriptions, info pages) */
+.card p { line-height: 1.65; margin: 0 0 12px; }
+.card p:last-child { margin-bottom: 0; }
+.card ul, .card ol { padding-left: 24px; margin: 8px 0 14px; line-height: 1.6; }
+.card ul:last-child, .card ol:last-child { margin-bottom: 0; }
+.card li { margin-bottom: 8px; padding-left: 3px; }
+.card li:last-child { margin-bottom: 0; }
+.card strong { color: var(--navy); }
 
 .resources-list { list-style: none; }
 .resources-list li {

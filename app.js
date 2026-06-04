@@ -6,7 +6,7 @@
 // =============================================================================
 
 const {
-  TRAININGS, ROLE_TEMPLATES, RECENT_ACTIVITY, INFO_PAGES, HANDBOOK_TOPICS,
+  TRAININGS, ROLE_TEMPLATES, RECENT_ACTIVITY, INFO_PAGES, CALENDAR_IMAGES, HANDBOOK_TOPICS,
   CHANA_EMAIL, DIRECTOR_EMAIL,
   resolveRequired, resolveOptional, resolveAdminItems
 } = window.PORTAL_DATA;
@@ -980,23 +980,20 @@ function renderInfo(id) {
   }
 
   else if (id === "camp-calendar") {
+    const calImg = (div === "girls") ? CALENDAR_IMAGES.girls
+                 : (div === "kiddie") ? CALENDAR_IMAGES.kiddie
+                 : CALENDAR_IMAGES.boys;
     body =
       sec("📅 Season", `<p><strong>Monday, June 29 – Friday, August 14, 2026</strong> (7 weeks). Fridays end at 2:00 PM.</p>`) +
       sec("🚫 Days off", ul([
-        "Friday, July 4 — No camp",
-        "Wednesday, July 30 — No camp (Tisha B'Av)"
+        "Friday, July 3 — No camp",
+        "Thursday, July 23 — No camp (Tisha B'Av fast day)"
       ])) +
-      sec("✈️ This summer's theme: \"Flying\"", ul([
-        "Week 1 — Flying into the Summer",
-        "Week 2 — Flying into Space",
-        "Week 3 — Flying Wild &amp; Wacky",
-        "Week 4 — Flying High",
-        "Week 5 — Flying Around the World",
-        "Week 6 — Flying with Friends",
-        "Week 7 — Flying into the Future"
-      ])) +
-      sec("🎨 Each week", `<p>There's a dress-up day and a Friday Shabbat Party every week. Your Head Counselor will share the specifics and how to prep.</p>`) +
-      sec("🚌 Trips", `<p>Each division goes on trips throughout the summer (arcades, gymnastics, farms, amusement parks, and more). <strong>Wear your camp shirt on trip days.</strong> The big <strong>Grand Trip to Dorney Park</strong> is for Division A on August 11. Your Head Counselor will give you each week's trip details.</p>`);
+      sec("🗓️ Your theme calendar", calImg
+        ? `<p>Here is your division's full theme calendar — the same one parents receive:</p><img src="${calImg}" alt="Division theme calendar" style="width:100%;border-radius:10px;border:1px solid var(--border);margin-top:8px;">`
+        : `<p>Your division's full <strong>theme calendar</strong> (weekly themes, trip days, dress-up days, and special events) will be posted right here — the same one parents receive. Your Head Counselor will walk you through each week.</p>`) +
+      sec("🎨 Each week", `<p>Every week has a dress-up day and a Friday Shabbat Party. Your Head Counselor will share the specifics and how to prep.</p>`) +
+      sec("🚌 Trips", `<p>Each division goes on trips throughout the summer. <strong>Wear your camp shirt on trip days.</strong> Your Head Counselor will give you each week's trip details.</p>`);
   }
 
   else if (id === "key-policies") {
