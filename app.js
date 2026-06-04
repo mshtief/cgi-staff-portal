@@ -904,6 +904,13 @@ function renderInfo(id) {
 
   let body = "";
 
+  if (id === "job-description") {
+    const jd = (window.PORTAL_DATA.JOB_DESCRIPTIONS || {})[user.role];
+    body = jd
+      ? `<div class="card">${jd}</div>`
+      : sec("Your Job Description", "<p>Your role's job description will be added shortly. Questions? Contact the camp office at <strong>office@ganisrael.org</strong>.</p>");
+  }
+
   if (id === "first-day") {
     const where = isKiddie
       ? "<strong>Kiddie Camp is at the Rabbinical College (RCA campus).</strong> Head to your classroom and get it set up."
