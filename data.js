@@ -866,25 +866,6 @@ const HANDBOOK_TOPICS = [
 <p>At drop-off and pickup, <strong>greet campers, parents, and fellow staff with a smile.</strong> Keep these touchpoints warm and friendly. <strong>Save any serious conversation about a camper for during the day, through leadership</strong> — not at the curb at pickup.</p>
 <p><em>(Bus-specific procedures are covered in the "Bus Counselors" section.)</em></p>` },
 
-  { id: "bus-counselors", title: "Bus Counselors", html:
-    `<p>Bus monitors are the heart of a safe, smooth ride. You are the main point of contact between parents, campers, and camp leadership, and you keep the bus calm, orderly, and safe from the first pickup to the last drop-off.</p>
-<p><strong>Hours depend on your route:</strong> pickup may begin as early as <strong>7:45 AM</strong>, arrival at camp around <strong>9:00 AM</strong>, departure from camp <strong>3:30 PM</strong>, and final drop-off as late as <strong>4:45 PM</strong>. Timeliness is critical — be on time every day, and if you're ever sick or delayed, notify the camp office as early as possible.</p>
-<p><strong>Bus monitors carry a working personal phone at all times</strong> (this is the one role where that's required) — you'll need it to run the parent WhatsApp group and share live location. Battery packs / data reimbursement are available if needed.</p>
-<p><strong>At pickup:</strong></p>
-<ul>
-  <li>Help each child board and get to their seat</li>
-  <li>Take accurate attendance</li>
-  <li>Make sure every camper is buckled in a seatbelt for the entire ride</li>
-</ul>
-<p><strong>At drop-off:</strong></p>
-<ul>
-  <li>Help children off the bus safely</li>
-  <li>Release a child <strong>only to an authorized person listed on the Child Release Form</strong> — request ID when needed</li>
-  <li>Walk the bus to be sure <strong>no child is left behind</strong>, and take attendance</li>
-</ul>
-<p><strong>While the bus is moving:</strong> everyone stays seated and buckled, keep the environment calm so the driver can focus, and know your route well enough to guide a substitute driver.</p>
-<p><strong>Leadership &amp; records:</strong> stay calm and positive, never yell, and make sure no camper is harmed physically or verbally. Report any serious concern to the camp office immediately. Keep a <strong>daily bus list</strong> — who was scheduled, who actually rode, and who each child was released to — and run a <strong>parent WhatsApp group</strong> with live location during pickup/drop-off and any delay updates.</p>
-<p><strong>Before camp:</strong> take part in the bus safety orientation at staff training and become fully familiar with all bus procedures.</p>` },
 
   { id: "dates-hours", title: "Camp Dates, Hours & Training", html:
     `<p>Here are the dates and times to lock in now. <strong>Camp runs Monday, June 29 through Friday, August 14, 2026, and camp is closed on Friday, July 3.</strong></p>
@@ -925,114 +906,189 @@ const RECENT_ACTIVITY = [];
 // EXPORT
 // =============================================================================
 const JOB_DESCRIPTIONS = {
-  "counselor": `<p><strong>Role summary:</strong> The Counselor is the primary leader of the bunk — running the day, leading davening, learning and activities, and serving as the role model and primary guardian of every camper's physical, emotional, and spiritual wellbeing.</p>
-<p><strong>Your key day-to-day responsibilities:</strong></p>
+  "boys-counselor": `<p><strong>Role summary:</strong> As a Boys Division Counselor you are the primary leader of your bunk and the main role model your campers look up to — responsible for their safety, their day-to-day experience, and inspiring a genuine love of Yiddishkeit through fun and energy.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Safety first:</strong> Provide proper supervision of every camper at all times, implement all safety guidelines, stay proactive about hazards, and present a positive image of camp in public. Campers are never left alone.</li>
-<li><strong>Davening & learning:</strong> Run an engaging, age-appropriate davening with songs and energy, and prepare daily for the learning class (about 10-30 minutes) using the curriculum provided — keep it fun and interactive. Flag the Head Counselor ahead of time if you want to teach something specific.</li>
-<li><strong>Keep campers engaged:</strong> Know the day's schedule before lineup, bring energy to every activity, take an active part in bus songs and games, join activities (including those led by professional instructors), stay present and vigilant at swim, and be ready to improvise if an activity is canceled.</li>
-<li><strong>Role model & mentchlichkeit:</strong> Set the example in attitude and behavior, make a kiddush Hashem at all times, and instill a love of Judaism. Guide and respect your Junior Counselor as a fellow staff member while supervising their work.</li>
-<li><strong>Discipline:</strong> Apply basic, appropriate corrections in the moment, and recognize and reward campers for individual and team achievements.</li>
-<li><strong>Organization & communication:</strong> Take attendance first thing each morning, keep activities running on schedule, document disciplinary issues in incident reports for the Head Counselor, report mishaps, and participate actively in staff meetings.</li>
-<li><strong>Drop-off / pick-up:</strong> Greet campers, parents, and fellow staff with a smile.</li>
+<li>Take attendance first thing every morning and provide proper supervision of every camper at all times — campers are never left alone.</li>
+<li>Run an engaging, age-appropriate davening with songs, energy, and incentives, and lead the daily learning class (15-30 min) from the curriculum provided; keep it fun and interactive with stories, props, and small activities.</li>
+<li>Lead and run your bunk through lineup, activities, lunch, transitions, swim, and trips; bring energy, join in, and be ready to improvise if an activity falls through.</li>
+<li>Be present and vigilant during swim times, overseeing campers in the pool and water-play area.</li>
+<li>Apply basic, appropriate discipline when needed, and recognize and reward campers for individual and team achievements.</li>
+<li>Guide and respect your Junior Counselor as a fellow staff member while supervising them.</li>
+<li>Keep your bunk room and areas clean, return all supplies and equipment, and clean up after every activity.</li>
+<li>Report mishaps and incidents; document disciplinary issues in incident reports and submit them to your Head Counselor.</li>
+<li>Greet campers, parents, and staff with a smile at drop-off and pick-up, and model mentchlichkeit and a kiddush Hashem at all times.</li>
 </ul>
-<p><strong>Chain of command:</strong> You report to the <strong>Head Counselor</strong>. Bring camper or staff issues to your Head Counselor; serious issues go to the Directors.</p>
-<p><strong>Role-specific notes:</strong></p>
-<ul>
-<li><strong>Phone:</strong> Counselors do <strong>NOT</strong> carry a phone during camp. Radios are provided for all communication.</li>
-<li><strong>Dress (Boys):</strong> Button-down shirt for davening and learning; T-shirts fine for other activities (nothing tight or with inappropriate images); no jeans or shorts; yeshiva-standard haircuts.</li>
-<li><strong>Dress (Girls):</strong> Tznius standards — skirts covering the knees with no slits, sleeves covering the elbows, necklines covered at all times. Not negotiable.</li>
-</ul>`,
+<p><strong>Chain of command:</strong> You report to your Head Counselor. Bring camper or staff issues to your Head Counselor, and serious issues up to the Directors.</p>
+<p><strong>Phone policy:</strong> Counselors do not carry or use a personal phone during camp. Radios are provided for communication; speak to your Head Counselor for anything you need.</p>
+<p><strong>Dress code:</strong> Button-down shirts for davening and the learning class. T-shirts or other shirts are fine for other activities, but nothing tight-fitting and no inappropriate images or writing. No jeans and no shorts. Haircuts in line with standard yeshiva guidelines — if you are unsure about anything, just ask. This is important to us and is not negotiable.</p>`,
 
-  "junior-counselor": `<p><strong>Role summary:</strong> The Junior Counselor assists the lead counselor throughout the day — supporting activities, helping individual campers, and adding consistent supervision, positive energy, and inspiration so every camper has a safe and enjoyable experience.</p>
-<p><strong>Your key day-to-day responsibilities:</strong></p>
+  "girls-counselor": `<p><strong>Role summary:</strong> As a Girls Division Counselor you are the primary leader of your bunk and the main role model your campers look up to — responsible for their safety, their day-to-day experience, and inspiring a genuine love of Yiddishkeit through fun and energy.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Assist all day:</strong> Help the counselor at lineup, davening, learning class, lunch, transitions, and all other activities and trips, including preparing supplies for each activity.</li>
-<li><strong>Give individual attention:</strong> Many bunks have campers who need extra help — step in and support them while the counselor moves the rest of the bunk along.</li>
-<li><strong>Follow the counselor's lead:</strong> When a counselor or head counselor asks for quiet, immediately put a finger to your lips and point to the speaker so your campers follow suit.</li>
-<li><strong>Stay positive:</strong> Smile, use encouraging word choice all day, and leave all disciplinary action to the counselor's discretion.</li>
-<li><strong>Be a role model:</strong> Set a good example and follow general camp procedures including sanitation, schedule, and sportsmanship.</li>
-<li><strong>Stay with your bunk:</strong> Remain with your assigned bunk; clear any break with the staff member in charge. If you feel you could do more, ask the Head Counselor, "What else can I do to help?"</li>
-<li><strong>Always ask:</strong> Ask for help whenever you're unsure how to proceed or a camper's or staff member's health or safety is in question.</li>
+<li>Take attendance first thing every morning and provide proper supervision of every camper at all times — campers are never left alone.</li>
+<li>Run an engaging, age-appropriate davening with songs, energy, and incentives, and lead the daily learning class (10-15 min) from the curriculum provided; keep it fun and interactive with stories, props, and small activities.</li>
+<li>Lead and run your bunk through lineup, activities, lunch, transitions, swim, and trips; bring energy, join in, and be ready to improvise if an activity falls through.</li>
+<li>Be present and vigilant during swim times, overseeing campers in the pool and water-play area.</li>
+<li>Apply basic, appropriate discipline when needed, and recognize and reward campers for individual and team achievements.</li>
+<li>Guide and respect your Junior Counselor as a fellow staff member while supervising them.</li>
+<li>Keep your bunk room and areas clean, return all supplies and equipment, and clean up after every activity.</li>
+<li>Report mishaps and incidents; document disciplinary issues in incident reports and submit them to your Head Counselor.</li>
+<li>Greet campers, parents, and staff with a smile at drop-off and pick-up, and model mentchlichkeit and a kiddush Hashem at all times.</li>
 </ul>
-<p><strong>Chain of command:</strong> You report to your <strong>Counselor</strong>. For issues, speak to a Head Counselor; for anything bigger, the camp office / Directors. The only bad question is the one not asked.</p>
-<p><strong>Role-specific notes:</strong></p>
-<ul>
-<li><strong>Phone:</strong> Junior Counselors do <strong>NOT</strong> carry a phone during camp. Radios are provided.</li>
-<li><strong>Dress (Boys):</strong> T-shirt or button-down (no tank tops), long pants, tzitzit and kippah (a baseball cap also works), camp shirt on trip days.</li>
-<li><strong>Dress (Girls):</strong> Tznius standards — skirts covering the knees with no slits, leg coverings no shorter than knee socks, sleeves covering the elbows, necklines covered. Not negotiable.</li>
-</ul>`,
+<p><strong>Chain of command:</strong> You report to your Head Counselor. Bring camper or staff issues to your Head Counselor, and serious issues up to the Directors.</p>
+<p><strong>Phone policy:</strong> Counselors do not carry or use a personal phone during camp. Radios are provided for communication; speak to your Head Counselor for anything you need.</p>
+<p><strong>Dress code:</strong> Our dress code follows the standards of tznius: skirts must cover the knees at all times with no slits, sleeves must cover the elbows at all times, and necklines must be covered at all times. This is very important to us and is not negotiable.</p>`,
 
-  "head-counselor": `<p><strong>Role summary:</strong> The Head Counselor is the day-to-day leader of the division — a "mini-director of counselors" responsible for the success of the camp day through three pillars: <strong>leadership</strong> (running the counselor team), <strong>energy</strong> (creating the CGI vibe), and <strong>organization</strong> (making camp run smoothly and on time).</p>
-<p><strong>Your key day-to-day responsibilities:</strong></p>
+  "boys-junior-counselor": `<p><strong>Role summary:</strong> As a Boys Division Junior Counselor you assist your counselor in running the bunk and caring for the campers, giving extra hands-on help and being a source of positive energy throughout the day.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Lead the counselors:</strong> You are the primary day-to-day supervisor of counselors. Set expectations, coach, motivate, correct, and guide — and address small issues early. Lead by example with professionalism, warmth, and mentchlichkeit.</li>
-<li><strong>Own the energy:</strong> Set the tone for lineup, transitions, lunch, trips, sports, bus games, and overall spirit — and empower counselors to carry that energy too.</li>
-<li><strong>Run the day:</strong> Know the schedule cold, make sure activities are prepared before they start, ensure counselors are in the right places, keep camp on time, and prevent chaos.</li>
-<li><strong>Discipline (first response):</strong> Reset the camper, coach the counselor, and apply small in-the-moment consequences calmly. Escalate patterns, parent-facing matters, and serious issues to leadership.</li>
-<li><strong>Trips:</strong> Own staffing coverage, camper flow and behavior, timing, headcounts, and getting everyone to the bus on time. (Waivers, vendors, and payments are handled by the Assistant Director.)</li>
-<li><strong>Supervision & safety:</strong> Ensure no camper is ever unsupervised, correct unsafe staff behavior immediately, and visit bunks regularly. In an emergency, call Hatzalah / 911 first, then notify leadership.</li>
-<li><strong>Pre-season:</strong> Build a "summer vision," plan the energy and incentives, learn the schedule, prepare a master supply list (~3 weeks before camp), connect with your counselors early, and complete all trainings 2 weeks before camp.</li>
+<li>Assist your counselor through every part of the day — lineup, davening and learning class, lunch, transitions, activities, and trips.</li>
+<li>Give individual attention to campers who need extra help while the counselor keeps the rest of the bunk moving.</li>
+<li>Help campers stay quiet and attentive: when a counselor or Head Counselor asks for quiet, immediately put your finger to your lips and point toward the person speaking so your campers follow.</li>
+<li>Stay with your assigned bunk at all times; if you need a break, clear it first with the staff member in charge.</li>
+<li>Use a smile, positive words, and encouragement all day — leave disciplinary action to the counselor's discretion.</li>
+<li>Always ask for help when you are unsure how to proceed or when a camper's or staff member's health or safety is in question.</li>
+<li>Be a role model, follow general camp procedures (sanitation, schedule, sportsmanship), and greet campers, parents, and staff with a smile at drop-off and pick-up.</li>
 </ul>
-<p><strong>Chain of command:</strong> You report to the <strong>Camp Director</strong> and work closely with the <strong>Assistant Director</strong>. You are the counselors' main leader; the Assistant Director backs you up on logistics. Disagreements go to the Director — no power struggles in front of staff or campers.</p>
-<p><strong>Role-specific notes:</strong></p>
-<ul>
-<li><strong>Phone:</strong> Head Counselors <strong>may keep a phone for emergencies only</strong> (and quick camp photos). No phones during activities — especially swim.</li>
-<li><strong>Dress (Boys):</strong> Button-down for davening/learning; modest camp clothing for activities; yeshiva-standard haircuts. As a visible leader you're held to a higher standard.</li>
-<li><strong>Dress (Girls):</strong> Tznius standards — skirts covering the knees with no slits, sleeves covering the elbows, necklines covered. You model these clearly.</li>
-</ul>`,
+<p><strong>Chain of command:</strong> You report to your Counselor and follow their lead. If you have an issue, speak to a Head Counselor; for anything bigger, speak to the Directors.</p>
+<p><strong>Phone policy:</strong> Junior Counselors do not carry or use a personal phone during camp. Radios and your counselor are your communication line — ask for help whenever you need it.</p>
+<p><strong>Dress code:</strong> T-shirt or button-down shirt (no tank tops), long pants, and tzitzit and a kippah (a baseball cap also works). Wear your camp shirt on trip days. This is important to us and is not negotiable.</p>`,
 
-  "kiddie-lead-teacher": `<p><strong>Role summary:</strong> The Kiddie Camp Lead Teacher is the primary leader of the bunk in Kiddie Camp — running the day, leading davening and learning, and guarding every young camper's physical, emotional, and spiritual wellbeing.</p>
-<p><strong>Your key day-to-day responsibilities:</strong></p>
+  "girls-junior-counselor": `<p><strong>Role summary:</strong> As a Girls Division Junior Counselor you assist your counselor in running the bunk and caring for the campers, giving extra hands-on help and being a source of positive energy throughout the day.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Keep campers safe:</strong> Provide proper supervision at all times, implement all safety guidelines, and present a positive image of camp in public. Apply basic, appropriate discipline, and reward campers for their achievements.</li>
-<li><strong>Run davening & learning:</strong> Lead circle time daily — davening plus Jewish stories, Parsha, and special calendar dates. Keep learning fun and interactive with small activities, stories, and props. Curriculum resources are available on request.</li>
-<li><strong>Prepare daily activities:</strong> Most of the schedule is provided, but you prepare <strong>two daily activities</strong> and make sure you have the supplies. Submit supply requests to the office at least a week in advance.</li>
-<li><strong>Keep campers stimulated:</strong> Know the schedule before lineup, bring energy, take part in bus songs and games, join instructor-led activities, stay vigilant at swim, and improvise if an activity falls through.</li>
-<li><strong>Role model & mentchlichkeit:</strong> Set the example, make a kiddush Hashem, instill a love of Judaism, and guide and respect your Junior Counselors while supervising them.</li>
-<li><strong>Organization:</strong> Take attendance each morning, keep activities on schedule, clean up after each one, record disciplinary issues for the Kiddie Camp Director, report mishaps, and join staff meetings.</li>
+<li>Assist your counselor through every part of the day — lineup, davening and learning class, lunch, transitions, activities, and trips.</li>
+<li>Give individual attention to campers who need extra help while the counselor keeps the rest of the bunk moving.</li>
+<li>Help campers stay quiet and attentive: when a counselor or Head Counselor asks for quiet, immediately put your finger to your lips and point toward the person speaking so your campers follow.</li>
+<li>Stay with your assigned bunk at all times; if you need a break, clear it first with the staff member in charge.</li>
+<li>Use a smile, positive words, and encouragement all day — leave disciplinary action to the counselor's discretion.</li>
+<li>Always ask for help when you are unsure how to proceed or when a camper's or staff member's health or safety is in question.</li>
+<li>Be a role model, follow general camp procedures (sanitation, schedule, sportsmanship), and greet campers, parents, and staff with a smile at drop-off and pick-up.</li>
 </ul>
-<p><strong>Chain of command:</strong> You report to the <strong>Kiddie Camp Director</strong>. Significant issues are escalated to the camp Directors through the Kiddie Camp Director.</p>
-<p><strong>Role-specific notes:</strong></p>
-<ul>
-<li><strong>Phone:</strong> As a Lead Teacher you <strong>may keep a phone for emergencies only</strong>. Radios are provided; phones stay away during activities and swim.</li>
-<li><strong>Dress:</strong> Tznius standards — skirts covering the knees with no slits, sleeves covering the elbows, necklines covered at all times. Not negotiable.</li>
-</ul>`,
+<p><strong>Chain of command:</strong> You report to your Counselor and follow their lead. If you have an issue, speak to a Head Counselor; for anything bigger, speak to the Directors.</p>
+<p><strong>Phone policy:</strong> Junior Counselors do not carry or use a personal phone during camp. Radios and your counselor are your communication line — ask for help whenever you need it.</p>
+<p><strong>Dress code:</strong> Our dress code follows the standards of tznius: skirts must cover the knees at all times with no slits, leg coverings no shorter than knee socks, sleeves must cover the elbows at all times, and necklines covered at all times. This is very important to us and is not negotiable.</p>`,
 
-  "kiddie-assistant": `<p><strong>Role summary:</strong> The Kiddie Camp Assistant Teacher supports the lead teacher throughout the day — helping the bunk run smoothly, assisting with activities and davening/learning, and helping safeguard every young camper's wellbeing.</p>
-<p><strong>Your key day-to-day responsibilities:</strong></p>
+  "boys-head-counselor": `<p><strong>Role summary:</strong> The Boys Division Head Counselor is the day-to-day leader of the division — a "mini-director of counselors" responsible for the energy, organization, and daily success of camp. You lead through three pillars: leadership of your counselors, creating the CGI energy, and keeping the day organized and on time.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Help keep campers safe:</strong> Support supervision at all times, be aware of all safety guidelines, and follow protocols in public. Support the lead with basic discipline and help reward campers.</li>
-<li><strong>Assist with davening & learning:</strong> Help run circle time (davening plus stories, Parsha, calendar dates), and pitch in with small activities, stories, and props.</li>
-<li><strong>Help run activities:</strong> Help the lead prepare and run daily activities and make sure supplies are ready. Know the schedule before lineup, bring energy, take part in bus songs, join instructor-led activities, and stay vigilant at swim.</li>
-<li><strong>Role model & mentchlichkeit:</strong> Set a good example, make a kiddush Hashem, and work positively alongside the Junior Counselors and fellow staff.</li>
-<li><strong>Organization:</strong> Assist with morning attendance, support smooth transitions, help clean up after activities, share disciplinary issues with the lead, report mishaps, and join staff meetings.</li>
+<li>Supervise and coach your counselors in real time — set expectations, motivate, give quick private corrections, and handle light coaching on energy, timing, and running activities.</li>
+<li>Own the energy and tone of lineup, transitions, lunch, trips, sports, and bus games, and empower counselors to bring that energy with you.</li>
+<li>Keep the day on time: know the schedule cold, make sure activities are prepared before they start (ideally the day before), and ensure counselors are in the right places — preventing dead time and chaos.</li>
+<li>When an activity is failing mid-stream, own the moment — fix it, pivot, and keep camp moving.</li>
+<li>Ensure morning bunk attendance is collected, run a calm 3-tier discipline approach (you handle first response; escalate patterns and parent-facing issues to the Assistant Director; major consequences go to the Director).</li>
+<li>On trips, own staffing, camper flow and behavior, headcounts, timing, shirts, water, and first aid, and get everyone to the bus on time (the Assistant Director handles waivers, vendors, and payments).</li>
+<li>Be visible and warm at drop-off and pick-up; keep serious parent matters for during the day through leadership, not at the gate.</li>
+<li>Lead healthy off-hours staff culture and the Torah-learning vibe, and keep campers supervised at all times — notify leadership immediately if staffing gets thin.</li>
 </ul>
-<p><strong>Chain of command:</strong> You report to the <strong>Kiddie Camp Lead Teacher and the Kiddie Camp Director</strong>. Significant issues are escalated to the camp Directors through them.</p>
-<p><strong>Role-specific notes:</strong></p>
-<ul>
-<li><strong>Phone:</strong> As an Assistant Teacher you <strong>may keep a phone for emergencies only</strong>. Radios are provided; phones stay away during activities and swim.</li>
-<li><strong>Dress:</strong> Tznius standards — skirts covering the knees with no slits, sleeves covering the elbows, necklines covered at all times. Not negotiable.</li>
-</ul>`,
+<p><strong>Pre-season:</strong> Build your summer vision and energy plan, develop an incentive system with leadership, learn the schedule and plan activities, submit a master supply list at least 3 weeks before camp, connect with your counselors before day one, and complete all trainings/webinars at least 2 weeks before camp.</p>
+<p><strong>Chain of command:</strong> You report to the Camp Director and work closely with the Assistant Director, who backs you up, handles serious sit-downs and escalations, and supports logistics. Leadership disagreements are never aired in front of staff or campers — bring them to the Director. Safety always overrides hierarchy.</p>
+<p><strong>Phone policy:</strong> Carry your phone for emergencies only — no phone use during activities, especially swim. Radios are used for regular camp communication.</p>
+<p><strong>Dress code:</strong> You are held to a higher role-model standard. Button-down shirt for davening and learning (tie optional if worn); modest, camp-appropriate clothing for activities; no tight clothing or inappropriate graphics; no jeans or shorts. Haircuts in line with yeshiva standards. If unsure, ask.</p>`,
 
-  "assistant-director": `<p><strong>Role summary:</strong> The Assistant Director supports and strengthens the Head Counselor and staff so camp runs smoothly, safely, and with positive energy — the bridge between planning and day-to-day execution. The role reinforces the Head Counselor's leadership rather than replacing it.</p>
-<p><strong>Your key day-to-day responsibilities:</strong></p>
+  "girls-head-counselor": `<p><strong>Role summary:</strong> The Girls Division Head Counselor is the day-to-day leader of the division, responsible for its tone, its staff, and the success of the camp day. You lead through three pillars: running the counselor team, creating the division's upbeat energy, and keeping the day organized and on time.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Staff & program support:</strong> Help Head Counselors run the daily schedule and make sure every activity is logistically ready — supplies, location, timing, setup, and cleanup.</li>
-<li><strong>Oversight without overstepping:</strong> Empower Head Counselors to lead; step in mainly for safety, urgent needs, coverage gaps, or follow-through. Any change to bunk assignments must be approved by the Director.</li>
-<li><strong>Camper support & safety:</strong> Back up behavioral issues the Head Counselor can't resolve, follow up on incidents and injuries (documented in UltraCamp), keep supervision strong, and oversee swim. Enforce the staff no-phone policy during activities. In an emergency, call Hatzalah / 911 first, then notify the Director.</li>
-<li><strong>Trips & events:</strong> Own the logistics — collect and verify waivers, confirm vendors and bus companies, manage supplies and transportation, and oversee headcounts.</li>
-<li><strong>Logistics & budget:</strong> Gather weekly supply lists and coordinate ordering within budget, monitor inventory, handle last-minute runs, and keep shared spaces organized.</li>
-<li><strong>Staff coordination:</strong> Brief daily debriefs with Head Counselors, monitor attendance and punctuality, support morale, and check in with the Director at least daily.</li>
-<li><strong>Pre-season:</strong> Arrive by June 25 to help with setup and orientation, study the handbook, become proficient in UltraCamp, and help plan and lead staff training.</li>
+<li>Supervise and coach your counselors in real time — set clear expectations, motivate, and give respectful feedback that addresses small issues before they grow.</li>
+<li>Build and set the energy and tone for lineup, transitions, lunch, trips, and the overall vibe — through your staff, not by doing everything yourself.</li>
+<li>Keep the day running on time: know the schedule thoroughly, ensure activities are prepared before they begin, and prevent downtime, confusion, and last-minute scrambling.</li>
+<li>Be the first line of response for camper behavior — handle it with calm, consistent leadership and coach counselors to do the same; escalate repeated, sensitive, or parent-heavy issues to leadership.</li>
+<li>Stay visibly present throughout the division, especially at lineup, lunch, dismissal, and drop-off/pick-up so families experience strong, engaged leadership.</li>
+<li>On trips, own staffing, counselor supervision, camper flow, headcounts, and the overall feel of the day, staying aligned with the Assistant Director on waivers, vendors, and outside logistics.</li>
+<li>Hold counselors accountable for setup and cleanup, keep your division's systems and supplies organized, and ensure no camper is ever unsupervised.</li>
+<li>Lead healthy after-hours staff culture, keeping the environment positive, inclusive, and ready for the next day.</li>
 </ul>
-<p><strong>Chain of command:</strong> You report to the <strong>Camp Director</strong> and serve as a liaison between leadership and staff. Consult the Director before reassigning campers/staff or escalating serious matters.</p>
-<p><strong>Role-specific notes:</strong></p>
+<p><strong>Pre-season:</strong> Build your summer vision; plan energy, lineup structure, routines, and a healthy incentive system; learn the schedule and prepare activity ideas; build a master supply list; begin relationships with your counselors early; attend all trainings and read through Super Staff Supervision before camp.</p>
+<p><strong>Chain of command:</strong> You report to the Camp Director and work closely with the Assistant Director, who supports logistics and follow-through and steps in when issues go beyond in-the-moment coaching. The Director is the final authority. In an emergency, call Hatzalah/911 first, then notify leadership.</p>
+<p><strong>Phone policy:</strong> Carry your phone for emergencies only — not during activities. Radios are used for regular camp communication.</p>
+<p><strong>Dress code:</strong> As a visible leader you model the division's standards clearly and consistently, including tznius: skirts must cover the knees at all times with no slits, leg coverings no shorter than knee socks, sleeves must cover the elbows at all times, and necklines covered at all times. These standards are important to us and are not negotiable.</p>`,
+
+  "kiddie-lead-teacher": `<p><strong>Role summary:</strong> As a Kiddie Camp Lead Teacher (counselor) you are the primary leader of your classroom of our youngest campers (ages 3-5), responsible for their physical, emotional, and spiritual wellbeing and for making their day joyful, safe, and full of Jewish warmth.</p>
+<p><strong>What you do day-to-day:</strong></p>
 <ul>
-<li><strong>Phone:</strong> As leadership, the Assistant Director uses a phone for camp operations — fielding calls and emails, coordinating logistics, and collecting/forwarding camp photos.</li>
-<li><strong>Boys division:</strong> Also carries the <strong>Learning Director</strong> duties — designing the 7-week learning curriculum for grades 1-6, preparing booklets 2 weeks before camp, coaching counselors on learning, and overseeing morning davening.</li>
-<li><strong>Dress:</strong> Boys — button-down for davening/learning, modest camp clothing, yeshiva-standard haircuts. Girls — tznius standards (skirts below the knee, elbows and necklines covered), modeled consistently as a leader.</li>
-</ul>`
+<li>Take attendance promptly each morning and provide proper supervision of every camper at all times — campers are never left alone.</li>
+<li>Run daily circle time: davening plus a mix of Jewish stories, Parsha, and special dates on the calendar (davening and learning may fall at different points in the day). Keep it fun and interactive with activities, stories, and props.</li>
+<li>Prepare and run two daily activities and make sure you have all the supplies ready — submit supply requests to the camp office at least one week in advance.</li>
+<li>Keep campers engaged and excited, join songs, games, and bus amusements, and be ready to improvise if an activity is canceled.</li>
+<li>Be present and vigilant during swim/water play, lunch, and transitions, following all safety protocols.</li>
+<li>Apply basic, appropriate discipline when needed, and recognize and reward campers for participation, good middos, teamwork, and effort.</li>
+<li>Guide and respect your Junior Counselors as fellow staff while supervising them; keep your classroom and supplies clean and organized by the end of each day.</li>
+<li>Report mishaps and incidents to the Kiddie Camp Director and document disciplinary issues for them; greet campers, parents, and staff with a smile at drop-off and pick-up.</li>
+</ul>
+<p><strong>Chain of command:</strong> You report to the Kiddie Camp Director. Communicate camper or staff concerns to the Kiddie Camp Director promptly, and significant issues are escalated to the Directors through them.</p>
+<p><strong>Phone policy:</strong> Carry your phone for emergencies only, kept out of sight during activities. Radios are provided for regular communication.</p>
+<p><strong>Dress code:</strong> Our dress code follows the standards of tznius: skirts must cover the knees at all times with no slits, sleeves must cover the elbows at all times, and necklines must be covered at all times. This is very important to us and is not negotiable.</p>`,
+
+  "kiddie-assistant": `<p><strong>Role summary:</strong> As a Kiddie Camp Assistant Teacher you support the lead teacher in running the classroom and caring for our youngest campers (ages 3-5), helping the day run smoothly and being a steady source of warmth and positive energy.</p>
+<p><strong>What you do day-to-day:</strong></p>
+<ul>
+<li>Help take attendance each morning and assist the lead teacher with proper supervision of every camper at all times.</li>
+<li>Assist with circle time — davening, Jewish stories, Parsha, and calendar dates — helping with activities, stories, and props to keep the little ones engaged.</li>
+<li>Help the lead teacher prepare and run the daily activities and make sure supplies are ready.</li>
+<li>Bring energy to activities, join songs, games, and bus amusements, and help improvise when an activity is canceled.</li>
+<li>Be present and vigilant during swim/water play, lunch, and transitions, following all safety protocols.</li>
+<li>Support the lead teacher with basic, appropriate discipline, and help recognize and reward campers for their achievements.</li>
+<li>Help keep the classroom and supplies clean and organized by the end of each day, and work respectfully alongside Junior Counselors and fellow staff.</li>
+<li>Report mishaps and incidents to the lead teacher and Kiddie Camp Director; greet campers, parents, and staff with a smile at drop-off and pick-up.</li>
+</ul>
+<p><strong>Chain of command:</strong> You report to your Kiddie Camp Lead Teacher and the Kiddie Camp Director. Share concerns with the lead teacher and Kiddie Camp Director promptly, and significant issues are escalated to the Directors through them.</p>
+<p><strong>Phone policy:</strong> Carry your phone for emergencies only, kept out of sight during activities. Radios are provided for regular communication.</p>
+<p><strong>Dress code:</strong> Our dress code follows the standards of tznius: skirts must cover the knees at all times with no slits, sleeves must cover the elbows at all times, and necklines must be covered at all times. This is very important to us and is not negotiable.</p>`,
+
+  "kiddie-director": `<p><strong>Role summary:</strong> The Kiddie Camp Director owns the full operation of Kiddie Camp (campers ages 3-5) — from pre-season planning through the daily running of camp and post-season wrap-up. Depending on enrollment the role is full-time administrative, or may include teaching a classroom half-days in addition to director duties.</p>
+<p><strong>What you do day-to-day (during the summer):</strong></p>
+<ul>
+<li>Oversee the daily schedule so activities align with the theme calendar, adjusting in real time for weather, supply, or camper and staff needs.</li>
+<li>Conduct daily check-ins with counselors and junior staff, give feedback and support, and arrange coverage when staff are absent — stepping in to teach or supervise a classroom when needed.</li>
+<li>Serve as the primary contact for Kiddie Camp parents (RingCentral, email, WhatsApp); counselors handle minor needs but loop you in on anything significant, and you escalate serious concerns to the Camp Director.</li>
+<li>Prepare weekly newsletters/updates by Thursday afternoon and keep parent communication professional and consistent.</li>
+<li>Monitor classroom supplies daily and replenish; keep first-aid kits stocked; ensure groups daven daily and learn Parsha, and run the camp-wide Shabbat party on Fridays (~1:00-1:30 PM).</li>
+<li>Collect bunk attendance each morning, review incident forms, and log significant incidents in UltraCamp's medical section.</li>
+<li>Maintain health, safety, and supervision standards; address any staff behavior that jeopardizes camper safety immediately (privately when possible); run a mid-season staff review and end-of-summer write-ups.</li>
+<li>Coordinate with other divisions for shared spaces (fields, gym) and bring conflicts to the Camp Director.</li>
+</ul>
+<p><strong>Pre-season:</strong> Hire and onboard Kiddie Camp staff (presenting recommended hires and wages for leadership approval); build the theme calendar and daily schedules on the required deadlines; compile and order the master supply list at least 3 weeks before camp; set up classrooms; finalize parent communications; ensure lead counselors get CPR/First Aid certification; and become proficient in UltraCamp.</p>
+<p><strong>Chain of command:</strong> You report to the Camp Director. You supervise all Kiddie Camp staff (lead teachers, assistant teachers, junior counselors, CITs). In an emergency, follow the camp's emergency response plan and ensure campers and staff are safe.</p>
+<p><strong>Phone policy:</strong> Carry your phone for camp operations — you are the primary parent contact for the division and coordinate staff throughout the day. Keep it out of sight during direct camper activities; radios are used for regular communication.</p>
+<p><strong>Dress code:</strong> Our dress code follows the standards of tznius: skirts must cover the knees at all times with no slits, sleeves must cover the elbows at all times, and necklines must be fully covered. These requirements are non-negotiable and reflect the spirit and mission of our camp.</p>`,
+
+  "boys-assistant-director": `<p><strong>Role summary:</strong> The Assistant Director of the Boys Division is a key member of camp leadership, there to support and empower the Head Counselors and staff in running a high-quality, safe, energetic camp — strengthening their leadership, not overriding it. You also carry the division's learning-program responsibilities.</p>
+<p><strong>What you do day-to-day:</strong></p>
+<ul>
+<li>Support Head Counselors in executing the daily schedule and making sure every activity is logistically ready — supplies, location, timing, setup, and cleanup.</li>
+<li>Be the hands-on "eyes and ears" of camp: spend the day moving through camp (not at a computer), stepping in to set up and run activities like water play when staff need help.</li>
+<li>Handle routine staff conflicts and operational issues; give Head Counselors reflective, supportive feedback and discuss counselor concerns with them before intervening directly (unless it's a safety issue). Any change to bunk assignments must be approved by the Director.</li>
+<li>Oversee camper safety and supervision: follow up on incidents/injuries, ensure incident reports are submitted and uploaded to UltraCamp, and enforce the staff no-phones-during-activities policy (especially at swim).</li>
+<li>On trips, handle waivers, vendor and bus-company coordination, payments, and headcount verification; decide with Head Counselors whether to accompany a trip.</li>
+<li>Manage supplies and budget with Head Counselors — weekly ordering, last-minute runs, equipment, and daily educational printouts — staying within Director-approved budgets.</li>
+<li>Oversee lunch delivery and benching; be outside greeting parents at drop-off and pick-up; run end-of-day cleanup, lockup, and lost-and-found.</li>
+<li>Meet daily with Head Counselors for brief debriefs and with the Director; monitor staff attendance and help cover for absent or late staff; nurture staff morale.</li>
+<li>Collect daily photos and forward them to the social-media coordinator, and ensure Head Counselors submit weekly newsletter content.</li>
+<li><strong>Learning program:</strong> plan, prepare, and supervise the seven-week learning curriculum for grades 1-6; prepare print-ready booklets at least two weeks before camp; train and coach counselors/learning teachers; teach or co-teach 4th-6th grade classes when available; and oversee boys' morning davening.</li>
+</ul>
+<p><strong>Chain of command:</strong> You report to the Camp Director and partner closely with him, serving as the liaison between leadership and staff. You support — not replace — the Head Counselors, stepping in directly mainly for safety or a clear breakdown in protocol. In a medical or safety emergency, call Hatzalah/911 first, then notify the Director.</p>
+<p><strong>Phone policy:</strong> Carry your phone for camp operations — you handle day-to-day camp calls and emails on camper, staff, and behavior matters and stay in constant contact with leadership. Radios are used for regular camp communication.</p>
+<p><strong>Dress code:</strong> Button-down shirt (and tie if worn) for morning davening and learning; modest camp T-shirt or similar for other activities and trips — no tight shirts, jeans, or shorts. Haircuts in line with standard yeshiva guidelines.</p>`,
+
+  "girls-assistant-director": `<p><strong>Role summary:</strong> The Assistant Director of the Girls Division is a key member of camp leadership whose job is to make sure camp actually runs smoothly day-to-day — with warmth, structure, and follow-through. This is a hands-on execution role that reinforces the Head Counselor's leadership rather than replacing it.</p>
+<p><strong>What you do day-to-day:</strong></p>
+<ul>
+<li>Support the Head Counselor in carrying out the daily schedule and make sure activities are logistically prepared — supplies, setup, timing, and responsibilities — and that identified needs actually get followed through.</li>
+<li>Stay hands-on and visible throughout the day, stepping in early when something is slipping, filling coverage gaps in real time, and handling operational issues so the day feels calm and steady.</li>
+<li>Oversee swim sessions so they run safely and efficiently: confirm lifeguards, instructors, and counselors are fulfilling their roles, and that campers are properly supervised in locker rooms, pool areas, and the water.</li>
+<li>Provide a second layer of camper support — assist with behavioral issues and minor follow-up, and ensure incidents and minor injuries are properly documented.</li>
+<li>On trips, own the logistics: collect and verify waivers, confirm details with vendors, manage setup, supplies, and transportation, and serve as the central point of coordination while the Head Counselor leads the groups.</li>
+<li>Manage supplies and inventory, communicate shortages early, and keep shared spaces and systems organized.</li>
+<li>Oversee lunch flow and serving, and be visible at arrival (8:50-9:10 AM) and dismissal (3:15-3:40 PM) so families and staff experience reliable leadership.</li>
+<li>Give staff respectful reminders and redirection when they need clarification, coverage, or follow-through, and support staff morale and practical needs.</li>
+<li>Take timely, organized photos of camp activities and upload them to the camp Photo WhatsApp group.</li>
+</ul>
+<p><strong>Chain of command:</strong> You report to the Camp Director (Girls Division) and serve as a bridge between planning and execution. You reinforce — not replace — the Head Counselor, stepping in for safety issues, urgent needs, coverage gaps, or practical follow-through. In an emergency, call Hatzalah/911 first, then notify the Director immediately.</p>
+<p><strong>Phone policy:</strong> Carry your phone for camp operations — you handle short parent calls, emails, and updates, run photo uploads, and stay in regular contact with the Director. Radios are used for regular camp communication.</p>
+<p><strong>Dress code:</strong> As a visible leader you model the division's standards clearly, including tznius: skirts must cover the knees at all times with no slits, leg coverings no shorter than knee socks, sleeves must cover the elbows at all times, and necklines covered at all times. These standards are important to us and are not negotiable.</p>`,
+
+  "bus-monitor": `<p><strong>Role summary:</strong> Bus monitors keep the bus safe, calm, and orderly, and are the main link between parents, campers, and camp leadership.</p><p><strong>Hours depend on your route:</strong> pickup as early as 7:45 AM, arrival ~9:00 AM, departure 3:30 PM, final drop-off as late as 4:45 PM. Timeliness is critical.</p><p><strong>Bus monitors carry a working phone at all times</strong> (the one role where that's required) to run the parent WhatsApp group and share live location.</p><p><strong>Pickup:</strong> help each child board and reach their seat, take attendance, and make sure every camper is buckled the whole ride.</p><p><strong>Drop-off:</strong> help children off safely, release a child ONLY to an authorized person on the Child Release Form (request ID when needed), walk the bus so no child is left behind, and take attendance.</p><p><strong>While moving:</strong> everyone seated and buckled; keep it calm for the driver; know the route well enough to guide a substitute.</p><p><strong>Leadership & records:</strong> stay calm, never yell, report serious concerns to the camp office immediately, keep a daily bus list (scheduled / rode / released-to), and run the parent WhatsApp group.</p>`
 };
 
 window.PORTAL_DATA = {

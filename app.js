@@ -890,6 +890,21 @@ function renderHandbookTopic(i) {
 // =============================================================================
 // CAMP INFO & RESOURCES — reference pages (read-only, division/role aware)
 // =============================================================================
+// Which job-description key applies to a staffer (role + division + position).
+// The backend supplies user.jdKey; this is the fallback for local/seed data.
+function jdKeyFor(user) {
+  if (user.jdKey) return user.jdKey;
+  const d = user.division, r = user.role, pos = (user.position || "").toLowerCase();
+  if (d === "kiddie") {
+    if (r === "kiddie-lead-teacher") return /director/.test(pos) ? "kiddie-director" : "kiddie-lead-teacher";
+    return "kiddie-assistant";
+  }
+  const pre = d === "girls" ? "girls" : "boys";
+  if (r === "head-counselor") return /assistant director/.test(pos) ? pre + "-assistant-director" : pre + "-head-counselor";
+  if (r === "junior-counselor") return pre + "-junior-counselor";
+  return pre + "-counselor";
+}
+
 function renderInfo(id) {
   const user = state.viewingAsStaff || state.currentUser || {};
   const div = user.division || "boys";
@@ -905,13 +920,17 @@ function renderInfo(id) {
   let body = "";
 
   if (id === "job-description") {
-    const jd = (window.PORTAL_DATA.JOB_DESCRIPTIONS || {})[user.role];
-    body = jd
-      ? `<div class="card">${jd}</div>`
+    const JDS = window.PORTAL_DATA.JOB_DESCRIPTIONS || {};
+    const main = JDS[jdKeyFor(user)];
+    body = main
+      ? `<div class="card">${main}</div>`
       : sec("Your Job Description", "<p>Your role's job description will be added shortly. Questions? Contact the camp office at <strong>office@ganisrael.org</strong>.</p>");
+    if (user.busMonitor && JDS["bus-monitor"]) {
+      body += `<div class="card"><h3>🚌 You're also a Bus Monitor</h3>${JDS["bus-monitor"]}</div>`;
+    }
   }
 
-  if (id === "first-day") {
+  else if (id === "first-day") {
     const where = isKiddie
       ? "<strong>Kiddie Camp is at the Rabbinical College (RCA campus).</strong> Head to your classroom and get it set up."
       : div === "girls"
