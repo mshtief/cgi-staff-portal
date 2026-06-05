@@ -1078,9 +1078,14 @@ function renderInfo(id) {
   }
 
   else if (id === "key-policies") {
-    const dress = isTznius
-      ? "<strong>Tznius dress:</strong> skirts cover the knees with no slits, sleeves cover the elbows, necklines covered — at all times. Not negotiable."
-      : "<strong>Boys staff:</strong> dress neatly and to yeshivish standards. Your exact dress code depends on your role — <strong>follow what's listed in your Job Description</strong> (junior counselors and counselors have different requirements).";
+    let dress;
+    if (isTznius) {
+      dress = "<strong>Tznius dress:</strong> skirts that cover the knees with no slits, leg coverings no shorter than knee socks, sleeves that cover the elbows, and necklines covered — at all times. This is very important to us and not negotiable.";
+    } else if (user.role === "junior-counselor") {
+      dress = "<strong>Boys junior counselors:</strong> a T-shirt or button-down shirt (no tank tops), long pants, tzitzis and a kippah (a baseball cap works too), and your camp shirt on trip days.";
+    } else {
+      dress = "<strong>Boys counselors &amp; staff:</strong> button-down shirt for morning davening &amp; learning; a modest camp T-shirt or similar for other activities and trips; no tight shirts, jeans, or shorts; haircuts in line with standard yeshiva guidelines.";
+    }
     body =
       sec("📵 Phones", `<p>No personal phone use during the camp day — <strong>emergencies and camp photos only</strong>. Communicate by walkie-talkie.</p>`) +
       sec("👕 Dress code", `<p>${dress}</p>`) +
