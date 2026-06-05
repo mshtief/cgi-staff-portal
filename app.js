@@ -434,6 +434,13 @@ function renderDashboard(forceStaff) {
       <p>${escapeHTML(role.label)} · ${escapeHTML(capitalize(user.division))} Division</p>
     </div>
 
+    ${hasPhotoAccess(user) ? `
+      <a href="#/info/photos" class="next-up-card" style="display:block;background:#eef2ff;border:1px solid var(--navy);margin-bottom:16px;">
+        <h3>📸 Camp Photo Upload Access</h3>
+        <div class="meta">Your photo-app login &amp; PIN + how to upload — tap to open</div>
+      </a>
+    ` : ""}
+
     ${allDone ? `
       <div class="card" style="text-align: center; padding: 32px 20px; background: var(--green-light); border-color: var(--green);">
         <div style="font-size: 48px;">🎉</div>
@@ -938,19 +945,19 @@ function renderInfo(id) {
   if (id === "job-description") {
     const JDS = window.PORTAL_DATA.JOB_DESCRIPTIONS || {};
     const main = JDS[jdKeyFor(user)];
-    body = main
+    const busCard = (user.busMonitor && JDS["bus-monitor"])
+      ? `<div class="card" style="border-color:var(--navy);background:#eef2ff;"><h3>🚌 You're a Bus Monitor</h3><p style="margin-top:0;">This is in addition to your division role (shown below). Your bus responsibilities:</p>${JDS["bus-monitor"]}</div>`
+      : "";
+    body = busCard + (main
       ? `<div class="card">${main}</div>`
-      : sec("Your Job Description", "<p>Your role's job description will be added shortly. Questions? Contact the camp office at <strong>office@ganisrael.org</strong>.</p>");
-    if (user.busMonitor && JDS["bus-monitor"]) {
-      body += `<div class="card"><h3>🚌 You're also a Bus Monitor</h3>${JDS["bus-monitor"]}</div>`;
-    }
+      : sec("Your Job Description", "<p>Your role's job description will be added shortly. Questions? Contact the camp office at <strong>office@ganisrael.org</strong>.</p>"));
   }
 
   else if (id === "first-day") {
     const where = isKiddie
       ? "<strong>Kiddie Camp is at the Rabbinical College (RCA campus).</strong> Head to your classroom and get it set up."
       : div === "girls"
-      ? "<strong>Girls Division is at the Sussex Avenue School, 226 Sussex Avenue</strong> (about a minute from the Rabbinical College)."
+      ? "<strong>Girls Division is at the Sussex Avenue School, 125 Sussex Avenue</strong> (about a minute from the Rabbinical College)."
       : "<strong>Boys Division is at the Rabbinical College (RCA campus).</strong> When you arrive, head to the <strong>picnic area</strong> for morning lineup; afternoon pickup is at the First Circle by the Boys' Cheder.";
     const arrive = isHead ? "8:30 AM" : "8:45 AM";
     body =
@@ -960,7 +967,6 @@ function renderInfo(id) {
       sec("✅ First things to do", ul([
         "Find your Head Counselor / division head and check in",
         "Take attendance for your bunk first thing",
-        "Learn your bunk's allergies and any medical notes",
         "Have your charged walkie-talkie and the day's schedule on you"
       ])) +
       sec("🎒 Come prepared", `<p>Daven and eat breakfast before camp, dress for the weather, and bring a water bottle. <strong>Phone policy depends on your role:</strong> Counselors and Junior Counselors don't carry a phone during camp (you'll use a walkie-talkie); Head Counselors and Kiddie staff may keep a phone for emergencies only.</p>`);
@@ -1032,8 +1038,7 @@ function renderInfo(id) {
       :
       sec("📸 You're set up to upload camp photos", `<p>As part of the leadership team, you can upload camp photos and videos that flow into the parent gallery. Good photos help parents feel the <strong>life, warmth, safety, and excitement</strong> of camp — it's one of the most valued things we do for families.</p><p>${divLine}</p>`) +
       sec("🔑 Your upload login", `
-        <p>Upload here: <a href="https://ganisrael.org/upload" target="_blank" rel="noopener"><strong>ganisrael.org/upload</strong></a><br>
-        <span style="font-size:13px;color:var(--text-muted);">Backup link if the main site is ever down: <a href="https://camp-photo-app.cgi-photos.workers.dev/upload" target="_blank" rel="noopener">camp-photo-app.cgi-photos.workers.dev/upload</a></span></p>
+        <p>Upload here: <a href="https://ganisrael.org/upload" target="_blank" rel="noopener"><strong>ganisrael.org/upload</strong></a></p>
         ${pinBlock}
         <p style="font-size:13px;color:var(--text-muted);">Note: this photo-upload login is <strong>separate</strong> from your Staff Portal login here.</p>`) +
       sec("📷 What makes a great camp photo", `
@@ -1075,7 +1080,7 @@ function renderInfo(id) {
   else if (id === "key-policies") {
     const dress = isTznius
       ? "<strong>Tznius dress:</strong> skirts cover the knees with no slits, sleeves cover the elbows, necklines covered — at all times. Not negotiable."
-      : "<strong>Boys dress:</strong> button-down shirt for davening &amp; learning; modest camp-appropriate clothing otherwise; no jeans or shorts; haircuts to yeshiva standards. Not negotiable.";
+      : "<strong>Boys staff:</strong> dress neatly and to yeshivish standards. Your exact dress code depends on your role — <strong>follow what's listed in your Job Description</strong> (junior counselors and counselors have different requirements).";
     body =
       sec("📵 Phones", `<p>No personal phone use during the camp day — <strong>emergencies and camp photos only</strong>. Communicate by walkie-talkie.</p>`) +
       sec("👕 Dress code", `<p>${dress}</p>`) +
@@ -1085,7 +1090,7 @@ function renderInfo(id) {
         "Never private-message a camper (Instagram, WhatsApp, Snapchat, etc.) — ever"
       ])) +
       sec("📣 Mandated reporting", `<p>Every staff member is a mandatory reporter. Report any concern up the chain: <strong>your Head Counselor → Assistant Director → Camp Directors</strong>. In an emergency, call Hatzoloh / 911 first, then notify leadership.</p>`) +
-      sec("🥪 Food", `<p>This is a <strong>nut-free and meat-free</strong> camp. Camper lunches must be dairy or parve — no meat, no nuts, no glass.</p>`) +
+      sec("🥪 Food", `<p>This is a <strong>nut-free</strong> camp. Any food campers bring <strong>from home</strong> must be <strong>dairy or parve — no meat, no nuts, no glass.</strong></p>`) +
       sec("👀 Supervision", ul([
         "Campers are never left unattended",
         "Ratios are legal requirements (older divisions 1:8, Kiddie 1:7)",
