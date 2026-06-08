@@ -373,6 +373,25 @@ document.getElementById("navLogout").addEventListener("click", (e) => {
 // =============================================================================
 // DASHBOARD VIEW
 // =============================================================================
+// Feedback affordance — lets staff flag anything that looks off or out of date.
+// Routes to the camp office (no personal names); frontend-only, opens a
+// pre-addressed email with the staffer's name + the page they were on.
+function feedbackHref(context) {
+  const who = (state.currentUser && state.currentUser.name) ? state.currentUser.name : "Staff";
+  const subject = `Staff portal feedback${context ? " — " + context : ""} (${who})`;
+  const body = "What looks off or needs updating:\n\n";
+  return `mailto:office@ganisrael.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+function feedbackCard(context) {
+  const where = context ? "on this page" : "here";
+  return `
+    <div class="card feedback-card">
+      <h3>💬 See something off?</h3>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Camp details can change. If anything ${where} looks wrong or out of date, tell us — we'll fix it fast.</p>
+      <a class="btn btn-ghost btn-full" href="${feedbackHref(context)}">Tell the camp office →</a>
+    </div>`;
+}
+
 function renderDashboard(forceStaff) {
   const user = forceStaff || state.viewingAsStaff || state.currentUser;
   if (!user || user.isAdmin) return;
@@ -489,6 +508,8 @@ function renderDashboard(forceStaff) {
         `).join("")}
       </div>
     ` : ""}
+
+    ${feedbackCard()}
   `;
 
   document.getElementById("viewDashboard").innerHTML = html;
@@ -1015,7 +1036,7 @@ function renderInfo(id) {
         ? `<p>Here is your division's full theme calendar — the same one parents receive:</p><img src="${calImg}" alt="Division theme calendar" style="width:100%;border-radius:10px;border:1px solid var(--border);margin-top:8px;">`
         : `<p>Your division's full <strong>theme calendar</strong> (weekly themes, trip days, dress-up days, and special events) will be posted right here — the same one parents receive. Your Head Counselor will walk you through each week.</p>`) +
       sec("🎨 Each week", `<p>Every week has a dress-up day and a Friday Shabbat Party. Your Head Counselor will share the specifics and how to prep.</p>`) +
-      sec("🚌 Trips", `<p>Each division goes on trips throughout the summer. <strong>Wear your camp shirt on trip days.</strong> Your Head Counselor will give you each week's trip details.</p>`);
+      sec("🚌 Trips", `<p>Each division goes on trips throughout the summer. <strong>Wear your camp shirt on trip days.</strong> Your Head Counselor will give you each week's trip details.</p><p>The big one is our <strong>Grand Trip to Dorney Park on Tuesday, August 11</strong> — both divisions go together, and the day ends a little later than usual (dismissal around 5:30 PM).</p>`);
   }
 
   else if (id === "photos") {
@@ -1116,21 +1137,26 @@ function renderInfo(id) {
     const boys = div === "boys";
     body =
       sec("✈️ You're taken care of", `<p>As an out-of-town staff member, we handle your housing, food, and travel so you can focus on camp. Here's how it works.</p>`) +
-      sec("📅 Arrival & departure", `<p>Arrive: <strong>${boys ? "Sunday morning, June 28" : "Thursday, June 25"}</strong>.<br>Leave: <strong>Sunday, August 16</strong> — or right after camp on <strong>August 14</strong> if you're heading somewhere local (like Crown Heights).</p>`) +
+      sec("📅 Arrival & departure", `<p>Arrive: <strong>${boys ? "Sunday morning, June 28" : "Thursday, June 25"}</strong>.<br>Leave: <strong>Sunday, August 16</strong> — or, if you're local and heading somewhere like Crown Heights, right after camp on <strong>August 14</strong> (just let us know in advance so we can plan).</p>`) +
       sec("🏠 Where you'll stay", boys
-        ? `<p>Room and board at the <strong>Rabbinical College / Yeshiva</strong>, with a washer and dryer available. Bring your own linens.</p>`
-        : `<p>Housed in <strong>Morristown on Tikva Way</strong> — three per room, with basic furniture provided. Pillows and blankets are available on request (especially if you're flying in). Bring your own linens if you like something fresh, or just ask and we'll provide them.</p>`) +
+        ? `<p>Room and board at the <strong>Rabbinical College / Yeshiva</strong>. Bring your own linens; <strong>laundry's on us</strong> — there's a washer and dryer, free to use.</p>`
+        : `<p>You'll stay in <strong>Morristown on Tikva Way</strong> — three to a room, with beds and basic furniture set up for you. Bring your own linens; flying in? Just ask ahead and we'll have <strong>pillows and blankets</strong> waiting. <strong>Laundry's on us.</strong></p>`) +
       sec("🍽️ Food", boys
-        ? `<p>All meals are served at the <strong>Yeshiva kitchen</strong>, and lunch is at camp.</p>`
-        : `<p>A hot dinner every night — usually <strong>three delivered, one BBQ, and one night out</strong> (camp chips in $10–$20). You're also welcome to <strong>cook together once or twice a week</strong> — send us the list and we'll stock it. Breakfast: we <strong>fully stock your house</strong> (kosher order placed Sunday afternoon, arrives Monday after camp; plus a weekly Walmart/ShopRite run). Lunch is at camp.</p>`) +
-      sec("🚗 Travel", `<p>The camp books your flight to <strong>Newark (EWR)</strong> — we'd rather pay for the flight directly than reimburse. We arrange an <strong>Uber</strong> from Newark to camp. (Flights over $300 may reduce the stipend.)</p>`) +
+        ? `<p>All your meals are at the <strong>Yeshiva kitchen</strong>, with <strong>lunch at camp.</strong> Once a week we do a <strong>BBQ</strong> — at a director's home, a camp family, or at camp — and another night you'll <strong>go out to a restaurant on us</strong> (about <strong>$10–$20</strong> per person). Breakfast's in the kitchen each morning.</p>`
+        : `<p>A hot dinner every night — usually <strong>three delivered, one BBQ, and one night out</strong> (we chip in <strong>$10–$20</strong> per person). Some nights you're welcome to <strong>cook for yourselves</strong> instead — send us your list and we'll stock it (we do a weekly <strong>Walmart/ShopRite run</strong>). For breakfast, we <strong>keep your house stocked</strong> — just get your requests to us by Sunday. Lunch is at camp.</p>`) +
+      sec("🚆 Getting to camp", `<p>Coming from <strong>Crown Heights</strong>? We cover your <strong>bus or train into New Jersey</strong> (or arrange a ride), pick you up, and <strong>bring your luggage to camp</strong> so you're not lugging it. Flying or coming another way? Your travel is arranged through your contract — just reach out with any questions and we'll sort it out.</p>`) +
       sec("🕙 Curfew", `<p><strong>10:00 PM</strong> back at your living quarters. Need an extension? Arrange it with your head counselor or a director.</p>`) +
       sec(boys ? "🕊️ Davening" : "📖 Learning", boys
         ? `<p><strong>Minyan at 7:40 AM</strong> every morning (with the on-time minyan bonus), plus a staff seder.</p>`
         : `<p>A <strong>weekly shiur</strong> given by one of the Rabbis or Rebbetzins.</p>`) +
       sec("🕯️ Shabbos — always looked after", boys
-        ? `<p>You'll never be on your own for Shabbos. Your options: stay at the Yeshiva, get set up as shluchim, or go to Crown Heights — and the directors host you, usually for two Shabboses.</p>`
-        : `<p>You'll never be on your own for Shabbos. Your options: stay on Tikva Way, visit someone nearby, go to Crown Heights, get paired with a host family, or join the directors — usually for two or three Shabbosim.</p>`);
+        ? `<p><strong>You're never on your own for Shabbos — the camp sets you up every week.</strong> By default we arrange it for you: at the Yeshiva, hosted by a local shliach, or at the director's home — it varies week to week (the directors usually host you for a couple of them).</p><p>Prefer to make your own plans — stay local or head to Crown Heights? You're always welcome to. Just <strong>let a director know by Monday</strong> so we don't set something else up for you, and we'll work out the details together.</p>`
+        : `<p><strong>You're never on your own for Shabbos — the camp sets you up every week.</strong> By default we arrange it for you: on Tikva Way, with a local host family, or at the director's home — it varies week to week (the directors usually host you for a couple of them).</p><p>Prefer to make your own plans — visit someone nearby or head to Crown Heights? You're always welcome to. Just <strong>let a director know by Monday</strong> so we don't set something else up for you, and we'll work out the details together.</p>`) +
+      sec("🎒 What to pack", `<ul><li><strong>Pillow, blanket, and linens</strong> — flying in? Request these ahead and we'll have them waiting.</li><li>Clothing for the full <strong>seven weeks</strong>, camp-appropriate and within our guidelines.</li><li><strong>Comfortable shoes</strong> — you'll be on your feet all day.</li><li>Toiletries (shampoo, soap, and the basics).</li><li>Fun, campy accessories for spirit days!</li></ul>`) +
+      sec("🚌 Sundays &amp; outings", `<p>Sundays are for staff outings — great for morale, and the camp chips in. We usually arrange <strong>a couple of fully-paid trips</strong> over the summer, plus a contribution toward the rest. One rule: <strong>any off-hours activity (Sundays included) gets cleared with the office first</strong> — time, place, and plan.</p>`) +
+      sec("🚗 Getting around", `<p>Driving is limited to the head counselor or approved staff (18+, valid license, added to camp insurance) — and <strong>no one rides alone.</strong> When there's no approved driver, we arrange rides through <strong>Uber Family</strong>, set up by head staff with a director's OK. Camp covers gas.</p>`) +
+      sec("📋 During &amp; after camp", `<p>Camp days run about <strong>8:45 AM–3:45 PM</strong> (head staff 8:30–4:00; Fridays end early) — you're free after. <strong>Phones stay away during camp hours</strong> (leave them in your room or the head-staff office; radios handle communication). A couple of times a week you may be asked to help with <strong>after-camp prep</strong> for theme days or big events like Color War.</p>`) +
+      sec("❓ Questions?", `<p>Anything about housing, travel, or your stay — reach the camp office at <strong>office@ganisrael.org</strong> or <strong>(862) 244-3420.</strong></p>`);
   }
 
   else {
@@ -1147,6 +1173,7 @@ function renderInfo(id) {
       <h1>${meta.icon} ${escapeHTML(meta.title)}</h1>
     </div>
     ${body}
+    ${feedbackCard(meta.title)}
   `;
 }
 

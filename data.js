@@ -917,10 +917,10 @@ const HANDBOOK_TOPICS = [
 
   { id: "dates-hours", title: "Camp Dates, Hours & Training", html:
     `<p>Here are the dates and times to lock in now. <strong>Camp runs Monday, June 29 through Friday, August 14, 2026, and camp is closed on Friday, July 3.</strong></p>
-<p><strong>Daily hours depend on your division:</strong></p>
+<p><strong>The camp day runs Monday–Thursday 9:00 AM – 3:30 PM, and Friday 9:00 AM – 2:00 PM</strong> (we end early for Shabbos).</p>
 <ul>
-  <li><strong>Boys division:</strong> Monday–Thursday <strong>8:30 AM – 4:00 PM</strong>; Friday <strong>8:30 AM – 2:30 PM</strong>.</li>
-  <li><strong>Girls division & Kiddie Camp:</strong> Monday–Thursday <strong>9:00 AM – 3:30 PM</strong> (arrive by <strong>8:45 AM</strong>, leave by <strong>3:45 PM</strong>); Friday <strong>9:00 AM – 2:00 PM</strong> (leave by <strong>2:15 PM</strong>).</li>
+  <li><strong>Counselors & staff:</strong> arrive <strong>8:45 AM</strong> and stay until <strong>3:45 PM</strong> (Fridays until <strong>2:15 PM</strong>) — fifteen minutes before and after the camp day, to set up and see every camper off.</li>
+  <li><strong>Head staff & leadership</strong> (Head Counselors, Assistant Directors, Kiddie Camp Director): <strong>8:30 AM – 4:00 PM</strong> (Fridays <strong>8:30 AM – 2:30 PM</strong>).</li>
 </ul>
 <p>On top of the posted hours, plan to <strong>arrive early to set up and greet campers</strong>, and <strong>stay until every camper is picked up.</strong></p>
 <p><strong>In-person staff training is mandatory.</strong> This is where we walk through day-to-day operations, your role, the daily flow, emergency procedures, and mandated reporting. Training times depend on your division:</p>
@@ -1094,9 +1094,8 @@ const JOB_DESCRIPTIONS = {
 
 <h2>Compensation</h2>
 <ul>
-  <li><strong>Remuneration</strong>: Though counselors officially work in our camp on a <strong>volunteer basis</strong>, each counselor receives a <strong>weekly stipend</strong> (based on age and camp experience).</li>
-  <li>This stipend is <strong>paid in full</strong> at the end of the summer (<strong>August 16, 2026</strong>).</li>
-  <li>To show our undying appreciation to our staff, we <strong>occasionally sponsor after-camp counselor outings</strong> and trips. (For out-of-town staff, please see our <strong>OOT manual</strong>.)</li>
+  <li>Your stipend and payment schedule are detailed in your <strong>signed contract</strong>.</li>
+  <li>To show our undying appreciation to our staff, we <strong>occasionally sponsor after-camp counselor outings</strong> and trips.</li>
 </ul>
 
 <p>We wish you <strong>Hatzlocho Rabba</strong> and look forward to being actively involved and working together with you.</p>
@@ -1239,8 +1238,7 @@ const JOB_DESCRIPTIONS = {
 
 <h2>Compensation</h2>
 <ul>
-  <li><strong>Remuneration</strong>: Though counselors officially work in our camp on a <strong>volunteer basis</strong>, each counselor receives a <strong>weekly stipend</strong> (based on age and camp experience).</li>
-  <li>This stipend is <strong>paid in full</strong> at the end of the summer (<strong>August 16, 2026</strong>).</li>
+  <li>Your stipend and payment schedule are detailed in your <strong>signed contract</strong>.</li>
   <li>To show our undying appreciation to our staff, we <strong>occasionally sponsor after-camp counselor outings</strong> and trips.</li>
 </ul>
 
@@ -1322,7 +1320,7 @@ const JOB_DESCRIPTIONS = {
 
 <h2>Compensation</h2>
 <ol>
-  <li>Remuneration: Though counselors officially work in our camp on a volunteer basis, you will receive a weekly stipend to be paid by August 16th.</li>
+  <li>Your stipend and payment schedule are detailed in your signed contract.</li>
   <li>To show our undying appreciation to our staff, we occasionally sponsor after camp counselor outings and trips.</li>
 </ol>
 
@@ -1403,7 +1401,7 @@ const JOB_DESCRIPTIONS = {
 
 <h2>Compensation</h2>
 <ol>
-  <li>Remuneration: Though counselors officially work in our camp on a volunteer basis, you will receive a weekly stipend to be paid by August 16th.</li>
+  <li>Your stipend and payment schedule are detailed in your signed contract.</li>
   <li>To show our undying appreciation to our staff, we occasionally sponsor after camp counselor outings and trips.</li>
 </ol>
 
@@ -2292,7 +2290,7 @@ const JOB_DESCRIPTIONS = {
 
 <h2>Payment</h2>
 <ol>
-  <li>Kiddie camp Counselors are paid based on age and camp experience. Staff are paid once on July 20 and once on the last day of camp.</li>
+  <li>Your pay and payment schedule are detailed in your signed contract.</li>
   <li>To show our undying appreciation to our staff, we occasionally sponsor after camp counselor outings and trips.</li>
 </ol>
 
@@ -2436,7 +2434,7 @@ const JOB_DESCRIPTIONS = {
 
 <h2>Payment</h2>
 <ol>
-  <li>Kiddie Camp Assistant Counselors are paid based on age, role, and camp experience. Staff are paid once on July 20 and once on the last day of camp.</li>
+  <li>Your pay and payment schedule are detailed in your signed contract.</li>
   <li>To show our undying appreciation to our staff, we occasionally sponsor after camp counselor outings and trips.</li>
 </ol>
 
@@ -2644,8 +2642,7 @@ const JOB_DESCRIPTIONS = {
 
 <h3>Payment</h3>
 <ul>
-  <li><strong>Compensation:</strong> Pay is based on age, experience, and position (director or counselor).</li>
-  <li><strong>Payment Schedule:</strong> Staff are paid twice—<strong>July 20</strong> and <strong>August 16</strong>.</li>
+  <li>Your compensation and payment schedule are detailed in your <strong>signed contract</strong>.</li>
   <li>Occasional staff outings or treats may be provided during the summer to show appreciation.</li>
 </ul>`,
 
@@ -2802,7 +2799,7 @@ const JOB_DESCRIPTIONS = {
   <li><strong>Trip Itineraries &amp; Program Input:</strong> Discuss how the Assistant Director can share ideas for trips, schedules, activities, and the learning program while respecting that the Director sets the overall schedule and Head Counselors plan specific activities.</li>
   <li><strong>General Camp Vision &amp; Roles:</strong> Align on the camp's vision, discuss areas such as pool and lifeguarding oversight, and clarify boundaries between Director, Head Counselors, and Assistant Director responsibilities.</li>
   <li><strong>Coordination With Other Divisions &amp; General Manager:</strong> Clarify the chain of command for collaborating with other divisions on site. Determine when to go directly to the Director versus when small assistance requests can be made of the general manager.</li>
-  <li><strong>Off-Hours Involvement &amp; Compensation:</strong> Discuss your desired level of participation in weekend and evening staff activities, trips, and meals. As an out-of-town staff member, housing, food, and Sunday outings are part of the compensation package. Should you choose to fully participate in all off-hours programs, compensation or stipend may be adjusted accordingly.</li>
+  <li><strong>Off-Hours Involvement:</strong> As an out-of-town staff member, housing, food, and Sunday outings are all part of the package. We'll talk through your level of participation in weekend and evening staff activities, trips, and meals.</li>
   <li><strong>Post-Summer Wrap-Up &amp; Success Report:</strong> Determine expectations for end-of-summer pack-up and evaluation. Outline how you will work with Head Counselors to store supplies and organize the shed and how you will prepare a brief report summarizing successes and areas for improvement.</li>
 </ul>
 
