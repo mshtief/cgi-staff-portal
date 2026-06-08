@@ -632,6 +632,21 @@ header.site-header .inner {
 .status-pill.not-started { background: #f3f4f6; color: #6b7280; }
 .status-pill.locked { background: #fef3c7; color: #92400e; }
 .login-foot { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 18px; }
+.login-privacy { text-align: center; font-size: 12px; line-height: 1.5; color: var(--text-light); margin-top: 12px; }
+.login-privacy a { color: var(--text-muted); }
+
+/* Persistent privacy footer — shown on every view */
+.site-footer {
+  max-width: 680px;
+  margin: 32px auto 0;
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+.site-footer a { color: var(--text-muted); }
 .status-pill.in-progress { background: #dbeafe; color: #1e40af; }
 .status-pill.complete { background: var(--green-light); color: #065f46; }
 
