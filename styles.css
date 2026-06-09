@@ -264,9 +264,9 @@ header.site-header .inner {
 }
 .login-logo-img {
   display: block;
-  width: 128px;
+  width: 84px;
   height: auto;
-  margin: 0 auto 16px;
+  margin: 4px auto 16px;
 }
 .login-card h1 {
   font-size: 24px; text-align: center;
