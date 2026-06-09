@@ -450,7 +450,7 @@ function renderDashboard(forceStaff) {
   const html = `
     <div class="welcome-banner">
       <h2>Hi ${escapeHTML(user.name.split(" ")[0])} 👋</h2>
-      <p>${escapeHTML(role.label)} · ${escapeHTML(capitalize(user.division))} Division</p>
+      <p>${escapeHTML(user.title || role.label)}${user.role === "director" ? "" : ` · ${escapeHTML(capitalize(user.division))} Division`}</p>
     </div>
 
     ${hasPhotoAccess(user) ? `
@@ -932,6 +932,8 @@ const PHOTO_ACCESS_EMAILS = ["tranydeutsch@gmail.com"]; // Trany Deitch — art/
 function hasPhotoAccess(user) {
   if (!user) return false;
   if (user.isAdmin) return true;
+  // Authoritative: if the backend issued this person a photo-app PIN, they have access.
+  if (user.photoPin && String(user.photoPin).trim()) return true;
   if (PHOTO_ACCESS_EMAILS.includes((user.email || "").toLowerCase().trim())) return true;
   return PHOTO_ACCESS_JDKEYS.includes(jdKeyFor(user));
 }

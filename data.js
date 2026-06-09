@@ -502,6 +502,18 @@ const BASELINE_REQUIRED = [
   "watchdog-clearance"         // admin-only (filtered out of staff view)
 ];
 
+// Directors are tracked for legal/compliance only — not the full staff checklist.
+// (Each item still self-filters by age/origin/fp-bg status via passesAppliesIf.)
+const LEGAL_ONLY = [
+  "working-papers-nj",
+  "fingerprints-identogo",
+  "fingerprints-renewal",
+  "bg-check-invite",
+  "bg-renewal-letter",
+  "home-country-bg-check",
+  "watchdog-clearance"
+];
+
 // =============================================================================
 // ROLE TEMPLATES — additional required items layered on baseline
 // =============================================================================
@@ -534,6 +546,11 @@ const ROLE_TEMPLATES = {
     label: "Kiddie Assistant",
     description: "Supports lead teachers in Kiddie Camp",
     additionalRequired: []   // baseline only
+  },
+  "director": {
+    label: "Director",
+    description: "Camp director — legal/compliance items only",
+    additionalRequired: []
   }
 };
 
@@ -573,7 +590,9 @@ function passesAppliesIf(t, staff) {
 function resolveRequired(staff) {
   const role = ROLE_TEMPLATES[staff.role];
   if (!role) return [];
-  const candidateIds = [...BASELINE_REQUIRED, ...role.additionalRequired];
+  const candidateIds = staff.role === "director"
+    ? [...LEGAL_ONLY]
+    : [...BASELINE_REQUIRED, ...role.additionalRequired];
   const seen = new Set();
   const final = [];
   for (const id of candidateIds) {
@@ -592,6 +611,7 @@ function resolveRequired(staff) {
 // Optional items a staff member is offered (shown separately). Gated by
 // optionalRoles ("all" or an array of role keys) and any appliesIf criteria.
 function resolveOptional(staff) {
+  if (staff.role === "director") return [];   // directors: legal/compliance only
   return OPTIONAL_OFFERED.filter(id => {
     const t = TRAININGS[id];
     if (!t) return false;
