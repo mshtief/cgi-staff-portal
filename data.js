@@ -1855,7 +1855,7 @@ const JOB_DESCRIPTIONS = {
 <h3>Camp Dates &amp; Hours</h3>
 <ul>
   <li>Camp Dates: June 29 – August 14, 2026</li>
-  <li>Required Arrival: June 25, 2026</li>
+  <li>Required Arrival: <strong>out-of-town</strong> staff arrive <strong>Thursday, June 25</strong>; <strong>in-town</strong> staff come for staff training (<strong>Friday, June 26</strong> and Sunday, June 28)</li>
   <li>Hours:
     <ul>
       <li>Mon–Thu: 8:30 AM – 4:00 PM</li>
@@ -2652,7 +2652,7 @@ const JOB_DESCRIPTIONS = {
 <ul>
   <li><strong>Camp Dates:</strong> June 29 – August 14 2026</li>
   <li><strong>Work dates Pre-Summer:</strong> Flexible</li>
-  <li><strong>Required Arrival:</strong> June 25 2026</li>
+  <li><strong>Required Arrival:</strong> arrive <strong>Sunday, June 28</strong> with the boys division — or earlier to help with pre-camp setup (coordinate your dates with the Director)</li>
   <li><strong>Hours:</strong> Monday–Thursday, 8:30 AM – 4:00 PM; Friday, 8:30 AM – 2:30 PM</li>
   <li><strong>Reports To:</strong> Camp Director</li>
 </ul>
@@ -2678,7 +2678,7 @@ const JOB_DESCRIPTIONS = {
 </ul>
 <h3>3. Pre-Camp Logistics</h3>
 <ul>
-  <li><strong>Arrival &amp; Setup:</strong> Arrive by June 25 to assist with pre-camp setup and orientation. Help prepare bunks, classrooms, and common areas for opening day.</li>
+  <li><strong>Arrival &amp; Setup:</strong> Arrive ahead of opening to assist with pre-camp setup and orientation — coordinate your exact dates with the Director. Help prepare bunks, classrooms, and common areas for opening day.</li>
   <li><strong>Staff Arrival Logistics:</strong> Coordinate with the Director to arrange rooms for staff. Travel arrangements such as flights will be handled by the Director. Assist with local transportation (e.g. airport pickups, rides from Crown Heights) if needed.</li>
   <li><strong>Orientation Support:</strong> Receive the general framework and resources from the Director, then lead orientation sessions together with Head Counselors. Guide staff through camp structure, logistics, and expectations.</li>
   <li><strong>Safety &amp; Documentation:</strong> Review camp safety documents and ensure Head Counselors and staff are familiar with camper allergies, behavioral notes, and general safety alerts shared by the Camp Director.</li>
@@ -2881,7 +2881,7 @@ const JOB_DESCRIPTIONS = {
 <ul>
   <li><strong>Camp Dates:</strong> June 29 – August 14, 2026</li>
   <li><strong>Work dates Pre-Summer:</strong> Flexible</li>
-  <li><strong>Required Arrival:</strong> June 25, 2026</li>
+  <li><strong>Required Arrival:</strong> out-of-town staff arrive <strong>Thursday, June 25</strong>; in-town staff come for staff training (<strong>Friday, June 26</strong> and Sunday, June 28)</li>
   <li><strong>Hours</strong>: Monday–Thursday, 8:30 AM – 4:00 PM; Friday, 8:30 AM – 2:30 PM</li>
   <li><strong>Reports To</strong>: Camp Director</li>
 </ul>
