@@ -236,7 +236,7 @@ const TRAININGS = {
     duration: "~15 min (online)",
     provider: "NJ Dept. of Labor",
     action: "Register at the NJ working papers portal, enter the camp's 8-digit employer code, and have a parent/guardian complete their part. Approval arrives by email.",
-    appliesIf: { is18Plus: false, isFromUS: true },
+    appliesIf: { is18Plus: false, isFromUS: true, isUnder14: false },
     completionMethod: "auto-confirmed",
     externalUrl: "https://myworkingpapers.nj.gov",
     employerCode: "00304001",
@@ -570,6 +570,7 @@ function passesAppliesIf(t, staff) {
   if (!t.appliesIf) return true;
   const c = t.appliesIf;
   if (c.is18Plus !== undefined && c.is18Plus !== !!staff.is18Plus) return false;
+  if (c.isUnder14 !== undefined && c.isUnder14 !== !!staff.isUnder14) return false;
   if (c.isFromUS !== undefined && c.isFromUS !== !!staff.isFromUS) return false;
   if (c.isReturning !== undefined && c.isReturning !== !!staff.isReturning) return false;
   if (c.minCompensation !== undefined && !((staff.compensation || 0) > c.minCompensation)) return false;
