@@ -920,22 +920,17 @@ function renderHandbookTopic(i) {
 // =============================================================================
 // Which job-description key applies to a staffer (role + division + position).
 // The backend supplies user.jdKey; this is the fallback for local/seed data.
-// Who sees the Camp Photos upload page: all leadership (kiddie director + teachers
-// + assistant teachers; boys & girls assistant directors + head counselors), plus
-// the art/crafts instructor (all divisions), plus admins/directors.
-const PHOTO_ACCESS_JDKEYS = [
-  "kiddie-director", "kiddie-lead-teacher", "kiddie-assistant",
-  "boys-assistant-director", "boys-head-counselor",
-  "girls-assistant-director", "girls-head-counselor"
-];
-const PHOTO_ACCESS_EMAILS = ["tranydeutsch@gmail.com"]; // Trany Deitch — art/crafts, all divisions
+// Photo-upload access = ONLY staff the office issued an upload PIN to (backend
+// PHOTO_PINS), plus a short extra-access list for people who should upload but
+// don't have a PIN yet (they're told to get one from the office), plus admins.
+// Access is NOT role-based — role-based wrongly showed it to junior counselors.
+const PHOTO_ACCESS_EXTRA = ["faygsw@gmail.com", "susanizara@icloud.com"]; // Fayge (Kiddie Director) + Susan Izara (Asst Counselor) — pending their own PINs
+const PHOTO_ACCESS_EMAILS = ["tranydeutsch@gmail.com"]; // uploaders who post to ALL divisions (art/crafts) — controls the division hint only
 function hasPhotoAccess(user) {
   if (!user) return false;
   if (user.isAdmin) return true;
-  // Authoritative: if the backend issued this person a photo-app PIN, they have access.
   if (user.photoPin && String(user.photoPin).trim()) return true;
-  if (PHOTO_ACCESS_EMAILS.includes((user.email || "").toLowerCase().trim())) return true;
-  return PHOTO_ACCESS_JDKEYS.includes(jdKeyFor(user));
+  return PHOTO_ACCESS_EXTRA.includes((user.email || "").toLowerCase().trim());
 }
 
 function jdKeyFor(user) {
@@ -943,6 +938,7 @@ function jdKeyFor(user) {
   const d = user.division, r = user.role, pos = (user.position || "").toLowerCase();
   if (d === "kiddie") {
     if (r === "kiddie-lead-teacher") return /director/.test(pos) ? "kiddie-director" : "kiddie-lead-teacher";
+    if (r === "junior-counselor") return "kiddie-junior-counselor";
     return "kiddie-assistant";
   }
   const pre = d === "girls" ? "girls" : "boys";

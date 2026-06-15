@@ -2464,6 +2464,78 @@ const JOB_DESCRIPTIONS = {
 <p>Please feel free to ask any questions or discuss any issues with the camp office, should you feel necessary.</p>
 <p>To learn more about our camp program or to complete an application form, visit our website: <strong>www.ganisrael.org</strong></p>`,
 
+  "kiddie-junior-counselor": `<p><strong>Job Title:</strong> Junior Counselor — Kiddie Camp</p>
+<p><strong>Reports to:</strong> Kiddie Camp Counselor (Lead Teacher) and Kiddie Camp Director</p>
+
+<p>Thank you for your interest in spending your summer with us here at Gan Israel Day Camps Morristown, NJ! It is because of your dedication and commitment that IYH this summer will be a smashing success.</p>
+<p>Our camp mission is to provide a safe, fun and uplifting summer day camp experience for Jewish children; a place where love for Judaism is taught through fun, joy, and a true love for every staff member, camper and each member of their families.</p>
+<p>Below are the basic responsibilities of a Kiddie Camp Junior Counselor at CGI. As a Junior Counselor you are a key helping hand to the lead teachers/counselors who run the bunk — you support them with our youngest campers (roughly ages 3–5) and help the day run smoothly.</p>
+
+<h2>Junior Counselor Role Summary</h2>
+<ol>
+  <li><strong>Assisting the Lead Counselor:</strong> Support the lead counselor/teacher in running activities, davening, learning, and transitions. Help organize and prepare supplies, and pitch in wherever an extra pair of hands is needed.</li>
+  <li><strong>Camper Wellbeing:</strong> Actively help safeguard the campers' spiritual, physical, and emotional wellbeing — staying vigilant about their safety and comfort at all times. Little ones need extra patience and attention.</li>
+  <li><strong>Supervision &amp; Inspiration:</strong> Provide consistent supervision and be a source of warmth, energy, and encouragement, helping every child feel happy, safe, and excited to be at camp.</li>
+</ol>
+
+<h2>Dates &amp; Hours</h2>
+<ul>
+  <li><strong>Camp Dates:</strong> Monday, June 29 – Friday, August 14, 2026.</li>
+  <li><strong>Staff Training:</strong> Takes place on June 26, 2026, for camp preparation and orientation.</li>
+  <li><strong>Daily Schedule:</strong>
+    <ul>
+      <li>Mondays to Thursdays: Camp hours are 9:00 am to 3:30 pm. Staff must arrive by 8:45 am and may leave by 3:45 pm.</li>
+      <li>Fridays: Camp hours are 9:00 am to 2:00 pm. Staff may leave by 2:15 pm.</li>
+    </ul>
+  </li>
+  <li><strong>Cell Phone Policy:</strong> Junior Counselors may not use a personal phone during camp. Radios are provided for regular communication.</li>
+  <li><strong>Timeliness:</strong> Staff are expected to attend every single day of camp on time. In case of illness or unavoidable delay, please notify the Directors ASAP.</li>
+</ul>
+
+<h2>Responsibilities</h2>
+<ol>
+  <li>Assist the lead counselor throughout the day: lineup, circle time, davening &amp; learning, snack/lunch, transitions, and all other activities and trips.</li>
+  <li>Some campers need extra individual attention or assistance. You can offer that extra help while the lead counselor moves on with the rest of the group.</li>
+  <li>Always ask for help when you are unsure how to proceed, or if the health or safety of a camper or staff member is in question.</li>
+  <li>Smile and use positive words and encouragement throughout the day. Leave all "disciplinary action" to the discretion of the lead counselor.</li>
+  <li>Always follow the lead counselor's lead. When a counselor or director asks for quiet, immediately place your finger over your lips and point toward the person speaking so the campers follow suit — helping get the group quiet is one of the biggest ways you keep our schedule moving!</li>
+  <li>Be present and attentive during swim and water-play times, helping watch the children closely.</li>
+  <li>Help with attendance, clean-up, and keeping the bunk area and supplies tidy and organized.</li>
+  <li>Be a role model — follow general camp procedures and practices including sanitation, schedule, and sportsmanship. Mentchlichkeit and making a kiddush Hashem come first.</li>
+  <li>Communication:
+    <ol>
+      <li>Stay with the group you are assigned to. If you need a break, make sure it's ok with the staff member in charge. If you feel you're not doing enough, ask, "What else can I do to help?"</li>
+      <li>If you have an issue, speak to your lead counselor, the Kiddie Camp Director, or the Directors. The only stupid question is the one not asked — please ask before a small inconvenience becomes a big problem.</li>
+    </ol>
+  </li>
+  <li>Other Duties: Participate in extracurricular and special activities (e.g., Family BBQ), and greet campers, parents, and staff with a smile at pick-up and drop-off!</li>
+</ol>
+
+<h2>Dress Code</h2>
+<p>Standards of Tznius for our staff include but are not limited to:</p>
+<ul>
+  <li>A) Skirts which cover the knees at all times with no slits.</li>
+  <li>B) Leg coverings no shorter than knee socks.</li>
+  <li>C) Sleeves which cover the elbows at all times.</li>
+  <li>D) Necklines covered at all times.</li>
+</ul>
+<p>This is very important to us and not "negotiable".</p>
+
+<h2>Professional Development</h2>
+<ol>
+  <li>Participate in the staff webinars and in-person training. Details will follow closer to the summer.</li>
+  <li>Be present at the staff meeting &amp; camp set-up which take place before camp.</li>
+</ol>
+
+<h2>Compensation</h2>
+<ol>
+  <li>Your stipend and payment schedule are detailed in your signed contract.</li>
+  <li>To show our undying appreciation to our staff, we occasionally sponsor after-camp counselor outings and trips.</li>
+</ol>
+
+<p>We wish you Hatzlacha Rabba and look forward to working together with you. Please feel free to ask any questions or discuss any issues with the camp office.</p>
+<p>To learn more about our camp program, visit our website: <strong>www.ganisrael.org</strong></p>`,
+
   "kiddie-director": `<h2>Kiddie Camp Director Job Description – Summer 2026</h2>
 <h3>Job Title</h3>
 <p>Kiddie Camp Director / Counselor (depending on camp size)</p>
