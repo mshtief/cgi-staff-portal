@@ -924,7 +924,7 @@ function renderHandbookTopic(i) {
 // PHOTO_PINS), plus a short extra-access list for people who should upload but
 // don't have a PIN yet (they're told to get one from the office), plus admins.
 // Access is NOT role-based — role-based wrongly showed it to junior counselors.
-const PHOTO_ACCESS_EXTRA = ["faygsw@gmail.com", "susanizara@icloud.com"]; // Fayge (Kiddie Director) + Susan Izara (Asst Counselor) — pending their own PINs
+const PHOTO_ACCESS_EXTRA = []; // staff to show the photo page WITHOUT a PIN (none now — Fayge & Susan have real PINs)
 const PHOTO_ACCESS_EMAILS = ["tranydeutsch@gmail.com"]; // uploaders who post to ALL divisions (art/crafts) — controls the division hint only
 function hasPhotoAccess(user) {
   if (!user) return false;
@@ -1038,7 +1038,7 @@ function renderInfo(id) {
   }
 
   else if (id === "photos") {
-    const email = user.email ? escapeHTML(user.email) : "your camp email address";
+    const email = (user.photoEmail || user.email) ? escapeHTML(user.photoEmail || user.email) : "your camp email address";
     const _pe = (user.email || "").toLowerCase().trim();
     const _allDiv = user.isAdmin || PHOTO_ACCESS_EMAILS.includes(_pe);
     const _divName = { boys: "Boys", girls: "Girls", kiddie: "Kiddie" }[user.division];
