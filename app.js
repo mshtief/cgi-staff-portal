@@ -305,6 +305,32 @@ function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 // =============================================================================
 // LOGIN
 // =============================================================================
+// Email-link login: staff who lost their code request their personal link by email.
+const _emailLinkForm = document.getElementById("emailLinkForm");
+if (_emailLinkForm) _emailLinkForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = (document.getElementById("loginEmail").value || "").trim();
+  const msg = document.getElementById("emailLinkMsg");
+  const show = (t) => { if (msg) { msg.style.display = "block"; msg.textContent = t; } };
+  if (!email || email.indexOf("@") < 1) { show("Please enter a valid email address."); return; }
+  const url = backendUrl();
+  if (!url) { show("Email login isn't available here — contact office@ganisrael.org."); return; }
+  const btn = _emailLinkForm.querySelector("button");
+  const label = btn ? btn.textContent : "";
+  if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+  try {
+    const sep = url.includes("?") ? "&" : "?";
+    const res = await fetch(url + sep + "action=requestlink&email=" + encodeURIComponent(email));
+    const r = await res.json().catch(() => ({}));
+    show(r && r.found
+      ? "✓ Sent! Check your email for your login link (give it a minute, and check your spam folder)."
+      : "We don't see that email on the staff list — use the exact email camp has for you, or contact office@ganisrael.org.");
+  } catch (err) {
+    show("Something went wrong — please try again, or contact office@ganisrael.org.");
+  }
+  if (btn) { btn.disabled = false; btn.textContent = label || "Email me my login link"; }
+});
+
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const raw = document.getElementById("loginCode").value.trim();

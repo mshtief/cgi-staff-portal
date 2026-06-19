@@ -87,6 +87,25 @@
         <button type="submit" class="btn btn-primary btn-full">Sign In</button>
       </form>
 
+      <div style="display:flex;align-items:center;gap:10px;color:#9ca3af;font-size:13px;margin:18px 0 12px;">
+        <span style="flex:1;height:1px;background:#e5e7eb;"></span>or<span style="flex:1;height:1px;background:#e5e7eb;"></span>
+      </div>
+
+      <form id="emailLinkForm">
+        <label for="loginEmail">Don't have your code? Get your link by email</label>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="the email camp has for you"
+          autocomplete="email"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+        <button type="submit" class="btn btn-full" style="background:#fff;color:#1e3a5f;border:1.5px solid #1e3a5f;">Email me my login link</button>
+      </form>
+      <p id="emailLinkMsg" class="login-foot" style="display:none;margin-top:10px;"></p>
+
       <p class="login-foot">Trouble signing in? Contact the camp office.</p>
       <p class="login-privacy">🔒 Your information is used only for camp staff onboarding, kept secure, and never shared outside Camp Gan Israel Morristown. Questions? <a href="mailto:office@ganisrael.org">office@ganisrael.org</a></p>
     </div>
