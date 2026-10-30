@@ -1269,6 +1269,13 @@ function wireModuleHandlers(t, isDone) {
   if (dataForm && !isDone) {
     dataForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      // Renewal-letter certifications: save the signed letter (name / typed
+      // signature / date) to the backend so the office has a real record to
+      // print + notarize — not just a "done" checkmark.
+      if (t.type === "fillable-form" && t.formKind === "renewal-letter") {
+        saveCertification(t);
+        return;
+      }
       toast("Saved & submitted ✓", "success");
       setTimeout(() => markTrainingComplete(t.id), 600);
     });
@@ -1372,6 +1379,33 @@ function uploadFileToBackend(file, trainingId) {
   };
   reader.onerror = () => toast("Couldn't read that file.", "error");
   reader.readAsDataURL(file);
+}
+
+// Save a signed renewal-letter certification (name / typed signature / date) to
+// the backend so the office has a real, printable record — then mark it complete.
+// Falls back to local-complete if there's no backend (e.g., reviewing on your computer).
+function saveCertification(t) {
+  const url = backendUrl();
+  const user = state.viewingAsStaff || state.currentUser;
+  const name = (document.getElementById("rlName")?.value || (user && user.name) || "").trim();
+  const sig = (document.getElementById("rlSig")?.value || "").trim();
+  const date = (document.getElementById("rlDate")?.value || "").trim();
+  if (!url || !user || !user.email) {
+    toast("Saved & submitted ✓", "success");
+    setTimeout(() => markTrainingComplete(t.id), 400);
+    return;
+  }
+  toast("Submitting…", "info");
+  fetch(url, {
+    method: "POST",
+    body: new URLSearchParams({
+      action: "certify", email: user.email, name,
+      trainingId: t.id, title: t.title || "",
+      statement: t.certifyText || "", signature: sig, signedDate: date
+    })
+  })
+    .then(() => { toast("Saved & submitted ✓", "success"); markTrainingComplete(t.id); })
+    .catch(() => { toast("Saved ✓", "success"); markTrainingComplete(t.id); });
 }
 
 function markTrainingComplete(trainingId) {

@@ -14,5 +14,10 @@
 // See backend/DEPLOY.md for the 5-minute deployment steps.
 // =============================================================================
 window.PORTAL_CONFIG = {
-  backendUrl: "https://script.google.com/macros/s/AKfycbx0Hq7pLHyb6r3sb9OExh8ULw4b3cgxBTpdGjqxfn_HoLN-AUhuDKWG19Rel4Qbkyyxlg/exec"
+  // 2026 portal backend (Apps Script bound to the 2026 master sheet). Replace with the 2027 URL at cutover.
+  backendUrl: "https://script.google.com/macros/s/AKfycbx0Hq7pLHyb6r3sb9OExh8ULw4b3cgxBTpdGjqxfn_HoLN-AUhuDKWG19Rel4Qbkyyxlg/exec",
+  // 2027 application + reference backend (standalone Apps Script owned by office@ganisrael.org, writes CGI_Morristown_Staff_2027;
+  // code in backend/2027/Code.gs, deployment "Staff application 2027", 2026-10-29). Empty = apply.html and reference.html
+  // run in PREVIEW mode (nothing is sent).
+  applyBackendUrl: "https://script.google.com/macros/s/AKfycbz13eD0W5zIgE8IYhZxeFTZgzmWRMaFGnmwTfpv4iZh2otCsCP-KZZTXiz6YpQBn1Dnfw/exec"
 };

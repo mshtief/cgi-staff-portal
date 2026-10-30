@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Staff Reference 2027</title>
+  <link rel="icon" href="assets/cgi-logo.png">
+  <style>
+    /* Layout: one short page a reference taps through in two minutes. Same tokens as the portal. */
+    :root {
+      --navy: #1e3a5f; --navy-dark: #142842; --navy-soft: #e8eef6;
+      --accent: #f59e0b; --accent-dark: #d97706;
+      --green: #059669; --red: #dc2626; --red-soft: #fef2f2;
+      --bg: #f5f7fa; --card: #ffffff;
+      --text: #111827; --muted: #6b7280; --light: #9ca3af;
+      --border: #e5e7eb; --border-dark: #d1d5db;
+      --radius: 14px; --radius-sm: 8px;
+      --shadow: 0 2px 8px rgba(0,0,0,.06); --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    :focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(30,58,95,.25); border-radius: var(--radius-sm); }
+    [hidden] { display: none !important; }
+    .top { background: var(--navy); color: #fff; padding-block: 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); box-shadow: var(--shadow); }
+    .top .inner { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+    .top img { width: 44px; height: 44px; object-fit: contain; background: #fff; border-radius: 10px; padding: 3px; flex-shrink: 0; }
+    .top .brand { font-weight: 700; font-size: 15px; line-height: 1.2; }
+    .top .sub { font-size: 12px; opacity: .8; }
+    .preview-ribbon { background: #b45309; color: #fff; font: 600 12px/1.4 var(--font); text-align: center; padding: 6px 10px; letter-spacing: .02em; }
+    .wrap { max-width: 640px; margin: 0 auto; padding-block: 18px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .card { background: var(--card); border-radius: var(--radius); padding: 20px 18px 22px; box-shadow: var(--shadow); margin-bottom: 14px; }
+    .card h1 { font-size: 21px; color: var(--navy); margin-bottom: 8px; text-wrap: balance; }
+    .card p { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+    .rule { background: var(--navy-soft); border-left: 4px solid var(--navy); padding: 10px 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; color: var(--text); font-weight: 600; }
+    .switch { display: flex; gap: 8px; margin: 10px 0 0; }
+    .switch button { flex: 1; padding: 10px; border: 1.5px solid var(--border-dark); background: #fff; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; }
+    .switch button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .q { margin-bottom: 20px; }
+    .q .lbl { display: block; font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .q .lbl .n { color: var(--accent-dark); margin-right: 6px; }
+    .q .lbl .req::after { content: " *"; color: var(--accent-dark); }
+    .q .opt { font-size: 13px; color: var(--muted); margin: -4px 0 8px; }
+    .choices { display: grid; gap: 8px; }
+    .choice { display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: #fff; cursor: pointer; font-size: 15px; min-height: 46px; }
+    .choice input { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--navy); }
+    .choice:has(input:checked) { border-color: var(--navy); background: var(--navy-soft); }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+    input[type=text], textarea { width: 100%; padding: 12px 14px; font-size: 16px; border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); background: #fff; min-height: 46px; }
+    textarea { min-height: 84px; resize: vertical; }
+    .q.error .choice, .q.error input, .q.error textarea { border-color: var(--red); }
+    .err { color: var(--red); font-size: 13px; margin-top: 6px; display: none; }
+    .q.error .err { display: block; }
+    .btn { border: 0; border-radius: var(--radius-sm); padding: 14px 18px; font-size: 16px; font-weight: 700; min-height: 48px; cursor: pointer; width: 100%; background: var(--accent); color: #fff; }
+    .btn:hover { background: var(--accent-dark); }
+    .done { text-align: center; }
+    .done .check { width: 64px; height: 64px; border-radius: 50%; background: var(--green); color: #fff; font-size: 34px; line-height: 64px; margin: 0 auto 14px; }
+    .summary { text-align: left; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; font-size: 14px; }
+    .summary dl { display: grid; grid-template-columns: minmax(110px, 36%) 1fr; gap: 6px 10px; }
+    .summary dt { color: var(--muted); } .summary dd { min-width: 0; overflow-wrap: anywhere; }
+    footer { text-align: center; color: var(--light); font-size: 12px; padding: 18px 16px 10px; }
+    footer a { color: var(--navy); }
+  </style>
+</head>
+<body>
+<header class="top"><div class="inner"><img src="assets/cgi-logo.png" alt="Camp Gan Israel Morristown"><div><div class="brand">CGI Morristown</div><div class="sub">Staff reference · Summer 2027</div></div></div></header>
+<div class="preview-ribbon" id="previewRibbon" hidden>PREVIEW · nothing you type here is sent</div>
+
+<main class="wrap">
+  <div class="card" id="intro">
+    <h1>A quick reference for <span id="applicantName">Rivky Levine</span></h1>
+    <p><span id="applicantFirst">Rivky</span> applied to work at Camp Gan Israel Morristown this summer and gave your name as a reference. This takes about two minutes, and it helps us a lot.</p>
+    <div class="rule">If more than one answer describes them, pick the one that best describes them.</div>
+    <div id="previewSwitch" hidden>
+      <p style="margin-top:12px">Preview only: choose which version to see.</p>
+      <div class="switch"><button type="button" id="btnIn" class="on">In-town version</button><button type="button" id="btnOot">Out-of-town version</button></div>
+    </div>
+  </div>
+
+  <form class="card" id="refForm" novalidate>
+    <div class="q"><label class="lbl" for="how"><span class="n">1.</span><span class="req">How do you know <span class="nm">Rivky</span>, and in what capacity?</span></label><input type="text" id="how" name="how" required placeholder="e.g. counselor in my camp, summer 2026"><div class="err">Please answer this one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">2.</span><span class="req">How long have you known them?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="years" value="Under a year" required> Under a year</label><label class="choice"><input type="radio" name="years" value="1 to 2 years"> 1 to 2 years</label><label class="choice"><input type="radio" name="years" value="3 years or more"> 3 years or more</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">3.</span><span class="req">As a counselor, or when working with kids, were they…</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="level" value="Okay" required> Okay</label><label class="choice"><input type="radio" name="level" value="Good"> Good</label><label class="choice"><input type="radio" name="level" value="Great"> Great</label><label class="choice"><input type="radio" name="level" value="Amazing"> Amazing</label><label class="choice"><input type="radio" name="level" value="Awesome"> Awesome</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">4.</span><span class="req">Did the kids like them or love them?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="kids" value="Liked" required> Liked</label><label class="choice"><input type="radio" name="kids" value="Loved"> Loved</label><label class="choice"><input type="radio" name="kids" value="Hard to say"> Hard to say</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">5.</span><span class="req">Is this someone you would suggest we hire?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="hire" value="Definitely" required> Definitely</label><label class="choice"><input type="radio" name="hire" value="Yes"> Yes</label><label class="choice"><input type="radio" name="hire" value="Not sure"> Not sure</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">6.</span><span class="req">If they wanted to come back to your camp or program, would you hire them again?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="takeBack" value="In a heartbeat" required> In a heartbeat</label><label class="choice"><input type="radio" name="takeBack" value="Yes"> Yes</label><label class="choice"><input type="radio" name="takeBack" value="Probably not"> Probably not</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">7.</span><span class="req">Are they a team player who gets along with others?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="team" value="Yes" required> Yes</label><label class="choice"><input type="radio" name="team" value="Mostly"> Mostly</label><label class="choice"><input type="radio" name="team" value="It depends on the group"> It depends on the group</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">8.</span><span class="req">Do they bring a positive vibe?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="vibe" value="Always" required> Always</label><label class="choice"><input type="radio" name="vibe" value="Usually"> Usually</label><label class="choice"><input type="radio" name="vibe" value="On good days"> On good days</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">9.</span><span class="req">How would you describe their work ethic?</span></span>
+      <div class="choices row"><label class="choice"><input type="radio" name="work" value="Hard-working" required> Hard-working</label><label class="choice"><input type="radio" name="work" value="Does what's asked"> Does what's asked</label><label class="choice"><input type="radio" name="work" value="Does well when encouraged"> Does well when encouraged</label></div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><span class="lbl"><span class="n">10.</span><span class="req">Which description fits them best?</span></span>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="type" value="Quiet and reserved, more comfortable in the background than running the fun" required> Quiet and reserved, more comfortable in the background than running the fun</label>
+        <label class="choice"><input type="radio" name="type" value="Quiet, but dedicated and fully involved with the kids"> Quiet, but dedicated and fully involved with the kids</label>
+        <label class="choice"><input type="radio" name="type" value="Responsible and organized, and knows how to make things exciting"> Responsible and organized, and knows how to make things exciting</label>
+        <label class="choice"><input type="radio" name="type" value="Energetic and loud, and connects with each camper one-on-one"> Energetic and loud, and connects with each camper one-on-one</label>
+        <label class="choice"><input type="radio" name="type" value="Energetic and loud, more the group entertainer than the one-on-one type"> Energetic and loud, more the group entertainer than the one-on-one type</label>
+        <label class="choice"><input type="radio" name="type" value="A natural leader the other staff follow"> A natural leader the other staff follow</label>
+      </div><div class="err">Please choose one.</div></div>
+
+    <div class="q"><label class="lbl" for="strengths"><span class="n">11.</span><span class="req">Tell us about their overall strengths.</span></label><textarea id="strengths" name="strengths" required></textarea><div class="err">A sentence or two is plenty.</div></div>
+
+    <div class="q"><label class="lbl" for="else"><span class="n">12.</span>Is there anything else that would help us?</label><div class="opt">Optional</div><textarea id="else" name="else"></textarea></div>
+
+    <div class="q"><span class="lbl"><span class="n">13.</span><span class="req">May we follow up with you?</span></span>
+      <div class="choices"><label class="choice"><input type="radio" name="followUp" value="Call me" required> Call me</label><label class="choice"><input type="radio" name="followUp" value="WhatsApp text or voice note"> WhatsApp text or voice note</label><label class="choice"><input type="radio" name="followUp" value="Email is better"> Email is better</label></div>
+      <div id="followDetail" hidden style="margin-top:8px"><input type="text" id="followInfo" name="followInfo" inputmode="tel" placeholder="Best number, and a good time"></div><div class="err">Please choose one.</div></div>
+
+    <div id="ootOnly" hidden>
+      <div class="q"><label class="lbl" for="afterHours"><span class="n">14.</span><span class="req">Are there any after-hours challenges we should be aware of?</span></label><div class="opt">Out-of-town staff live with us for the summer. "None" is a fine answer.</div><textarea id="afterHours" name="afterHours" required></textarea><div class="err">Please answer this one.</div></div>
+      <div class="q"><label class="lbl" for="frumkeit"><span class="n">15.</span><span class="req">In a few words, how would you describe their level of Frumkeit, Chassidishkeit, and excitement in Yiddishkeit?</span></label><textarea id="frumkeit" name="frumkeit" required></textarea><div class="err">Please answer this one.</div></div>
+    </div>
+
+    <div class="q"><label class="lbl" for="refName"><span class="req">Your name</span></label><div class="opt">Filled in from the application; please correct it if it's not right.</div><input type="text" id="refName" name="refName" required><div class="err">Please enter your name.</div></div>
+    <button type="submit" class="btn" id="submitBtn">Send reference</button>
+    <p style="margin-top:10px;font-size:13px;color:var(--muted)">Your answers go only to the camp office and are never shared with the applicant.</p>
+  </form>
+
+  <div class="card done" id="doneCard" hidden>
+    <div class="check">✓</div>
+    <h1>Thank you!</h1>
+    <p id="doneText">Your reference was sent to the camp office.</p>
+    <div class="summary" id="summary"></div>
+  </div>
+</main>
+<footer>Camp Gan Israel Morristown · <a href="mailto:office@ganisrael.org">office@ganisrael.org</a> · (862) 244-3420</footer>
+
+<script src="config.js"></script>
+<script>
+window.REF_CONFIG = window.REF_CONFIG || { backendUrl: (window.PORTAL_CONFIG && window.PORTAL_CONFIG.applyBackendUrl) || "" };
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const form = $('refForm');
+  const params = new URLSearchParams(location.search);
+  const preview = !window.REF_CONFIG.backendUrl;
+  let version = (params.get('v') === 'oot') ? 'oot' : 'in';
+  if (preview) { $('previewRibbon').hidden = false; $('previewSwitch').hidden = false; }
+  function applyVersion() {
+    $('ootOnly').hidden = version !== 'oot';
+    $('btnIn').classList.toggle('on', version === 'in'); $('btnOot').classList.toggle('on', version === 'oot');
+  }
+  $('btnIn').addEventListener('click', () => { version = 'in'; applyVersion(); });
+  $('btnOot').addEventListener('click', () => { version = 'oot'; applyVersion(); });
+  applyVersion();
+  // applicant name from the link (production) — the preview shows a sample name
+  const nm = params.get('applicant'); if (nm) { $('applicantName').textContent = nm; const first = nm.split(' ')[0]; $('applicantFirst').textContent = first; document.querySelectorAll('.nm').forEach(e => e.textContent = first); }
+  // reference name from the link (production) — the preview shows a sample
+  const rn = params.get('ref'); $('refName').value = rn || (preview ? 'Mrs. Example (from the application)' : '');
+  form.addEventListener('change', () => {
+    const f = form.querySelector('[name="followUp"]:checked');
+    const show = !!(f && f.value !== 'Email is better');
+    $('followDetail').hidden = !show; $('followInfo').required = show;
+    $('followInfo').placeholder = (f && f.value === 'Call me') ? 'Best number, and a good time to call' : 'Your WhatsApp number';
+  });
+  function validate() {
+    let ok = true, first = null;
+    form.querySelectorAll('.q').forEach(q => q.classList.remove('error'));
+    const seen = new Set();
+    form.querySelectorAll('input, textarea').forEach(el => {
+      if (el.closest('[hidden]')) return;
+      const q = el.closest('.q'); let bad = false;
+      if (el.type === 'radio') { if (seen.has(el.name)) return; seen.add(el.name); if (el.required && !form.querySelector('[name="' + el.name + '"]:checked')) bad = true; }
+      else if (el.required && !el.value.trim()) bad = true;
+      if (el.id === 'followInfo' && el.required && !el.value.trim()) bad = true;
+      if (bad) { q.classList.add('error'); ok = false; if (!first) first = el; }
+    });
+    if (!ok && first) { first.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    return ok;
+  }
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); if (!validate()) return;
+    const data = { version, applicant: $('applicantName').textContent, token: params.get('t') || '', a: params.get('a') || '', r: params.get('r') || '' };
+    new FormData(form).forEach((v, k) => { data[k] = v; });
+    const btn = $('submitBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+    let ok = preview;
+    let errText = '';
+    if (!preview) {
+      for (let attempt = 1; attempt <= 3 && !ok; attempt++) {
+        try { const r = await fetch(window.REF_CONFIG.backendUrl, { method: 'POST', body: new URLSearchParams({ action: 'reference', payload: JSON.stringify(data) }) }); const j = await r.json(); ok = !!j.ok; if (!ok && j.error) { errText = j.error; break; } }
+        catch (err) { ok = false; if (attempt < 3) await new Promise(res => setTimeout(res, 1500 * attempt)); }
+      }
+    }
+    if (!ok) { btn.disabled = false; btn.textContent = 'Send reference'; btn.insertAdjacentHTML('afterend', '<p class="err" style="display:block;margin-top:8px">' + (errText || 'Something went wrong. Please try again in a minute, or email office@ganisrael.org.') + '</p>'); return; }
+    form.hidden = true; $('intro').hidden = true;
+    if (preview) $('doneText').textContent = 'Preview only: nothing was sent. This is what the camp office would receive.';
+    const labels = {how:'How they know them',years:'Known for',level:'As a counselor',kids:'Kids',hire:'Suggest we hire',takeBack:'Would take back',team:'Team player',vibe:'Positive vibe',work:'Work ethic',type:'Best description',strengths:'Strengths',else:'Anything else',followUp:'Follow up',followInfo:'Number / time',afterHours:'After hours',frumkeit:'Frumkeit / Chassidishkeit / Yiddishkeit',refName:'Reference name',version:'Version'};
+    $('summary').innerHTML = '<dl>' + Object.keys(labels).filter(k => data[k] && String(data[k]).trim()).map(k => '<dt>' + labels[k] + '</dt><dd>' + String(data[k]).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])) + '</dd>').join('') + '</dl>';
+    $('doneCard').hidden = false; window.scrollTo({ top: 0 });
+  });
+})();
+</script>
+</body>
+</html>

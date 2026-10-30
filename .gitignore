@@ -19,3 +19,7 @@ backend/
 node_modules/
 screenshots/
 .DS_Store
+
+# Claude Code session helpers (not part of the site)
+.claude/
+HIRING-2027-DESIGN.md

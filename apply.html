@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Staff Application 2027</title>
+  <link rel="icon" href="assets/cgi-logo.png">
+  <style>
+    /* Layout: one column, one section at a time, big tap targets. Same tokens as the portal (styles.css). */
+    :root {
+      --navy: #1e3a5f; --navy-dark: #142842; --navy-soft: #e8eef6;
+      --accent: #f59e0b; --accent-dark: #d97706;
+      --green: #059669; --red: #dc2626; --red-soft: #fef2f2;
+      --bg: #f5f7fa; --card: #ffffff;
+      --text: #111827; --muted: #6b7280; --light: #9ca3af;
+      --border: #e5e7eb; --border-dark: #d1d5db;
+      --radius: 14px; --radius-sm: 8px;
+      --shadow: 0 2px 8px rgba(0,0,0,.06); --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    :focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(30,58,95,.25); border-radius: var(--radius-sm); }
+    [hidden] { display: none !important; }
+
+    .top { background: var(--navy); color: #fff; padding-block: 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); position: sticky; top: 0; z-index: 10; box-shadow: var(--shadow); }
+    .top .inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+    .top img { width: 44px; height: 44px; object-fit: contain; background: #fff; border-radius: 10px; padding: 3px; flex-shrink: 0; }
+    .top .brand { font-weight: 700; font-size: 15px; line-height: 1.2; }
+    .top .sub { font-size: 12px; opacity: .8; }
+    .top .step-pill { margin-left: auto; font-size: 12px; font-weight: 600; background: rgba(255,255,255,.14); padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+
+    .wrap { max-width: 680px; margin: 0 auto; padding-block: 18px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .preview-ribbon { background: #b45309; color: #fff; font: 600 12px/1.4 var(--font); text-align: center; padding: 6px 10px; letter-spacing: .02em; }
+
+    .progress { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 0 0 18px; }
+    .progress span { height: 6px; border-radius: 3px; background: var(--border-dark); }
+    .progress span.done { background: var(--green); }
+    .progress span.now { background: var(--accent); }
+
+    .intro { background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 16px; }
+    .intro h1 { font-size: 22px; color: var(--navy); margin-bottom: 6px; text-wrap: balance; }
+    .intro p { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+    .intro p:last-child { margin-bottom: 0; }
+    .intro .dates { display: grid; gap: 4px; font-size: 14px; color: var(--text); margin: 10px 0; }
+    .intro .dates b { color: var(--navy); }
+    .intro h3 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-dark); margin: 14px 0 4px; }
+    .intro .small { font-size: 13px; }
+    .field input[type=file] { display: block; width: 100%; padding: 10px; border: 1.5px dashed var(--border-dark); border-radius: var(--radius-sm); background: #fff; font-size: 14px; }
+
+    section.step { background: var(--card); border-radius: var(--radius); padding: 20px 18px 22px; box-shadow: var(--shadow); }
+    section.step h2 { font-size: 19px; color: var(--navy); margin-bottom: 4px; text-wrap: balance; }
+    section.step .lead { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .group { display: grid; gap: 14px; }
+    .field label, .field .lbl { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .field .hint { font-size: 13px; color: var(--muted); margin: -2px 0 6px; }
+    .field .req::after { content: " *"; color: var(--accent-dark); }
+    input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea {
+      width: 100%; padding: 12px 14px; font-size: 16px; border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); background: #fff; min-height: 46px;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    select { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 36px; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .two { grid-template-columns: 1fr; } }
+    .choices { display: grid; gap: 8px; }
+    .choice { display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: #fff; cursor: pointer; font-size: 15px; min-height: 46px; }
+    .choice input { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--navy); }
+    .choice:has(input:checked) { border-color: var(--navy); background: var(--navy-soft); }
+    .choice small { display: block; color: var(--muted); font-size: 13px; }
+    .inline { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; margin-top: 8px; }
+    .inline input { width: 20px; height: 20px; accent-color: var(--navy); }
+    .note { background: var(--navy-soft); border-left: 4px solid var(--navy); padding: 10px 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; color: var(--text); }
+    .subcard { border: 1.5px dashed var(--border-dark); border-radius: var(--radius-sm); padding: 14px; display: grid; gap: 12px; }
+    .subcard h3 { font-size: 15px; color: var(--navy); }
+    .subcard p.pol { font-size: 14px; color: var(--text); line-height: 1.55; }
+    .field.error input, .field.error select, .field.error textarea { border-color: var(--red); background: var(--red-soft); }
+    .err { color: var(--red); font-size: 13px; margin-top: 4px; display: none; }
+    .field.error .err { display: block; }
+    .banner-error { background: var(--red-soft); border: 1.5px solid var(--red); color: var(--red); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
+
+    .nav { display: flex; gap: 10px; margin-top: 22px; }
+    .btn { border: 0; border-radius: var(--radius-sm); padding: 14px 18px; font-size: 16px; font-weight: 700; min-height: 48px; cursor: pointer; }
+    .btn-primary { background: var(--navy); color: #fff; flex: 1; }
+    .btn-primary:hover { background: var(--navy-dark); }
+    .btn-ghost { background: #fff; color: var(--navy); border: 1.5px solid var(--border-dark); }
+    .btn-accent { background: var(--accent); color: #fff; flex: 1; }
+    .btn-accent:hover { background: var(--accent-dark); }
+    .saved { text-align: center; font-size: 12px; color: var(--light); margin-top: 10px; }
+
+    .done-card { background: var(--card); border-radius: var(--radius); padding: 24px 18px; box-shadow: var(--shadow-lg); text-align: center; }
+    .done-card .check { width: 64px; height: 64px; border-radius: 50%; background: var(--green); color: #fff; font-size: 34px; line-height: 64px; margin: 0 auto 14px; }
+    .done-card h2 { color: var(--navy); font-size: 22px; margin-bottom: 8px; }
+    .done-card p { color: var(--muted); margin-bottom: 8px; }
+    .summary { text-align: left; margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; font-size: 14px; }
+    .summary h3 { font-size: 15px; color: var(--navy); margin: 12px 0 6px; }
+    .summary dl { display: grid; grid-template-columns: minmax(120px, 38%) 1fr; gap: 4px 10px; }
+    .summary dt { color: var(--muted); }
+    .summary dd { min-width: 0; overflow-wrap: anywhere; }
+
+    footer { text-align: center; color: var(--light); font-size: 12px; padding: 22px 16px 10px; }
+    footer a { color: var(--navy); }
+    @media (prefers-reduced-motion: no-preference) { section.step { animation: in .18s ease-out; } @keyframes in { from { opacity: .6; transform: translateY(4px); } to { opacity: 1; transform: none; } } }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <img src="assets/cgi-logo.png" alt="Camp Gan Israel Morristown">
+    <div>
+      <div class="brand">CGI Morristown</div>
+      <div class="sub">Staff Application · Summer 2027</div>
+    </div>
+    <div class="step-pill" id="stepPill">Step 1 of 7</div>
+  </div>
+</header>
+
+<div class="preview-ribbon" id="previewRibbon" hidden>PREVIEW · nothing you type here is sent</div>
+
+<main class="wrap">
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <div class="intro" id="intro">
+    <h1>Thank you for your interest in spending your summer with us at Camp Gan Israel Morristown!</h1>
+    <p>Working at Camp Gan Israel is a balance between being the most fun person in the world while maintaining an unwavering sense of professionalism and care. We set the bar pretty high for our staff, as there is nothing we take more seriously than truly providing the summer of children's lives.</p>
+    <p>Our camp mission is to provide a safe, fun and uplifting summer day camp experience for Jewish children; a place where love for Judaism is taught through fun, joy, and a true love for every staff member, camper and each member of their families. A few things we ask every potential staff member to consider before applying:</p>
+    <h3>Dates</h3>
+    <div class="dates">
+      <div><b>Camp season:</b> Monday, June 28 – Friday, August 13, 2027</div>
+      <div><b>Specialty camp week (optional):</b> June 21 – 25</div>
+      <div><b>Out-of-town staff:</b> arrive in New Jersey by Thursday, June 24</div>
+    </div>
+    <p>Priority for staffing positions is given to people who can work the entire season. If you are interested in also joining the specialty camp week, please say so on your application. Applications for partial sessions are welcome, but full-season availability is preferred. Out-of-town staff who require accommodation need to commit to the full season. On rare occasions an exception can be made if someone else we accept can take your position for the other part of the summer.</p>
+    <h3>Timeliness</h3>
+    <p>There are no vacation days during camp. Staff are expected to attend every single day of camp, on time. In case of illness, please notify the directors as soon as possible.</p>
+    <h3>Pre-season training</h3>
+    <p>Staff training is a requirement for employment, both by Camp Gan Israel and by our licensing bodies. It consists of online training, due at least two weeks before camp, and in-person staff training and camp setup on <b>Friday, June 25 and Sunday, June 27</b>. All staff are expected to be present.</p>
+    <h3>Committed staff</h3>
+    <p>Summer is a break from school for many, but working at camp is a serious undertaking: you are taking on the care of young children. It requires your energy, patience, excitement and commitment. By applying, you are ready to commit to giving it all you've got this summer.</p>
+    <h3>Our commitment</h3>
+    <p>We as a camp will do all we can to support you. Staff are always encouraged to bring any difficulty to our attention, and we will coach you and support you. We also show our appreciation for our staff's tireless work with fun nights out, trips and special surprise gifts. This summer will be rewarding for you, and you will see yourself grow from it.</p>
+    <p class="small">Camp Gan Israel is an equal opportunity employer and does not discriminate on the basis of race, religion, sexual orientation or gender. Questions? <a href="mailto:office@ganisrael.org">office@ganisrael.org</a>, or call, text or WhatsApp (862) 244-3420.</p>
+    <p class="small">The application takes about 15 minutes. Your answers save on this device as you go, so you can finish later. Once you submit, we'll be in touch to schedule an interview.</p>
+  </div>
+
+  <div class="banner-error" id="bannerError" hidden>Please fix the highlighted answers before continuing.</div>
+
+  <form id="applyForm" novalidate autocomplete="on">
+
+    <!-- ===================== STEP 1: ABOUT YOU ===================== -->
+    <section class="step" data-step="1">
+      <h2>About you</h2>
+      <p class="lead">The basics, so we know who's applying.</p>
+      <div class="group">
+        <div class="two">
+          <div class="field"><label class="req" for="firstName">First name</label><input type="text" id="firstName" name="firstName" autocomplete="given-name" required><div class="err">Please enter your first name.</div></div>
+          <div class="field"><label class="req" for="lastName">Last name</label><input type="text" id="lastName" name="lastName" autocomplete="family-name" required><div class="err">Please enter your last name.</div></div>
+        </div>
+        <div class="field">
+          <span class="lbl req">Gender</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="gender" value="Female" required> Female</label>
+            <label class="choice"><input type="radio" name="gender" value="Male"> Male</label>
+          </div>
+          <div class="err">Please choose one.</div>
+        </div>
+        <div class="two">
+          <div class="field"><label class="req" for="birthday">Birthday</label><input type="date" id="birthday" name="birthday" required><div class="err">Please enter your birthday.</div></div>
+          <div class="field">
+            <label class="req" for="gradeEntering">Grade you are entering in September 2027</label>
+            <select id="gradeEntering" name="gradeEntering" required>
+              <option value="">Choose…</option>
+              <option>7th Grade</option><option>8th Grade</option><option>9th Grade</option><option>10th Grade</option>
+              <option>11th Grade</option><option>12th Grade</option>
+              <option>Post-High School / Seminary / Bais Midrash</option><option>College</option>
+              <option>Not currently in school</option><option>Other</option>
+            </select>
+            <div class="hint">The grade you'll be in this coming fall. Applicants must have finished 6th grade.</div>
+            <div class="err">Please choose your grade.</div>
+          </div>
+        </div>
+        <div class="field"><label class="req" for="school">School you currently attend</label><input type="text" id="school" name="school" required placeholder="School, yeshiva or seminary name (or “not in school”)"><div class="err">Please tell us your school.</div></div>
+        <div class="field"><label class="req" for="street">Street address</label><input type="text" id="street" name="street" autocomplete="street-address" required><div class="err">Please enter your address.</div></div>
+        <div class="two">
+          <div class="field"><label class="req" for="city">City</label><input type="text" id="city" name="city" autocomplete="address-level2" required><div class="err">Please enter your city.</div></div>
+          <div class="field"><label class="req" for="state">State / Region</label><input type="text" id="state" name="state" autocomplete="address-level1" required placeholder="NJ, NY, Jerusalem…"><div class="err">Please enter your state or region.</div></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="zip">ZIP / Postal code</label><input type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric"></div>
+          <div class="field">
+            <label class="req" for="country">Country</label>
+            <select id="country" name="country" required>
+              <option value="">Choose…</option>
+              <option>United States</option><option>Israel</option><option>Canada</option><option>South Africa</option>
+              <option>United Kingdom</option><option>Australia</option><option>Other</option>
+            </select>
+            <div class="err">Please choose your country.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 2: CONTACT ===================== -->
+    <section class="step" data-step="2" hidden>
+      <h2>How to reach you</h2>
+      <p class="lead">Before camp we communicate mostly by email. Interviews are by Zoom or WhatsApp video. Please give us an email and phone that you check.</p>
+      <div class="group">
+        <div class="field"><label class="req" for="email">Your email</label><input type="email" id="email" name="email" autocomplete="email" inputmode="email" required><div class="err">Please enter a working email address.</div></div>
+        <div class="field">
+          <label class="req" for="phone">Your phone</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required placeholder="Include the country code if outside the US">
+          <label class="inline"><input type="checkbox" id="phoneWhatsApp" name="phoneWhatsApp" value="Yes"> This number is on WhatsApp</label>
+          <div class="err">Please enter a phone number.</div>
+        </div>
+
+        <div class="field" id="noOwnContactField">
+          <span class="lbl">If the email or phone above isn't really yours</span>
+          <div class="choices">
+            <label class="choice"><input type="checkbox" id="noOwnContact" name="noOwnContact" value="Yes"> I don't have my own email or phone<small>Younger applicants only. You'll add a parent's contact below.</small></label>
+            <label class="choice"><input type="checkbox" id="limitedAccess" name="limitedAccess" value="Yes"> I have limited access to my phone or email (for example, in yeshiva)<small>We'll copy a parent so they can pass along interview, training and camp emails.</small></label>
+          </div>
+          <div class="note" id="ownContactRule" hidden>Applicants entering 11th grade or above must have their own email and phone.</div>
+        </div>
+
+        <div class="subcard" id="parentBlock" hidden>
+          <h3>Parent or guardian contact</h3>
+          <div class="field"><label class="req" for="parentName">Parent / guardian name</label><input type="text" id="parentName" name="parentName"><div class="err">Please enter a parent's name.</div></div>
+          <div class="two">
+            <div class="field"><label class="req" for="parentEmail">Parent email</label><input type="email" id="parentEmail" name="parentEmail" inputmode="email"><div class="err">Please enter a working email.</div></div>
+            <div class="field"><label class="req" for="parentPhone">Parent phone</label><input type="tel" id="parentPhone" name="parentPhone" inputmode="tel"><label class="inline"><input type="checkbox" name="parentPhoneWhatsApp" value="Yes"> On WhatsApp</label><div class="err">Please enter a phone number.</div></div>
+          </div>
+          <div class="hint">We'll copy your parent on interview, training and contract emails. You stay the main contact.</div>
+        </div>
+
+        <div class="subcard">
+          <h3>Second phone number (optional)</h3>
+          <div class="hint">For example a home phone, or a number you use during the summer and vacation.</div>
+          <div class="two">
+            <div class="field"><label for="phone2">Number</label><input type="tel" id="phone2" name="phone2" inputmode="tel"></div>
+            <div class="field"><label for="phone2Note">What is this number?</label><input type="text" id="phone2Note" name="phone2Note" placeholder="Home phone, yeshiva phone…"></div>
+          </div>
+          <label class="inline"><input type="checkbox" name="phone2WhatsApp" value="Yes"> This number is on WhatsApp</label>
+          <label class="inline"><input type="checkbox" name="phone2Summer" value="Yes"> This number is available during the summer and vacation</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 3: THE JOB ===================== -->
+    <section class="step" data-step="3" hidden>
+      <h2>The job</h2>
+      <p class="lead">What you're applying for and when you can be here.</p>
+      <div class="group">
+        <div class="field">
+          <span class="lbl req">Which division are you applying for?</span>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="division" value="Boys Division" required> Boys Division</label>
+            <label class="choice"><input type="radio" name="division" value="Girls Division"> Girls Division</label>
+            <label class="choice"><input type="radio" name="division" value="Kiddie Camp"> Kiddie Camp<small>Pre-K and entering Kindergarten</small></label>
+            <label class="choice"><input type="radio" name="division" value="General Camp Position for all divisions"> General camp position for all divisions</label>
+          </div>
+          <div class="err">Please choose a division.</div>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label class="req" for="position1">Position you're applying for</label>
+            <select id="position1" name="position1" required>
+              <option value="">Choose…</option>
+              <option>Junior Counselor</option><option>Counselor</option><option>Head Counselor</option><option>Assistant Director</option>
+              <option>Kiddie Camp Teacher</option><option>Kiddie Camp Assistant</option>
+              <option>Specialty / Elective Instructor</option><option>Lifeguard</option><option>Van Driver</option><option>Bus Monitor</option>
+              <option>Learning Teacher (Boys Division)</option><option>Other</option>
+            </select>
+            <div class="err">Please choose a position.</div>
+          </div>
+          <div class="field">
+            <label for="position2">Second choice, or a position to combine with it</label>
+            <select id="position2" name="position2">
+              <option value="">None</option>
+              <option>Junior Counselor</option><option>Counselor</option><option>Head Counselor</option><option>Assistant Director</option>
+              <option>Kiddie Camp Teacher</option><option>Kiddie Camp Assistant</option>
+              <option>Specialty / Elective Instructor</option><option>Lifeguard</option><option>Van Driver</option><option>Bus Monitor</option>
+              <option>Learning Teacher (Boys Division)</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" id="positionOtherField" hidden><label for="positionOther">Tell us the position you have in mind</label><input type="text" id="positionOther" name="positionOther"></div>
+        <div class="subcard" id="phonePolicyBlock" hidden>
+          <h3>Our phone policy</h3>
+          <p class="pol" id="policyStrict" hidden>Camp Gan Israel is a no-phone environment during camp hours. Each morning you leave your phone in the camp office with the director, and you pick it up at the end of the day. Staff stay in touch with each other by radio. We've seen that phones pull attention away from the campers, and campers shouldn't see staff on a phone. If you need to make a personal call, let your direct supervisor know and step away. Phones come out only for a genuine emergency.</p>
+          <p class="pol" id="policyGeneral" hidden>Camp Gan Israel is a no-phone environment during camp hours. Phones come out only for a genuine emergency, or to take photos when asked. For a personal call, let your direct supervisor know and step away from the campers. Campers shouldn't see staff on a phone.</p>
+          <div class="field">
+            <label class="choice"><input type="checkbox" name="phonePolicyAck" value="Yes" required> <span>I've read the phone policy, and I'm comfortable working with it.</span></label>
+            <div class="err">Please tick the box to continue.</div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl req">Where are you coming from?</span>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="origin" value="In town" required> In town<small>Morristown area, coming to camp each day</small></label>
+            <label class="choice"><input type="radio" name="origin" value="Out of town (USA)"> Out of town, within the US<small>You'd stay in Morristown for the summer</small></label>
+            <label class="choice"><input type="radio" name="origin" value="International"> International<small>Coming from outside the US</small></label>
+          </div>
+          <div class="err">Please choose one.</div>
+        </div>
+        <div class="field">
+          <span class="lbl req">Please confirm the weeks that you will be at camp</span>
+          <div class="hint">Preference is given to those who can attend the entire season.</div>
+          <div class="choices">
+            <label class="choice"><input type="checkbox" name="weeks" value="Specialty Week (June 21 - June 25)"> Specialty Week <small>June 21 – 25</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 1 (June 28 - July 2)"> Week 1 <small>June 28 – July 2</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 2 (July 5 - July 9)"> Week 2 <small>July 5 – 9 · no camp Monday, July 5</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 3 (July 12 - July 16)"> Week 3 <small>July 12 – 16</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 4 (July 19 - July 23)"> Week 4 <small>July 19 – 23</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 5 (July 26 - July 30)"> Week 5 <small>July 26 – 30</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 6 (August 2 - August 6)"> Week 6 <small>August 2 – 6</small></label>
+            <label class="choice"><input type="checkbox" name="weeks" value="Week 7 (August 9 - August 13)"> Week 7 <small>August 9 – 13 · no camp Thursday, August 12 (Tisha B'Av)</small></label>
+          </div>
+          <div class="err">Please check at least one week.</div>
+        </div>
+        <div class="field"><label for="blackoutDates">Within those weeks, are there any days you can't be at camp?</label><input type="text" id="blackoutDates" name="blackoutDates" placeholder="Leave blank if none"></div>
+        <div class="field">
+          <span class="lbl req">Have you worked at Camp Gan Israel Morristown before?</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="returning" value="Yes" required> Yes</label>
+            <label class="choice"><input type="radio" name="returning" value="No"> No</label>
+          </div>
+          <div class="err">Please choose one.</div>
+        </div>
+        <div class="field" id="returningDetailField" hidden><label for="returningDetail">Which summers, and in what position?</label><input type="text" id="returningDetail" name="returningDetail" placeholder="e.g. 2025 and 2026, Girls Division counselor"></div>
+        <div class="note">We offer transportation for staff who can be bus monitors. Areas we offer transportation from: West Orange and Livingston. Inquire about other locations.</div>
+        <div class="field">
+          <span class="lbl req">Will you require transportation to and from camp?</span>
+          <div class="hint">All staff using camp transportation are required to be a bus monitor.</div>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="transportation" value="Yes" required> Yes</label>
+            <label class="choice"><input type="radio" name="transportation" value="No"> No</label>
+            <label class="choice"><input type="radio" name="transportation" value="Unsure"> Unsure</label>
+          </div>
+          <div class="err">Please choose one.</div>
+        </div>
+        <div class="field">
+          <span class="lbl">Are you interested in additional camp jobs after camp hours?</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="afterHoursJobs" value="Yes"> Yes</label>
+            <label class="choice"><input type="radio" name="afterHoursJobs" value="No"> No</label>
+            <label class="choice"><input type="radio" name="afterHoursJobs" value="Maybe"> Maybe</label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl req">Are you applying together with friends?</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="friendsYN" value="Yes" required> Yes</label>
+            <label class="choice"><input type="radio" name="friendsYN" value="No"> No</label>
+          </div>
+          <div class="err">Please choose one.</div>
+        </div>
+        <div class="field" id="friendsField" hidden><label class="req" for="friends">Which friends? (names)</label><input type="text" id="friends" name="friends"><div class="err">Please list their names.</div></div>
+        <div class="field">
+          <label for="heardFrom">How did you hear about us?</label>
+          <select id="heardFrom" name="heardFrom">
+            <option value="">Choose…</option>
+            <option>I worked here before</option><option>A friend or family member</option><option>ganisrael.org</option><option>Instagram</option>
+            <option>A classified ad or job board</option><option>My yeshiva or seminary</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 4: EXPERIENCE ===================== -->
+    <section class="step" data-step="4" hidden>
+      <h2>Your experience</h2>
+      <p class="lead">Tell us about you. Short and honest is perfect.</p>
+      <div class="group">
+        <div class="field"><label class="req" for="expChildren">What is your past experience as a counselor or caretaker of children?</label><textarea id="expChildren" name="expChildren" required></textarea><div class="err">Please answer this one.</div></div>
+        <div class="field"><label for="expCamper">Please describe your past camp experience as a camper. Include best/worst memory, favorite activity, and dislikes.</label><textarea id="expCamper" name="expCamper"></textarea></div>
+        <div class="field" id="expStaffField"><label for="expStaff">Please describe your experience as a staff member. What were the pros and cons of your previous experiences? What did you like about being a staff member?</label><textarea id="expStaff" name="expStaff"></textarea></div>
+        <div class="field"><label class="req" for="whyCGI">Describe why you would like to work at Camp Gan Israel</label><textarea id="whyCGI" name="whyCGI" required></textarea><div class="err">Please answer this one.</div></div>
+        <div class="field">
+          <span class="lbl">Check areas in which you have interest, experience, or teaching knowledge</span>
+          <div class="choices two">
+            <label class="choice"><input type="checkbox" name="interests" value="Arts & Crafts"> Arts &amp; Crafts</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Cooking"> Cooking</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Sports"> Sports</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Nature"> Nature</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Dance"> Dance</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Swim"> Swim</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Drawing"> Drawing</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Music"> Music</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Woodworking"> Woodworking</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Drama"> Drama</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Photography"> Photography</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Sewing"> Sewing</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Technology"> Technology</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Gymnastics"> Gymnastics</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Song Writing"> Song Writing</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Lego Robotics"> Lego Robotics</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Computer Science"> Computer Science</label>
+            <label class="choice"><input type="checkbox" name="interests" value="Ceramics"> Ceramics</label>
+          </div>
+        </div>
+        <div class="field"><label for="interestsExplain">Please explain any items selected above</label><textarea id="interestsExplain" name="interestsExplain"></textarea></div>
+        <div class="field"><label for="hobbies">What hobbies, skills, talents, or interests can you use at camp to better your campers' experience/activities?</label><div class="hint">You can also include items not listed above.</div><textarea id="hobbies" name="hobbies"></textarea></div>
+        <div class="field"><label for="ageRange">Is there a specific age range you would like to work with?</label><input type="text" id="ageRange" name="ageRange" placeholder="e.g. ages 6–8, or the oldest bunk"></div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 5: REFERENCES & WORK HISTORY ===================== -->
+    <section class="step" data-step="5" hidden>
+      <h2>References and work history</h2>
+      <p class="lead">Please give us two references we can contact, and a third if you have one. Our preference is a reference from a camp you worked at; if you don't have that, other work experience is appreciated: an employer, a family you babysat for, a volunteer program, or a teacher. We'll email each reference a few short questions, and may also call.</p>
+      <div class="group">
+        <div class="subcard">
+          <h3>Reference 1</h3>
+          <div class="two">
+            <div class="field"><label class="req" for="ref1Type">This reference is from</label><select id="ref1Type" name="ref1Type" required><option value="">Choose…</option><option>A camp I worked at</option><option>An employer</option><option>A family I babysat for</option><option>Volunteer work</option><option>A teacher or school</option><option>Other</option></select><div class="err">Please choose one.</div></div>
+            <div class="field"><label class="req" for="ref1Name">Name</label><input type="text" id="ref1Name" name="ref1Name" required><div class="err">Please enter a name.</div></div>
+          </div>
+          <div class="two">
+            <div class="field"><label class="req" for="ref1Phone">Phone</label><input type="tel" id="ref1Phone" name="ref1Phone" inputmode="tel" required><label class="inline"><input type="checkbox" name="ref1WhatsApp" value="Yes"> On WhatsApp</label><div class="err">Please enter a phone number.</div></div>
+            <div class="field"><label class="req" for="ref1Email">Email</label><input type="email" id="ref1Email" name="ref1Email" inputmode="email" required><div class="err">Please enter a working email.</div></div>
+          </div>
+          <div class="field"><label class="req" for="ref1How">Where they know you from, and your position there</label><input type="text" id="ref1How" name="ref1How" required placeholder="e.g. Camp Gan Israel Brooklyn, counselor, summer 2026"><div class="err">Please tell us how they know you.</div></div>
+        </div>
+        <div class="subcard">
+          <h3>Reference 2</h3>
+          <div class="two">
+            <div class="field"><label class="req" for="ref2Type">This reference is from</label><select id="ref2Type" name="ref2Type" required><option value="">Choose…</option><option>A camp I worked at</option><option>An employer</option><option>A family I babysat for</option><option>Volunteer work</option><option>A teacher or school</option><option>Other</option></select><div class="err">Please choose one.</div></div>
+            <div class="field"><label class="req" for="ref2Name">Name</label><input type="text" id="ref2Name" name="ref2Name" required><div class="err">Please enter a name.</div></div>
+          </div>
+          <div class="two">
+            <div class="field"><label class="req" for="ref2Phone">Phone</label><input type="tel" id="ref2Phone" name="ref2Phone" inputmode="tel" required><label class="inline"><input type="checkbox" name="ref2WhatsApp" value="Yes"> On WhatsApp</label><div class="err">Please enter a phone number.</div></div>
+            <div class="field"><label class="req" for="ref2Email">Email</label><input type="email" id="ref2Email" name="ref2Email" inputmode="email" required><div class="err">Please enter a working email.</div></div>
+          </div>
+          <div class="field"><label class="req" for="ref2How">Where they know you from, and your position there</label><input type="text" id="ref2How" name="ref2How" required><div class="err">Please tell us how they know you.</div></div>
+        </div>
+        <div class="subcard">
+          <h3>Reference 3 (optional)</h3>
+          <div class="two">
+            <div class="field"><label for="ref3Type">This reference is from</label><select id="ref3Type" name="ref3Type"><option value="">Choose…</option><option>A camp I worked at</option><option>An employer</option><option>A family I babysat for</option><option>Volunteer work</option><option>A teacher or school</option><option>Other</option></select></div>
+            <div class="field"><label for="ref3Name">Name</label><input type="text" id="ref3Name" name="ref3Name"></div>
+          </div>
+          <div class="two">
+            <div class="field"><label for="ref3Phone">Phone</label><input type="tel" id="ref3Phone" name="ref3Phone" inputmode="tel"><label class="inline"><input type="checkbox" name="ref3WhatsApp" value="Yes"> On WhatsApp</label></div>
+            <div class="field"><label for="ref3Email">Email</label><input type="email" id="ref3Email" name="ref3Email" inputmode="email"></div>
+          </div>
+          <div class="field"><label for="ref3How">Where they know you from, and your position there</label><input type="text" id="ref3How" name="ref3How"></div>
+        </div>
+        <div class="field"><label for="otherWork">Other work or volunteer experience you'd like us to know about (optional)</label><textarea id="otherWork" name="otherWork"></textarea></div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 6: EDUCATION ===================== -->
+    <section class="step" data-step="6" hidden>
+      <h2>Education</h2>
+      <p class="lead">Where you've studied.</p>
+      <div class="group">
+        <div class="two">
+          <div class="field"><label for="elemSchool">Name of elementary school</label><input type="text" id="elemSchool" name="elemSchool"></div>
+          <div class="field"><label for="elemYears">Grades and years attended</label><input type="text" id="elemYears" name="elemYears"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="hsSchool">Name of high school or yeshiva</label><input type="text" id="hsSchool" name="hsSchool"></div>
+          <div class="field"><label for="hsYears">Grades and years attended</label><input type="text" id="hsYears" name="hsYears"></div>
+        </div>
+        <div class="field">
+          <span class="lbl">High school / yeshiva status</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="hsStatus" value="Current student"> Current student</label>
+            <label class="choice"><input type="radio" name="hsStatus" value="Graduated"> Graduated</label>
+            <label class="choice"><input type="radio" name="hsStatus" value="Other"> Other</label>
+          </div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="postSchool">Seminary / Bais Midrash / College / University</label><input type="text" id="postSchool" name="postSchool"></div>
+          <div class="field"><label for="postYears">Years attended</label><input type="text" id="postYears" name="postYears"></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Status</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="postStatus" value="Current student"> Current student</label>
+            <label class="choice"><input type="radio" name="postStatus" value="Graduated"> Graduated</label>
+            <label class="choice"><input type="radio" name="postStatus" value="Other"> Other</label>
+          </div>
+        </div>
+        <div class="field"><label for="degree">Degree / year earned, if any</label><input type="text" id="degree" name="degree"></div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 7: A FEW MORE THINGS + SUBMIT ===================== -->
+    <section class="step" data-step="7" hidden>
+      <h2>A few more things</h2>
+      <p class="lead">Almost done.</p>
+      <div class="group">
+        <div class="subcard" id="ootBlock" hidden>
+          <h3>Coming from out of town</h3>
+          <div class="note">At Camp Gan Israel we take care of your needs for the summer: lodging, meals and local transportation, plus a weekly stipend. Travel within the USA is covered up to a set amount; if your travel costs more, we cover it and adjust the stipend. If you are coming from outside the USA, we cover your flights and adjust the stipend to reflect the cost.</div>
+          <div class="field"><label for="flights">Will you require flights to and from camp? If yes, from which city or country? If not, from which city will you be coming and will you require transportation?</label><textarea id="flights" name="flights"></textarea></div>
+          <div class="field"><label for="accommodations">Any accommodations you will require this summer, such as a specific food diet?</label><div class="hint">If none, write N/A.</div><textarea id="accommodations" name="accommodations"></textarea></div>
+          <div class="field"><label for="foods">Foods you don't eat, and foods you like to eat</label><input type="text" id="foods" name="foods"></div>
+          <div class="two">
+            <div class="field"><label for="arrival">Arrival plans</label><input type="text" id="arrival" name="arrival" placeholder="When you expect to arrive in New Jersey"></div>
+            <div class="field"><label for="departure">Departure plans</label><input type="text" id="departure" name="departure" placeholder="When you expect to leave"></div>
+          </div>
+          <div class="field">
+            <span class="lbl req">Housing</span>
+            <div class="choices two">
+              <label class="choice"><input type="radio" name="housing" value="I'll need camp housing" required> I'll need camp housing</label>
+              <label class="choice"><input type="radio" name="housing" value="I have my own arrangement"> I have my own arrangement</label>
+            </div>
+            <div class="err">Please choose one.</div>
+          </div>
+          <div class="field">
+            <span class="lbl req">Will you need camp's help with housing before or after the official housing period?</span>
+            <div class="hint">Camp's responsibility runs from the Thursday before camp through the Sunday after camp. Anything beyond that is discussed and approved in advance.</div>
+            <div class="choices two">
+              <label class="choice"><input type="radio" name="extraHousing" value="No" required> No</label>
+              <label class="choice"><input type="radio" name="extraHousing" value="Yes"> Yes</label>
+            </div>
+            <div class="err">Please choose one.</div>
+          </div>
+          <div class="field" id="extraHousingField" hidden><label for="extraHousingDetail">Please explain</label><input type="text" id="extraHousingDetail" name="extraHousingDetail"></div>
+          <div class="field"><label class="choice"><input type="checkbox" name="ootFullSummer" value="Yes" required> <span>I can be at camp for the full summer, June 28 to August 13, and for staff training on June 25 and June 27.</span></label><div class="err">Out-of-town staff need to commit to the full season.</div></div>
+          <div class="field"><label class="choice"><input type="checkbox" name="ootInsurance" value="Yes" required> <span>I will arrange appropriate travel and medical insurance before coming.</span></label><div class="err">Please tick the box to continue.</div></div>
+          <div class="field" id="visaField" hidden>
+            <span class="lbl">Do you have a valid passport, and a US visa if you need one?</span>
+            <div class="choices two">
+              <label class="choice"><input type="radio" name="visa" value="Yes, both"> Yes, both</label>
+              <label class="choice"><input type="radio" name="visa" value="Passport only"> Passport only</label>
+              <label class="choice"><input type="radio" name="visa" value="Not yet"> Not yet</label>
+            </div>
+            <div class="hint">We'll ask for passport details later, only if you're hired.</div>
+          </div>
+        </div>
+        <div class="subcard" id="specialtyBlock" hidden>
+          <h3>About the position you chose</h3>
+          <div class="note">Many of our positions do not require a degree. Your experience, and your interest in familiarizing yourself with the position, may be enough.</div>
+          <div class="field"><label for="specDegrees">Please list any degrees, certifications, and/or experience you have in that field</label><textarea id="specDegrees" name="specDegrees"></textarea></div>
+          <div class="field"><label for="specExperience">Please describe your experience with the position you selected</label><textarea id="specExperience" name="specExperience"></textarea></div>
+          <div class="note">About your second choice: we may already have someone for your first selection, or it may be a part-time position that can be combined with another one.</div>
+          <div class="field"><label for="specOther">Please list any other positions you would be happy to do at camp</label><input type="text" id="specOther" name="specOther"></div>
+        </div>
+        <div class="field">
+          <span class="lbl req">Do you have any medical or health condition that could keep you from doing the job at 100%, or that we should know about for working and living closely with others?</span>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="medicalYN" value="No" required> No</label>
+            <label class="choice"><input type="radio" name="medicalYN" value="Yes"> Yes</label>
+          </div>
+          <div class="err">Please choose one.</div>
+        </div>
+        <div class="field" id="medicalField" hidden><label class="req" for="medicalDetail">Please explain</label><div class="hint">Only the camp office sees this.</div><textarea id="medicalDetail" name="medicalDetail"></textarea><div class="err">Please tell us a little more.</div></div>
+        <div class="field"><label for="resume">Resume (optional)</label><div class="hint">PDF or a photo, up to 10 MB. You can also email it to office@ganisrael.org.</div><input type="file" id="resume" name="resume" accept=".pdf,image/*"></div>
+        <div class="field"><label for="anythingElse">Anything else you would like us to know?</label><textarea id="anythingElse" name="anythingElse"></textarea></div>
+        <div class="note">The undersigned authorizes the camp to contact any previous employers and personal references. Your opportunity for employment will be based solely upon your merit and the availability of positions. Background checks are completed after hiring, through the staff portal.</div>
+        <div class="field"><label class="req" for="signature">Typed full name (signature)</label><input type="text" id="signature" name="signature" required autocomplete="off"><div class="err">Please type your full name.</div></div>
+        <div class="field">
+          <label class="choice"><input type="checkbox" id="acknowledge" name="acknowledge" value="Yes" required> <span>I have answered all the questions to the best of my knowledge, and I'm ready to commit to giving it my best at Camp Gan Israel this summer. I understand that working at camp is a serious commitment that requires punctual, dependable attendance every day. This includes the items at the beginning of the application regarding the dates of camp, timeliness, pre-season training, staff commitment, and our commitment to you.</span></label>
+          <div class="err">Please check the box to continue.</div>
+        </div>
+        <p class="hint">Your information is used only for camp staff hiring, kept secure, and never shared outside Camp Gan Israel Morristown.</p>
+      </div>
+    </section>
+
+    <div class="nav" id="nav">
+      <button type="button" class="btn btn-ghost" id="backBtn" hidden>Back</button>
+      <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+      <button type="submit" class="btn btn-accent" id="submitBtn" hidden>Submit application</button>
+    </div>
+    <div class="nav" id="previewNav" hidden><button type="button" class="btn btn-ghost" id="skipBtn" style="flex:1">Skip this step (preview only, nothing required)</button></div>
+    <div class="saved" id="savedNote"></div>
+  </form>
+
+  <div class="done-card" id="doneCard" hidden>
+    <div class="check">✓</div>
+    <h2>Thank you for applying!</h2>
+    <p id="doneText">We'll review your application and be in touch shortly, usually within a week or two, to set up a short interview.</p>
+    <p>Questions in the meantime? Email <a href="mailto:office@ganisrael.org">office@ganisrael.org</a>, or call, text or WhatsApp (862) 244-3420.</p>
+    <div class="summary" id="summary"></div>
+  </div>
+</main>
+
+<footer>Camp Gan Israel Morristown · <a href="https://www.ganisrael.org/staff">ganisrael.org/staff</a> · <a href="mailto:office@ganisrael.org">office@ganisrael.org</a> · call, text or WhatsApp (862) 244-3420</footer>
+
+<script src="config.js"></script>
+<script>
+// ---------------------------------------------------------------------------
+// Backend: config.js -> PORTAL_CONFIG.applyBackendUrl (the Apps Script web app bound to the 2027
+// workbook, backend/Code2027.gs). Empty = preview mode (nothing is sent; a summary is shown instead).
+// ---------------------------------------------------------------------------
+window.APPLY_CONFIG = window.APPLY_CONFIG || { backendUrl: (window.PORTAL_CONFIG && window.PORTAL_CONFIG.applyBackendUrl) || "" };
+
+(function () {
+  const form = document.getElementById('applyForm');
+  const steps = Array.from(form.querySelectorAll('section.step'));
+  const TOTAL = steps.length;
+  const $ = (id) => document.getElementById(id);
+  let current = 1;
+  const DRAFT_KEY = 'cgi-apply-2027-draft';
+  const preview = !window.APPLY_CONFIG.backendUrl;
+  if (preview) $('previewRibbon').hidden = false;
+
+  // ---- progress / navigation ------------------------------------------------
+  function renderProgress() {
+    const p = $('progress'); p.innerHTML = '';
+    for (let i = 1; i <= TOTAL; i++) {
+      const s = document.createElement('span');
+      if (i < current) s.className = 'done'; else if (i === current) s.className = 'now';
+      p.appendChild(s);
+    }
+    $('stepPill').textContent = 'Step ' + current + ' of ' + TOTAL;
+    $('backBtn').hidden = current === 1;
+    $('nextBtn').hidden = current === TOTAL;
+    $('submitBtn').hidden = current !== TOTAL;
+    $('intro').hidden = current !== 1;
+  }
+  function show(n) {
+    current = Math.max(1, Math.min(TOTAL, n));
+    steps.forEach(s => s.hidden = Number(s.dataset.step) !== current);
+    $('bannerError').hidden = true;
+    applyRules();
+    renderProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    saveDraft();
+  }
+
+  // ---- conditional rules ----------------------------------------------------
+  function val(name) { const el = form.elements[name]; if (!el) return ''; if (el.length && el[0] && el[0].type === 'radio') { const c = form.querySelector('[name="' + name + '"]:checked'); return c ? c.value : ''; } return el.value || ''; }
+  function checked(id) { const el = $(id); return !!(el && el.checked); }
+  function gradeIndex() { const g = val('gradeEntering'); const order = ['7th Grade','8th Grade','9th Grade','10th Grade','11th Grade','12th Grade','Post-High School / Seminary / Bais Midrash','College','Not currently in school','Other']; return order.indexOf(g); }
+  function mustHaveOwnContact() { const i = gradeIndex(); return i >= 4; } // entering 11th or above (finished 10th or older)
+
+  function applyRules() {
+    // Contact rules
+    const noOwn = $('noOwnContact'), rule = $('ownContactRule');
+    if (mustHaveOwnContact()) { noOwn.checked = false; noOwn.closest('.choice').hidden = true; rule.hidden = false; }
+    else { noOwn.closest('.choice').hidden = false; rule.hidden = true; }
+    const needParent = checked('noOwnContact') || checked('limitedAccess');
+    $('parentBlock').hidden = !needParent;
+    ['parentName','parentEmail','parentPhone'].forEach(id => $(id).required = needParent);
+    // Position "Other"
+    const p1 = val('position1'), p2 = val('position2');
+    $('positionOtherField').hidden = !(p1 === 'Other' || p2 === 'Other');
+    // Returning detail
+    $('returningDetailField').hidden = val('returning') !== 'Yes';
+    // Friends applying together → names
+    const withFriends = val('friendsYN') === 'Yes';
+    $('friendsField').hidden = !withFriends; $('friends').required = withFriends;
+    // Medical: explain only if Yes
+    const med = val('medicalYN') === 'Yes';
+    $('medicalField').hidden = !med; $('medicalDetail').required = med;
+    // Phone policy acknowledgment: appears once a position is chosen; strict text for counselors and JCs
+    const strictRoles = ['Junior Counselor', 'Counselor'];
+    $('phonePolicyBlock').hidden = !p1;
+    const strict = strictRoles.includes(p1) || strictRoles.includes(p2);
+    $('policyStrict').hidden = !strict; $('policyGeneral').hidden = strict;
+    // Out-of-town: explain extra housing help only if Yes
+    $('extraHousingField').hidden = val('extraHousing') !== 'Yes';
+    // Staff-experience question shown for everyone except a first-time junior counselor
+    $('expStaffField').hidden = (p1 === 'Junior Counselor' && val('returning') === 'No');
+    // Step 7 blocks
+    const origin = val('origin');
+    $('ootBlock').hidden = !(origin === 'Out of town (USA)' || origin === 'International');
+    $('visaField').hidden = origin !== 'International';
+    const specialty = ['Specialty / Elective Instructor','Lifeguard','Van Driver','Learning Teacher (Boys Division)','Kiddie Camp Teacher','Assistant Director','Head Counselor'];
+    $('specialtyBlock').hidden = !(specialty.includes(p1) || specialty.includes(p2));
+  }
+  form.addEventListener('change', () => { applyRules(); saveDraft(); });
+  form.addEventListener('input', debounce(saveDraft, 400));
+
+  // ---- validation -----------------------------------------------------------
+  function validateStep(n) {
+    const section = steps[n - 1];
+    let ok = true, first = null;
+    section.querySelectorAll('.field').forEach(f => f.classList.remove('error'));
+    const seen = new Set();
+    section.querySelectorAll('input, select, textarea').forEach(el => {
+      if (el.closest('[hidden]')) return;
+      const field = el.closest('.field'); if (!field || field.hidden) return;
+      let bad = false;
+      if (el.type === 'radio') { if (seen.has(el.name)) return; seen.add(el.name); if (el.required && !form.querySelector('[name="' + el.name + '"]:checked')) bad = true; }
+      else if (el.type === 'checkbox') { if (el.name === 'weeks') { if (seen.has('weeks')) return; seen.add('weeks'); if (!form.querySelector('[name="weeks"]:checked')) bad = true; } else if (el.required && !el.checked) bad = true; }
+      else { const v = el.value.trim(); if (el.required && !v) bad = true; if (v && el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) bad = true; if (v && el.id === 'birthday' && !validBirthday(v)) bad = true; }
+      if (bad) { field.classList.add('error'); ok = false; if (!first) first = el; }
+    });
+    $('bannerError').hidden = ok;
+    if (!ok && first) { first.scrollIntoView({ block: 'center', behavior: 'smooth' }); try { first.focus({ preventScroll: true }); } catch (e) {} }
+    return ok;
+  }
+  function validBirthday(v) { const d = new Date(v + 'T12:00:00'); if (isNaN(d)) return false; const age = (new Date('2027-06-28T12:00:00') - d) / (365.25 * 24 * 3600 * 1000); return age >= 11 && age <= 90; }
+
+  $('nextBtn').addEventListener('click', () => { if (validateStep(current)) show(current + 1); });
+  $('backBtn').addEventListener('click', () => show(current - 1));
+  // Preview only: page through without filling anything; on the last step, show the summary.
+  if (preview) {
+    $('previewNav').hidden = false;
+    $('skipBtn').addEventListener('click', () => {
+      if (current < TOTAL) { show(current + 1); return; }
+      const data = collect(); data.submittedAt = new Date().toISOString(); data.source = 'apply page (preview)';
+      submitted = true; try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+      form.hidden = true; $('intro').hidden = true; $('progress').hidden = true; $('stepPill').textContent = 'Done';
+      $('doneText').textContent = 'Preview only: nothing was sent. Here is what the camp office would receive.';
+      renderSummary(data); $('doneCard').hidden = false; window.scrollTo({ top: 0 });
+    });
+    steps.forEach(s => { s.addEventListener('transitionend', () => {}); });
+  }
+
+  // ---- draft save/restore (this device only) ---------------------------------
+  function collect() {
+    const data = {};
+    new FormData(form).forEach((v, k) => {
+      if (v instanceof File) { v = v.name ? v.name + ' (' + Math.round(v.size / 1024) + ' KB)' : ''; if (!v) return; }
+      if (data[k] !== undefined) { data[k] = [].concat(data[k], v); } else data[k] = v;
+    });
+    return data;
+  }
+  let submitted = false;   // once submitted, never write the draft again (a delayed autosave must not resurrect it)
+  function saveDraft() {
+    if (submitted) return;
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ step: current, data: collect(), t: Date.now() })); $('savedNote').textContent = 'Saved on this device · ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); } catch (e) {}
+  }
+  function restoreDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY); if (!raw) return;
+      const { step, data } = JSON.parse(raw);
+      Object.keys(data || {}).forEach(k => {
+        const els = form.querySelectorAll('[name="' + k + '"]'); if (!els.length) return;
+        const vals = [].concat(data[k]);
+        els.forEach(el => { if (el.type === 'checkbox' || el.type === 'radio') el.checked = vals.includes(el.value); else el.value = vals[0] || ''; });
+      });
+      if (step) current = step;
+    } catch (e) {}
+  }
+  function debounce(fn, ms) { let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+  // ---- submit ----------------------------------------------------------------
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateStep(TOTAL)) return;
+    const data = collect();
+    data.submittedAt = new Date().toISOString();
+    data.source = 'apply page';
+    const btn = $('submitBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+    let ok = preview, result = null;
+    if (!preview) {
+      // Resume file -> base64 (the backend files it in Drive). 10 MB cap matches the hint on the page.
+      try {
+        const f = $('resume').files && $('resume').files[0];
+        if (f && f.size <= 10 * 1024 * 1024) {
+          data.resumeName = f.name; data.resumeType = f.type || 'application/octet-stream';
+          data.resumeData = await new Promise((res, rej) => { const rd = new FileReader(); rd.onload = () => res(String(rd.result).split(',')[1] || ''); rd.onerror = rej; rd.readAsDataURL(f); });
+        }
+      } catch (e) { /* send without the file */ }
+      // Up to 3 tries: a slow Apps Script cold start should never cost an applicant their form.
+      for (let attempt = 1; attempt <= 3 && !ok; attempt++) {
+        try {
+          const res = await fetch(window.APPLY_CONFIG.backendUrl, { method: 'POST', body: new URLSearchParams({ action: 'apply', payload: JSON.stringify(data) }) });
+          result = await res.json(); ok = !!(result && result.ok);
+          if (!ok && result && result.error) break;   // a real validation error: don't retry
+        } catch (err) { ok = false; if (attempt < 3) await new Promise(r => setTimeout(r, 1500 * attempt)); }
+      }
+    }
+    if (!ok) { btn.disabled = false; btn.textContent = 'Submit application'; $('bannerError').textContent = (result && result.error) ? ('We could not accept this yet: ' + result.error + '. Please check and try again, or email office@ganisrael.org.') : 'Something went wrong sending your application. Your answers are saved on this device: please try again in a minute, or email office@ganisrael.org or call, text or WhatsApp (862) 244-3420.'; $('bannerError').hidden = false; $('bannerError').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    submitted = true;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    form.hidden = true; $('intro').hidden = true; $('progress').hidden = true; $('stepPill').textContent = 'Done';
+    if (preview) $('doneText').textContent = 'Preview only: nothing was sent. Here is what the camp office would receive.';
+    renderSummary(data);
+    $('doneCard').hidden = false;
+    window.scrollTo({ top: 0 });
+  });
+
+  function renderSummary(d) {
+    const groups = [
+      ['About you', ['firstName','lastName','gender','birthday','gradeEntering','school','street','city','state','zip','country']],
+      ['Contact', ['email','phone','phoneWhatsApp','noOwnContact','limitedAccess','parentName','parentEmail','parentPhone','parentPhoneWhatsApp','phone2','phone2Note','phone2WhatsApp','phone2Summer']],
+      ['The job', ['division','position1','position2','positionOther','phonePolicyAck','origin','weeks','blackoutDates','returning','returningDetail','transportation','afterHoursJobs','friendsYN','friends','heardFrom']],
+      ['Experience', ['expChildren','expCamper','expStaff','whyCGI','interests','interestsExplain','hobbies','ageRange']],
+      ['References', ['ref1Type','ref1Name','ref1Phone','ref1WhatsApp','ref1Email','ref1How','ref2Type','ref2Name','ref2Phone','ref2WhatsApp','ref2Email','ref2How','ref3Type','ref3Name','ref3Phone','ref3WhatsApp','ref3Email','ref3How','otherWork']],
+      ['Education', ['elemSchool','elemYears','hsSchool','hsYears','hsStatus','postSchool','postYears','postStatus','degree']],
+      ['More', ['flights','accommodations','foods','arrival','departure','housing','extraHousing','extraHousingDetail','ootFullSummer','ootInsurance','visa','specDegrees','specExperience','specOther','medicalYN','medicalDetail','resume','anythingElse','signature','acknowledge']]
+    ];
+    const labels = { gender:'Gender', division:'Division', origin:'Coming from', weeks:'Weeks available', returning:'Worked here before', transportation:'Needs transportation', afterHoursJobs:'After-hours jobs', friendsYN:'Applying with friends', interests:'Interests', hsStatus:'High school status', postStatus:'Seminary / college status', visa:'Passport and visa', medicalYN:'Medical condition', housing:'Housing', extraHousing:'Housing help outside the period', phonePolicyAck:'Phone policy acknowledged', ootFullSummer:'Full summer and training confirmed', ootInsurance:'Travel and medical insurance confirmed', acknowledge:'Commitment acknowledged', phoneWhatsApp:'Phone on WhatsApp', parentPhoneWhatsApp:'Parent phone on WhatsApp', phone2WhatsApp:'Second phone on WhatsApp', phone2Summer:'Second phone available in summer', noOwnContact:'No own email or phone', limitedAccess:'Limited phone or email access', ref1WhatsApp:'Reference 1 on WhatsApp', ref2WhatsApp:'Reference 2 on WhatsApp', ref3WhatsApp:'Reference 3 on WhatsApp' };
+    form.querySelectorAll('label[for]').forEach(l => { labels[l.htmlFor] = l.textContent.trim(); });
+    let html = '';
+    groups.forEach(([title, keys]) => {
+      const rows = keys.filter(k => d[k] && String(d[k]).trim()).map(k => '<dt>' + esc(labels[k] || k) + '</dt><dd>' + esc([].concat(d[k]).join(', ')) + '</dd>').join('');
+      if (rows) html += '<h3>' + title + '</h3><dl>' + rows + '</dl>';
+    });
+    $('summary').innerHTML = html;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+  // ---- boot ------------------------------------------------------------------
+  restoreDraft();
+  show(current);
+})();
+</script>
+</body>
+</html>
