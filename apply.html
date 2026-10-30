@@ -126,7 +126,7 @@
 
   <div class="intro" id="intro">
     <h1>Thank you for your interest in spending your summer with us at Camp Gan Israel Morristown!</h1>
-    <p>Working at Camp Gan Israel is a balance between being the most fun person in the world while maintaining an unwavering sense of professionalism and care. We set the bar pretty high for our staff, as there is nothing we take more seriously than truly providing the summer of children's lives.</p>
+    <p>Working at Camp Gan Israel is a balance between being the most fun person in the world while maintaining an unwavering sense of professionalism and care. We set the bar high for our staff, because nothing matters more to us than giving children the summer of their lives.</p>
     <p>Our camp mission is to provide a safe, fun and uplifting summer day camp experience for Jewish children; a place where love for Judaism is taught through fun, joy, and a true love for every staff member, camper and each member of their families. A few things we ask every potential staff member to consider before applying:</p>
     <h3>Dates</h3>
     <div class="dates">
@@ -134,11 +134,11 @@
       <div><b>Specialty camp week (optional):</b> June 21 – 25</div>
       <div><b>Out-of-town staff:</b> arrive in New Jersey by Thursday, June 24</div>
     </div>
-    <p>Priority for staffing positions is given to people who can work the entire season. If you are interested in also joining the specialty camp week, please say so on your application. Applications for partial sessions are welcome, but full-season availability is preferred. Out-of-town staff who require accommodation need to commit to the full season. On rare occasions an exception can be made if someone else we accept can take your position for the other part of the summer.</p>
+    <p>Priority for staffing positions is given to people who can work the entire season. If you are interested in also joining the specialty camp week, please say so on your application. Applications for partial sessions are welcome, but full-season availability is preferred. Out-of-town staff who require accommodation need to commit to the full season (all seven weeks). On rare occasions an exception can be made if someone else we accept can take your position for the other part of the summer.</p>
     <h3>Timeliness</h3>
     <p>There are no vacation days during camp. Staff are expected to attend every single day of camp, on time. In case of illness, please notify the directors as soon as possible.</p>
     <h3>Pre-season training</h3>
-    <p>Staff training is a requirement for employment, both by Camp Gan Israel and by our licensing bodies. It consists of online training, due at least two weeks before camp, and in-person staff training and camp setup on <b>Friday, June 25 and Sunday, June 27</b>. All staff are expected to be present.</p>
+    <p>Staff training is a requirement for employment, both by Camp Gan Israel and by our licensing bodies. It consists of online training, due at least two weeks before camp, and in-person staff training and camp setup: <b>Girls Division and Kiddie Camp on Friday, June 25 and Sunday, June 27</b>; <b>Boys Division on Sunday, June 27</b>. All staff are expected to be present.</p>
     <h3>Committed staff</h3>
     <p>Summer is a break from school for many, but working at camp is a serious undertaking: you are taking on the care of young children. It requires your energy, patience, excitement and commitment. By applying, you are ready to commit to giving it all you've got this summer.</p>
     <h3>Our commitment</h3>
@@ -200,6 +200,7 @@
             </select>
             <div class="err">Please choose your country.</div>
           </div>
+          <div class="field" id="countryOtherField" hidden><label class="req" for="countryOther">Which country?</label><input type="text" id="countryOther" name="countryOther" autocomplete="country-name"><div class="err">Please tell us your country.</div></div>
         </div>
       </div>
     </section>
@@ -290,10 +291,10 @@
         <div class="field" id="positionOtherField" hidden><label for="positionOther">Tell us the position you have in mind</label><input type="text" id="positionOther" name="positionOther"></div>
         <div class="subcard" id="phonePolicyBlock" hidden>
           <h3>Our phone policy</h3>
-          <p class="pol" id="policyStrict" hidden>Camp Gan Israel is a no-phone environment during camp hours. Each morning you leave your phone in the camp office with the director, and you pick it up at the end of the day. Staff stay in touch with each other by radio. We've seen that phones pull attention away from the campers, and campers shouldn't see staff on a phone. If you need to make a personal call, let your direct supervisor know and step away. Phones come out only for a genuine emergency.</p>
-          <p class="pol" id="policyGeneral" hidden>Camp Gan Israel is a no-phone environment during camp hours. Phones come out only for a genuine emergency, or to take photos when asked. For a personal call, let your direct supervisor know and step away from the campers. Campers shouldn't see staff on a phone.</p>
+          <p class="pol" id="policyStrict" hidden>Camp Gan Israel has a no-phone policy during camp hours. Each morning you leave your phone in the camp office and pick it up at the end of the day; staff stay in touch by radio. Phones pull our attention away from the campers, and campers feel it. If you have a reason to use your phone during camp, let your direct supervisor know and we'll be happy to accommodate.</p>
+          <p class="pol" id="policyGeneral" hidden>Camp Gan Israel has a no-phone policy during camp hours. Phones come out only for a genuine emergency, or to take photos when asked. Phones pull our attention away from the campers, and campers feel it. If you have a reason to use your phone during camp, let your direct supervisor know and we'll be happy to accommodate.</p>
           <div class="field">
-            <label class="choice"><input type="checkbox" name="phonePolicyAck" value="Yes" required> <span>I've read the phone policy, and I'm comfortable working with it.</span></label>
+            <label class="choice"><input type="checkbox" name="phonePolicyAck" value="Yes" required> <span class="req">I've read the phone policy, and I'm comfortable working with it.</span></label>
             <div class="err">Please tick the box to continue.</div>
           </div>
         </div>
@@ -501,10 +502,6 @@
           <div class="field"><label for="flights">Will you require flights to and from camp? If yes, from which city or country? If not, from which city will you be coming and will you require transportation?</label><textarea id="flights" name="flights"></textarea></div>
           <div class="field"><label for="accommodations">Any accommodations you will require this summer, such as a specific food diet?</label><div class="hint">If none, write N/A.</div><textarea id="accommodations" name="accommodations"></textarea></div>
           <div class="field"><label for="foods">Foods you don't eat, and foods you like to eat</label><input type="text" id="foods" name="foods"></div>
-          <div class="two">
-            <div class="field"><label for="arrival">Arrival plans</label><input type="text" id="arrival" name="arrival" placeholder="When you expect to arrive in New Jersey"></div>
-            <div class="field"><label for="departure">Departure plans</label><input type="text" id="departure" name="departure" placeholder="When you expect to leave"></div>
-          </div>
           <div class="field">
             <span class="lbl req">Housing</span>
             <div class="choices two">
@@ -513,17 +510,16 @@
             </div>
             <div class="err">Please choose one.</div>
           </div>
+          <div class="note" id="housingNote" hidden>We take care of our staff from beginning to end: camp housing runs from the day before staff training through the Sunday after camp.</div>
           <div class="field">
-            <span class="lbl req">Will you need camp's help with housing before or after the official housing period?</span>
-            <div class="hint">Camp's responsibility runs from the Thursday before camp through the Sunday after camp. Anything beyond that is discussed and approved in advance.</div>
+            <span class="lbl req">Can you be at camp for the full summer, all seven weeks (June 28 – August 13), plus staff training?</span>
             <div class="choices two">
-              <label class="choice"><input type="radio" name="extraHousing" value="No" required> No</label>
-              <label class="choice"><input type="radio" name="extraHousing" value="Yes"> Yes</label>
+              <label class="choice"><input type="radio" name="ootFullSummer" value="Yes" required> Yes, the full summer</label>
+              <label class="choice"><input type="radio" name="ootFullSummer" value="No"> No, only part of it</label>
             </div>
+            <div class="hint">Out-of-town positions are for the full season; partial availability is kept on file in case something opens up.</div>
             <div class="err">Please choose one.</div>
           </div>
-          <div class="field" id="extraHousingField" hidden><label for="extraHousingDetail">Please explain</label><input type="text" id="extraHousingDetail" name="extraHousingDetail"></div>
-          <div class="field"><label class="choice"><input type="checkbox" name="ootFullSummer" value="Yes" required> <span>I can be at camp for the full summer, June 28 to August 13, and for staff training on June 25 and June 27.</span></label><div class="err">Out-of-town staff need to commit to the full season.</div></div>
           <div class="field"><label class="choice"><input type="checkbox" name="ootInsurance" value="Yes" required> <span>I will arrange appropriate travel and medical insurance before coming.</span></label><div class="err">Please tick the box to continue.</div></div>
           <div class="field" id="visaField" hidden>
             <span class="lbl">Do you have a valid passport, and a US visa if you need one?</span>
@@ -656,8 +652,11 @@ window.APPLY_CONFIG = window.APPLY_CONFIG || { backendUrl: (window.PORTAL_CONFIG
     $('phonePolicyBlock').hidden = !p1;
     const strict = strictRoles.includes(p1) || strictRoles.includes(p2);
     $('policyStrict').hidden = !strict; $('policyGeneral').hidden = strict;
-    // Out-of-town: explain extra housing help only if Yes
-    $('extraHousingField').hidden = val('extraHousing') !== 'Yes';
+    // Country "Other" → write it in
+    const otherCountry = val('country') === 'Other';
+    $('countryOtherField').hidden = !otherCountry; $('countryOther').required = otherCountry;
+    // Out-of-town: what camp housing covers, shown when they ask for it
+    $('housingNote').hidden = val('housing') !== "I'll need camp housing";
     // Staff-experience question shown for everyone except a first-time junior counselor
     $('expStaffField').hidden = (p1 === 'Junior Counselor' && val('returning') === 'No');
     // Step 7 blocks
@@ -774,15 +773,15 @@ window.APPLY_CONFIG = window.APPLY_CONFIG || { backendUrl: (window.PORTAL_CONFIG
 
   function renderSummary(d) {
     const groups = [
-      ['About you', ['firstName','lastName','gender','birthday','gradeEntering','school','street','city','state','zip','country']],
+      ['About you', ['firstName','lastName','gender','birthday','gradeEntering','school','street','city','state','zip','country','countryOther']],
       ['Contact', ['email','phone','phoneWhatsApp','noOwnContact','limitedAccess','parentName','parentEmail','parentPhone','parentPhoneWhatsApp','phone2','phone2Note','phone2WhatsApp','phone2Summer']],
       ['The job', ['division','position1','position2','positionOther','phonePolicyAck','origin','weeks','blackoutDates','returning','returningDetail','transportation','afterHoursJobs','friendsYN','friends','heardFrom']],
       ['Experience', ['expChildren','expCamper','expStaff','whyCGI','interests','interestsExplain','hobbies','ageRange']],
       ['References', ['ref1Type','ref1Name','ref1Phone','ref1WhatsApp','ref1Email','ref1How','ref2Type','ref2Name','ref2Phone','ref2WhatsApp','ref2Email','ref2How','ref3Type','ref3Name','ref3Phone','ref3WhatsApp','ref3Email','ref3How','otherWork']],
       ['Education', ['elemSchool','elemYears','hsSchool','hsYears','hsStatus','postSchool','postYears','postStatus','degree']],
-      ['More', ['flights','accommodations','foods','arrival','departure','housing','extraHousing','extraHousingDetail','ootFullSummer','ootInsurance','visa','specDegrees','specExperience','specOther','medicalYN','medicalDetail','resume','anythingElse','signature','acknowledge']]
+      ['More', ['flights','accommodations','foods','housing','ootFullSummer','ootInsurance','visa','specDegrees','specExperience','specOther','medicalYN','medicalDetail','resume','anythingElse','signature','acknowledge']]
     ];
-    const labels = { gender:'Gender', division:'Division', origin:'Coming from', weeks:'Weeks available', returning:'Worked here before', transportation:'Needs transportation', afterHoursJobs:'After-hours jobs', friendsYN:'Applying with friends', interests:'Interests', hsStatus:'High school status', postStatus:'Seminary / college status', visa:'Passport and visa', medicalYN:'Medical condition', housing:'Housing', extraHousing:'Housing help outside the period', phonePolicyAck:'Phone policy acknowledged', ootFullSummer:'Full summer and training confirmed', ootInsurance:'Travel and medical insurance confirmed', acknowledge:'Commitment acknowledged', phoneWhatsApp:'Phone on WhatsApp', parentPhoneWhatsApp:'Parent phone on WhatsApp', phone2WhatsApp:'Second phone on WhatsApp', phone2Summer:'Second phone available in summer', noOwnContact:'No own email or phone', limitedAccess:'Limited phone or email access', ref1WhatsApp:'Reference 1 on WhatsApp', ref2WhatsApp:'Reference 2 on WhatsApp', ref3WhatsApp:'Reference 3 on WhatsApp' };
+    const labels = { gender:'Gender', division:'Division', origin:'Coming from', weeks:'Weeks available', returning:'Worked here before', transportation:'Needs transportation', afterHoursJobs:'After-hours jobs', friendsYN:'Applying with friends', interests:'Interests', hsStatus:'High school status', postStatus:'Seminary / college status', visa:'Passport and visa', medicalYN:'Medical condition', housing:'Housing', phonePolicyAck:'Phone policy acknowledged', ootFullSummer:'Full summer', countryOther:'Country', ootInsurance:'Travel and medical insurance confirmed', acknowledge:'Commitment acknowledged', phoneWhatsApp:'Phone on WhatsApp', parentPhoneWhatsApp:'Parent phone on WhatsApp', phone2WhatsApp:'Second phone on WhatsApp', phone2Summer:'Second phone available in summer', noOwnContact:'No own email or phone', limitedAccess:'Limited phone or email access', ref1WhatsApp:'Reference 1 on WhatsApp', ref2WhatsApp:'Reference 2 on WhatsApp', ref3WhatsApp:'Reference 3 on WhatsApp' };
     form.querySelectorAll('label[for]').forEach(l => { labels[l.htmlFor] = l.textContent.trim(); });
     let html = '';
     groups.forEach(([title, keys]) => {
