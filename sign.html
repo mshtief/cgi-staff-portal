@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Staff Agreement 2027</title>
+  <link rel="icon" href="assets/cgi-logo.png">
+  <style>
+    /* Layout: one reading column of cards, like the application page (same tokens). The paper is shown part by part;
+       a confirm strip closes each part that needs one; the signature card comes last. */
+    :root {
+      --navy: #1e3a5f; --navy-soft: #e8eef6; --accent: #f59e0b; --green: #059669; --green-soft: #ecfdf5; --red: #b91c1c; --red-soft: #fef2f2;
+      --bg: #f5f7fa; --card: #ffffff; --text: #111827; --muted: #6b7280; --border: #e5e7eb; --border-dark: #d1d5db;
+      --radius: 14px; --radius-sm: 8px; --shadow: 0 2px 8px rgba(0,0,0,.06);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    button, input { font: inherit; color: inherit; }
+    :focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(30,58,95,.3); border-radius: var(--radius-sm); }
+    [hidden] { display: none !important; }
+
+    .top { background: var(--navy); color: #fff; padding-block: 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .top .inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+    .top img { width: 44px; height: 44px; object-fit: contain; background: #fff; border-radius: 10px; padding: 3px; flex-shrink: 0; }
+    .top .brand { font-weight: 700; font-size: 15px; line-height: 1.2; }
+    .top .sub { font-size: 12px; opacity: .8; }
+
+    .wrap { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; padding-block: 18px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .card { background: var(--card); border-radius: var(--radius); padding: 18px 18px 16px; box-shadow: var(--shadow); min-width: 0; }
+    h1 { font-size: 22px; line-height: 1.2; color: var(--navy); margin-bottom: 6px; text-wrap: balance; }
+    h2 { font-size: 18px; color: var(--navy); margin-bottom: 8px; text-wrap: balance; }
+    h3 { font-size: 15px; color: var(--navy); margin: 14px 0 4px; }
+    .card p { margin-bottom: 10px; } .card p:last-child { margin-bottom: 0; }
+    .card ul, .card ol { margin: 0 0 10px; padding-left: 22px; } .card li { margin-bottom: 5px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; } dt { color: var(--muted); } dd { font-weight: 600; }
+
+    .progress { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; align-self: flex-start; background: var(--navy-soft); color: var(--navy); border: 1px solid var(--border-dark); border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 700; }
+    .confirm { margin-top: 12px; border-top: 1px dashed var(--border-dark); padding-top: 12px; }
+    .tick { display: flex; gap: 10px; align-items: flex-start; background: var(--navy-soft); border-radius: 10px; padding: 10px 12px; font-weight: 600; cursor: pointer; }
+    .tick input { width: 20px; height: 20px; margin-top: 2px; flex: none; accent-color: var(--navy); }
+    .ini { display: flex; flex-direction: column; gap: 8px; background: var(--navy-soft); border-radius: 10px; padding: 10px 12px; font-weight: 600; }
+    .ini-row { display: flex; align-items: center; gap: 10px; font-weight: 400; }
+    input[type=text] { background: #fff; border: 1.5px solid var(--border-dark); border-radius: 10px; padding: 10px 12px; min-width: 0; font-size: 16px; }
+    .ini-row input { width: 5.5em; text-transform: uppercase; text-align: center; letter-spacing: .1em; }
+    input:disabled { opacity: .45; }
+    .hint { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .byline { background: var(--navy-soft); border-radius: 10px; padding: 10px 12px; }
+    label.f { display: block; font-weight: 600; margin: 12px 0 4px; }
+    .sign input[type=text] { width: 100%; }
+    button.go { display: block; width: 100%; margin-top: 16px; background: var(--navy); color: #fff; border: 0; border-radius: 12px; padding: 14px 18px; font-size: 16px; font-weight: 700; cursor: pointer; }
+    button.go:disabled { opacity: .4; cursor: not-allowed; }
+    .banner { background: var(--red-soft); color: var(--red); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-top: 12px; }
+    .ok h1 { color: var(--green); }
+    .spinner { width: 28px; height: 28px; border: 3px solid var(--border-dark); border-top-color: var(--navy); border-radius: 50%; animation: spin 1s linear infinite; margin: 6px auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <img src="assets/cgi-logo.png" alt="Camp Gan Israel Morristown">
+    <div>
+      <div class="brand">CGI Morristown</div>
+      <div class="sub">Staff Agreement · Summer 2027</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card" id="loading"><div class="spinner" aria-hidden="true"></div><p class="muted" style="text-align:center">Opening your agreement…</p></section>
+
+  <section class="card" id="problem" hidden>
+    <h1>We could not open your agreement</h1>
+    <p id="problemText"></p>
+    <p class="muted">Questions? Email office@ganisrael.org, or call, text or WhatsApp (862) 244-3420.</p>
+  </section>
+
+  <section class="card ok" id="already" hidden>
+    <h1>Already signed</h1>
+    <p id="alreadyText"></p>
+    <p class="muted">There is nothing more to do here. Questions? Email office@ganisrael.org, or call, text or WhatsApp (862) 244-3420.</p>
+  </section>
+
+  <section class="card ok" id="done" hidden>
+    <h1>Signed. Thank you!</h1>
+    <p id="doneText"></p>
+    <p class="muted">Questions? Email office@ganisrael.org, or call, text or WhatsApp (862) 244-3420.</p>
+  </section>
+
+  <div id="form" hidden style="display:contents">
+    <section class="card">
+      <h1 id="docTitle"></h1>
+      <p class="muted" id="docSub"></p>
+      <p id="hello"></p>
+    </section>
+    <section class="card" id="termsCard" hidden><h2>Your terms</h2><dl id="terms"></dl></section>
+    <div class="progress" id="progress" aria-live="polite"></div>
+    <div id="parts" style="display:contents"></div>
+    <section class="card sign">
+      <h2>Sign</h2>
+      <p class="byline" id="agree"></p>
+      <label class="f" for="fullName">Type your full name</label>
+      <input type="text" id="fullName" autocomplete="name">
+      <p class="hint">Date: <span id="today"></span></p>
+      <div id="parentBlock" hidden>
+        <label class="f" for="parentName">Parent or guardian: type your full name</label>
+        <input type="text" id="parentName" autocomplete="off">
+        <p class="hint">By typing my name I confirm that we read this agreement together.</p>
+      </div>
+      <button type="button" class="go" id="signBtn" disabled>Sign the agreement</button>
+      <p class="hint" id="why"></p>
+      <div class="banner" id="sendError" hidden></div>
+    </section>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script>
+// The signing page. The link in the email carries a = applicant id, d = which paper, t = a signature of both.
+// The paper, the person's terms and the lines to confirm come from the backend (backend/2027/Code.gs: signPacket),
+// which reads the paper live from its Google Doc. Signing posts to handleSigned. [Mendel · 2026-11-18]
+(function () {
+  var BACKEND = (window.PORTAL_CONFIG && window.PORTAL_CONFIG.applyBackendUrl) || '';
+  var $ = function (id) { return document.getElementById(id); };
+  var q = new URLSearchParams(location.search), A = q.get('a') || '', D = q.get('d') || '', T = q.get('t') || '';
+  var packet = null, controls = [];
+  function show(id) { ['loading', 'problem', 'already', 'done', 'form'].forEach(function (x) { $(x).hidden = x !== id; }); window.scrollTo(0, 0); }
+  function problem(msg) { $('problemText').textContent = msg; show('problem'); }
+  function text(s) { return document.createTextNode(String(s)); }
+  function twoWords(v) { return v.trim().split(/\s+/).filter(Boolean).length >= 2; }
+  function ok(c) { return c.type === 'checkbox' ? c.checked : c.value.trim().length >= 2; }
+
+  function refresh() {
+    var n = controls.filter(ok).length, nameOk = twoWords($('fullName').value), parentOk = !packet.needsParent || twoWords($('parentName').value);
+    $('progress').textContent = n + ' of ' + controls.length + ' confirmed';
+    $('signBtn').disabled = !(n === controls.length && nameOk && parentOk);
+    $('why').textContent = n < controls.length ? 'Confirm each part above first.' : !nameOk ? 'Type your first and last name.' : !parentOk ? "A parent or guardian types their full name too." : '';
+  }
+
+  function build(p) {
+    packet = p;
+    $('docTitle').textContent = p.title; $('docSub').textContent = p.sub || '';
+    $('hello').textContent = 'Hi ' + p.first + '. Please read each part' + (p.needsParent ? ' together with a parent' : '') + ', confirm the short line under it, and sign at the end. It takes about five minutes, and no printer is needed.';
+    if (p.terms && p.terms.length) {
+      p.terms.forEach(function (t) { var dt = document.createElement('dt'), dd = document.createElement('dd'); dt.appendChild(text(t[0])); dd.appendChild(text(t[1])); $('terms').appendChild(dt); $('terms').appendChild(dd); });
+      $('termsCard').hidden = false;
+    }
+    var bySec = {}; (p.lines || []).forEach(function (l) { bySec[l.sec] = l; });
+    p.sections.forEach(function (s) {
+      var card = document.createElement('section'); card.className = 'card';
+      var h = document.createElement('h2'); h.appendChild(text(s.head)); card.appendChild(h);
+      var body = document.createElement('div'); body.innerHTML = s.html; card.appendChild(body);     // built by the backend from the Doc: escaped text with b / p / ul / ol / li / h3 only
+      var line = bySec[s.num];
+      if (line) {
+        var end = document.createElement('div'); end.setAttribute('data-end', s.num); card.appendChild(end);
+        var box = document.createElement('div'); box.className = 'confirm';
+        var input = document.createElement('input'); input.id = 'c' + s.num; input.disabled = true; input.setAttribute('data-sec', s.num);
+        var label = document.createElement('label'), span = document.createElement('span'); span.appendChild(text(line.text));
+        if (line.kind === 'initials') {
+          input.type = 'text'; input.maxLength = 4; input.autocomplete = 'off'; input.setAttribute('autocapitalize', 'characters');
+          label.className = 'ini'; label.htmlFor = input.id; label.appendChild(span);
+          var row = document.createElement('span'); row.className = 'ini-row'; row.appendChild(text('My initials ')); row.appendChild(input); label.appendChild(row);
+        } else { input.type = 'checkbox'; label.className = 'tick'; label.appendChild(input); label.appendChild(span); }
+        box.appendChild(label);
+        var hint = document.createElement('p'); hint.className = 'hint'; hint.id = 'h' + s.num; hint.appendChild(text('Read this part to the end, then confirm it here.')); box.appendChild(hint);
+        card.appendChild(box); controls.push(input);
+      }
+      $('parts').appendChild(card);
+    });
+    $('agree').textContent = p.agree || 'I have read this document and understand my role and responsibilities.';
+    $('parentBlock').hidden = !p.needsParent;
+    $('today').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    function unlock(sec) { controls.forEach(function (c) { if (c.getAttribute('data-sec') === sec) { c.disabled = false; var h = $('h' + sec); if (h) h.hidden = true; } }); }
+    show('form');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { unlock(e.target.getAttribute('data-end')); io.unobserve(e.target); } }); }, { threshold: 1 });
+      [].forEach.call(document.querySelectorAll('[data-end]'), function (el) { io.observe(el); });
+    } else controls.forEach(function (c) { unlock(c.getAttribute('data-sec')); });
+    refresh();
+  }
+
+  document.addEventListener('input', function () { if (packet) refresh(); });
+  document.addEventListener('change', function () { if (packet) refresh(); });
+
+  $('signBtn').addEventListener('click', async function () {
+    var btn = $('signBtn'), lines = {};
+    controls.forEach(function (c) { lines[c.getAttribute('data-sec')] = c.type === 'checkbox' ? true : c.value.trim().toUpperCase(); });
+    var payload = { a: A, d: D, t: T, lines: lines, name: $('fullName').value.trim(), parentName: packet.needsParent ? $('parentName').value.trim() : '', ua: navigator.userAgent };
+    btn.disabled = true; btn.textContent = 'Signing…'; $('sendError').hidden = true;
+    var result = null, okSent = false;
+    for (var attempt = 1; attempt <= 3 && !okSent; attempt++) {          // a slow first answer from the server must not cost anyone their signature
+      try {
+        var res = await fetch(BACKEND, { method: 'POST', body: new URLSearchParams({ action: 'signed', payload: JSON.stringify(payload) }) });
+        result = await res.json(); okSent = !!(result && result.ok);
+        if (!okSent && result && result.error) break;
+      } catch (err) { if (attempt < 3) await new Promise(function (r) { setTimeout(r, 1500 * attempt); }); }
+    }
+    if (!okSent) {
+      btn.disabled = false; btn.textContent = 'Sign the agreement';
+      $('sendError').textContent = (result && result.error) ? ('We could not record your signature yet: ' + result.error + '.') : 'Something went wrong while sending. Please try again in a minute, or email office@ganisrael.org.';
+      $('sendError').hidden = false; return;
+    }
+    $('doneText').textContent = 'Thank you, ' + packet.first + '. Your agreement is signed and your place at camp is confirmed. A copy is on its way to your email.';
+    show('done');
+  });
+
+  (async function start() {
+    if (!A || !D || !T) return problem('This link is not complete. Please open the link from your email again.');
+    if (!BACKEND) return problem('This page is not connected yet. Please contact the camp office.');
+    for (var attempt = 1; attempt <= 3; attempt++) {
+      try {
+        var res = await fetch(BACKEND + '?action=signpacket&a=' + encodeURIComponent(A) + '&d=' + encodeURIComponent(D) + '&t=' + encodeURIComponent(T));
+        var p = await res.json();
+        if (!p || !p.ok) return problem((p && p.error) || 'This link is not valid. Please use the link from your email.');
+        if (p.signed) { $('alreadyText').textContent = 'Thank you, ' + p.first + '. This agreement was signed on ' + p.when + '.'; return show('already'); }
+        return build(p);
+      } catch (err) { if (attempt < 3) await new Promise(function (r) { setTimeout(r, 1500 * attempt); }); }
+    }
+    problem('The page could not reach the camp office system. Please check your connection and open the link again.');
+  })();
+})();
+</script>
+</body>
+</html>
