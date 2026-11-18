@@ -227,14 +227,17 @@
           <div class="note" id="ownContactRule" hidden>Applicants entering 11th grade or above must have their own email and phone.</div>
         </div>
 
+        <div id="parentSlotContact">
         <div class="subcard" id="parentBlock" hidden>
           <h3>Parent or guardian contact</h3>
+          <p class="pol" id="parentJcNote" hidden>We ask every junior counselor applicant for a parent or guardian's contact. We keep it on file; our emails go to you.</p>
           <div class="field"><label class="req" for="parentName">Parent / guardian name</label><input type="text" id="parentName" name="parentName"><div class="err">Please enter a parent's name.</div></div>
           <div class="two">
             <div class="field"><label class="req" for="parentEmail">Parent email</label><input type="email" id="parentEmail" name="parentEmail" inputmode="email"><div class="err">Please enter a working email.</div></div>
             <div class="field"><label class="req" for="parentPhone">Parent phone</label><input type="tel" id="parentPhone" name="parentPhone" inputmode="tel"><label class="inline"><input type="checkbox" name="parentPhoneWhatsApp" value="Yes"> On WhatsApp</label><div class="err">Please enter a phone number.</div></div>
           </div>
-          <div class="hint">We'll copy your parent on interview, training and contract emails. You stay the main contact.</div>
+          <div class="hint" id="parentCopyHint">We'll copy your parent on interview, training and contract emails. You stay the main contact.</div>
+        </div>
         </div>
 
         <div class="subcard">
@@ -289,6 +292,7 @@
           </div>
         </div>
         <div class="field" id="positionOtherField" hidden><label for="positionOther">Tell us the position you have in mind</label><input type="text" id="positionOther" name="positionOther"></div>
+        <div id="parentSlotJob"></div>
         <div class="subcard" id="phonePolicyBlock" hidden>
           <h3>Our phone policy</h3>
           <p class="pol" id="policyStrict" hidden>Camp Gan Israel has a no-phone policy during camp hours. Each morning you leave your phone in the camp office and pick it up at the end of the day; staff stay in touch by radio. Phones pull our attention away from the campers, and campers feel it. If you have a reason to use your phone during camp, let your direct supervisor know and we'll be happy to accommodate.</p>
@@ -572,7 +576,7 @@
   <div class="done-card" id="doneCard" hidden>
     <div class="check">✓</div>
     <h2>Thank you for applying!</h2>
-    <p id="doneText">We'll review your application and be in touch shortly, usually within a week or two, to set up a short interview.</p>
+    <p id="doneText">We received your application and will be in touch shortly after reviewing it.</p>
     <p>Questions in the meantime? Email <a href="mailto:office@ganisrael.org">office@ganisrael.org</a>, or call, text or WhatsApp (862) 244-3420.</p>
     <div class="summary" id="summary"></div>
   </div>
@@ -633,11 +637,19 @@ window.APPLY_CONFIG = window.APPLY_CONFIG || { backendUrl: (window.PORTAL_CONFIG
     const noOwn = $('noOwnContact'), rule = $('ownContactRule');
     if (mustHaveOwnContact()) { noOwn.checked = false; noOwn.closest('.choice').hidden = true; rule.hidden = false; }
     else { noOwn.closest('.choice').hidden = false; rule.hidden = true; }
-    const needParent = checked('noOwnContact') || checked('limitedAccess');
-    $('parentBlock').hidden = !needParent;
+    // Parent contact is required (a) when the applicant has no own email or phone, or limited access: asked on the
+    // Contact step, and that parent is copied on our emails; (b) for every junior counselor applicant: asked on the
+    // Job step, right under the position (the position is chosen after the Contact step), kept on file and NOT copied
+    // on emails. One block, moved to where it is needed. [Mendel · 2026-11-17 and 2026-11-18]
+    const p1 = val('position1'), p2 = val('position2');
+    const byContact = checked('noOwnContact') || checked('limitedAccess');
+    const jc = p1 === 'Junior Counselor' || p2 === 'Junior Counselor';
+    const needParent = byContact || jc;
+    const parentBlock = $('parentBlock'), parentSlot = (jc && !byContact) ? $('parentSlotJob') : $('parentSlotContact');
+    if (parentBlock.parentNode !== parentSlot) parentSlot.appendChild(parentBlock);
+    parentBlock.hidden = !needParent; $('parentJcNote').hidden = !(jc && !byContact); $('parentCopyHint').hidden = (jc && !byContact);
     ['parentName','parentEmail','parentPhone'].forEach(id => $(id).required = needParent);
     // Position "Other"
-    const p1 = val('position1'), p2 = val('position2');
     $('positionOtherField').hidden = !(p1 === 'Other' || p2 === 'Other');
     // Returning detail
     $('returningDetailField').hidden = val('returning') !== 'Yes';
