@@ -98,7 +98,8 @@
       var res = await fetch(BACKEND, { method: 'POST', body: body });
       var j = await res.json();
       if (j && typeof j.html === 'string') show(j);
-      else throw new Error((j && j.error) ? String(j.error) : 'no answer');
+      else if (j && j.error) { if (btn) { btn.disabled = false; btn.textContent = label; } say(String(j.error)); }   // a missing choice: the form stays as it was filled in
+      else throw new Error('no answer');
     } catch (err) {
       if (btn) { btn.disabled = false; btn.textContent = label; }
       say('That did not go through (' + (err && err.message ? err.message : 'no connection') + '). Before you try again, open the row in Staff 2027 and look at the status: it may have gone out already.');
