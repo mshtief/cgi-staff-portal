@@ -5,109 +5,723 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1e3a5f">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-title" content="Camp Office">
   <title>Camp Office</title>
-  <link rel="icon" href="assets/cgi-logo.png">
+  <link rel="icon" href="assets/crest-184.png">
+  <link rel="apple-touch-icon" href="assets/crest-184.png">
   <style>
-    /* The camp office's own pages: the Yes / No page of a new application, and the offer page after an interview.
-       This file is only the frame. What is shown comes from the hiring backend (backend/2027/Code.gs: decidePage,
-       offerPage), which answers only to the signed link from an office email. Layout: one narrow column, as the
-       backend's content is written for (520px, grey ground, white fields). */
-    :root { --navy: #1e3a5f; --bg: #f5f7fa; --text: #111827; --muted: #6b7280; --border: #d1d5db; --red: #b91c1c; --red-soft: #fef2f2; color-scheme: light; }
+    /* The Camp Office: the camp office's own page for staff hiring. This file is the frame, the look and the way
+       around; what is shown comes from the hiring backend (backend/2027/Code.gs, block 8 "THE OFFICE") after a
+       sign-in, or through a signed link from an office email.
+
+       The look (2026-11-19, the director's choice between two): the look of the staff application page (apply.html),
+       so that the office and the pages staff see belong together: slate navy, amber for whatever waits for him, the
+       device's own letters, white cards with 14px corners on pale grey, 8px corners on everything that is pressed.
+       Text and the edges of controls are a little darker than on the application page, because here they are read
+       and pressed all day.
+
+       The layout (2026-11-19, his choice among three he tried; reasons and sources: backend/DEPLOY-2027.md):
+       - Phone and tablet: the list. A name search and four tabs (To do / Waiting / Hired / All), people grouped by
+         what happens next; tap a name, that person, back to the list where it was.
+       - Computer (960px and wider): the board. One column for each stage, one card for each person, the whole
+         pipeline in one look. A card opens that person on the whole page; Back returns to the board where it was.
+         Cards are not dragged: every move sends an email, so it is done on the person's page, where he sees what
+         goes out.
+       - One person (the same on both): who it is, four marks for where it stands, then the next step first. Where
+         the page is wide enough, how to reach them and what has gone out sit in a column on the right.
+       - Nothing is tucked behind a menu, and everything to press is at least 44px high. */
+    :root {
+      --navy: #1e3a5f; --navy-dark: #142842; --navy-soft: #e8eef6; --navy-line: #cfd9e6;
+      --accent: #f59e0b; --accent-dark: #d97706; --accent-text: #b45309; --accent-soft: #fff7e6; --mark: #fcd34d;
+      --ink: #111827; --muted: #4b5563; --field: #8a94a6; --edge: #e5e7eb; --rule: #eceef2;
+      --page: #f5f7fa; --col: #e9edf2; --white: #ffffff; --hover: #f3f6fa;
+      --ok: #047857; --ok-soft: #ecfdf5; --stop: #b91c1c; --stop-soft: #fef2f2; --quiet: #eef0f3; --ahead: #d1d5db;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --r: 14px; --r-sm: 8px; --shadow: 0 2px 8px rgba(0, 0, 0, .06);
+      --bar: 0px;                                  /* the height of the bar while it stays on top (computer only) */
+      --gut: 16px;
+      color-scheme: light;
+    }
     * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    html, body { margin: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { background: var(--page); color: var(--ink); font: 400 16px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
     [hidden] { display: none !important; }
-    .top { background: var(--navy); color: #fff; padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-    .top .inner { max-width: 520px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
-    .top img { width: 40px; height: 40px; object-fit: contain; background: #fff; border-radius: 10px; padding: 3px; flex-shrink: 0; }
-    .top .brand { font-weight: 700; font-size: 15px; line-height: 1.2; }
-    .top .sub { font-size: 12px; opacity: .8; }
-    .wrap { max-width: 520px; margin: 0 auto; padding-block: 22px 56px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
-    #root { min-width: 0; overflow-wrap: anywhere; }
-    #root h2 { text-wrap: balance; }
-    #root button:disabled { opacity: .55; cursor: default; }
-    #root :focus-visible { outline: 3px solid rgba(30,58,95,.35); outline-offset: 2px; }
+    h1, h2, h3 { font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--navy); margin: 0; text-wrap: balance; }
+    p { margin: 0 0 12px; }
+    a { color: var(--navy); text-underline-offset: 4px; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .6; cursor: default; }
+    :focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+    .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    /* the bar, as on the application page: navy, the camp logo on white; what there is to go to is written out */
+    .top { background: var(--navy); color: var(--white); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+    .top-in { max-width: 1320px; margin: 0 auto; min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-block: 8px; padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--white); text-decoration: none; }
+    .brand img { display: block; width: 44px; height: 44px; object-fit: contain; border-radius: 10px; background: var(--white); padding: 3px; flex: none; }
+    .brand strong { display: block; font-size: 15px; font-weight: 700; line-height: 1.2; }
+    .brand small { display: block; font-size: 12px; line-height: 1.4; margin-top: 1px; opacity: .85; }
+    .brand:focus-visible, .top-nav a:focus-visible { outline-color: var(--accent); }
+    .top-nav { display: flex; align-items: center; gap: 4px 24px; flex: none; font-size: 14px; font-weight: 600; }
+    .top-nav .here { display: none; }
+    .top-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--white); text-decoration: none; }
+    .top-nav a:hover { text-decoration: underline; }
+
+    .wrap { max-width: 1320px; margin: 0 auto; padding-block: 22px 40px; padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); }
+    .office, .pane-list, .pane-detail, #root, #signin { min-width: 0; }
+    #root, #signin, #list, #board { overflow-wrap: anywhere; }
+    #root:focus { outline: none; }
+    .pane-list, .pane-detail { max-width: 760px; margin-inline: auto; }
+    .pane-detail { container: detail / inline-size; }
+    .pane-detail:has(.o-cols) { max-width: 1060px; }
     .muted { color: var(--muted); font-size: 14px; text-align: center; }
-    .banner { background: var(--red-soft); color: var(--red); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin: 0 0 14px; }
-    .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 1s linear infinite; margin: 26px auto 12px; }
+    .banner { max-width: 760px; margin: 0 auto 16px; background: var(--stop-soft); border-left: 3px solid var(--stop); border-radius: 0 var(--r-sm) var(--r-sm) 0; color: var(--stop); padding: 12px 14px; font-size: 14px; line-height: 1.6; }
+    .spinner { width: 30px; height: 30px; border: 3px solid var(--edge); border-top-color: var(--navy); border-radius: 50%; animation: spin 1s linear infinite; margin: 44px auto 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } html { scroll-behavior: auto; } }
+
+    /* everyone, or one person: never both. (Before the list has come, only the right-hand part shows: the wait, or a
+       person opened through a link in an email.) */
+    .office:not(.has-list) .pane-list, .office.has-list[data-view="home"] .pane-detail, .office.has-list[data-view="person"] .pane-list { display: none; }
+
+    /* signing in: a calm navy stage with one white card */
+    body.is-signin { background: var(--navy); }
+    body.is-signin .top { display: none; }
+    body.is-signin .wrap { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 36px; }
+    body.is-signin .banner { max-width: 440px; width: 100%; margin: 0 auto 14px; border-radius: var(--r-sm); }
+    .si-card { width: 100%; max-width: 440px; margin: 0 auto; padding: 30px 26px 24px; background: var(--white); border-radius: var(--r); border-top: 5px solid var(--accent); box-shadow: 0 24px 60px rgba(8, 20, 40, .3); }
+    .si-crest { display: block; width: 76px; height: 88px; object-fit: contain; margin: 0 auto 14px; }
+    .si-card .o-eyebrow { text-align: center; }
+    .si-card h1 { text-align: center; font-size: 28px; margin: 0 0 8px; }
+    .si-intro { text-align: center; font-size: 15px; color: var(--muted); max-width: 320px; margin: 0 auto 20px; }
+    .si-card form { display: grid; gap: 10px; }
+    .si-card .o-foot { text-align: center; margin: 14px 0 0; }
+
+    /* words above a title, titles */
+    .o-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .07em; line-height: 1.6; text-transform: uppercase; color: var(--accent-text); margin: 0 0 6px; }
+    .o-h1 { font-size: clamp(24px, 5.6vw, 32px); line-height: 1.18; margin: 0 0 10px; }
+    .o-h1 b { font-weight: inherit; background: linear-gradient(transparent 64%, var(--mark) 64%, var(--mark) 92%, transparent 92%); padding: 0 .1em; }
+    .o-n { display: inline-block; min-width: 26px; text-align: center; background: var(--navy-soft); color: var(--navy); border-radius: 999px; padding: 0 9px; font: 700 13px/22px var(--font); letter-spacing: 0; }
+    .o-tag { background: var(--accent); color: var(--ink); border-radius: 5px; padding: 1px 6px; font: 700 11px/1.5 var(--font); letter-spacing: .04em; vertical-align: 1px; }
+    .o-empty { color: var(--muted); font-size: 15px; line-height: 1.6; padding: 26px 4px; margin: 0; text-align: center; }
+
+    /* everyone: the one line on top and the name search (both layouts) */
+    .pl-intro { margin: 0 0 16px; }
+    .pl-intro .o-h1 { margin: 0; }
+    .pl-find { display: block; }
+    .pl-find input { display: block; width: 100%; min-height: 48px; padding: 11px 13px; border: 1.5px solid var(--field); border-radius: var(--r-sm); background: var(--white); color: var(--ink); font: 400 16px/1.4 var(--font); -webkit-appearance: none; appearance: none; }
+    .pl-find input::placeholder { color: #5f6b7c; opacity: 1; }
+    .o-startp { margin: 0; }
+    .o-btn.o-start { width: auto; max-width: 100%; display: inline-flex; gap: 10px; margin-top: 0; padding-inline: 24px; }
+    #board, .pl-head .o-startp { display: none; }                      /* the board and its "start with" button: computer only, further down */
+
+    /* the list (phone and tablet): four tabs, then the people by what happens next */
+    .tabs { display: flex; justify-content: space-between; gap: 0 4px; margin: 10px 0 0; border-bottom: 1px solid var(--edge); }
+    .tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 46px; min-height: 46px; padding: 0 3px; margin-bottom: -1px; background: none; border: 0; border-bottom: 3px solid transparent; border-radius: 0; color: var(--muted); font: 700 14px/1.2 var(--font); white-space: nowrap; }
+    .tabs button:hover { color: var(--navy); }
+    .tabs button[aria-pressed="true"] { color: var(--navy); border-bottom-color: var(--navy); }
+    .t-n { min-width: 20px; padding: 0 6px; border-radius: 999px; background: var(--navy-soft); color: var(--navy); font: 700 12px/20px var(--font); text-align: center; }
+    .t-n:empty { display: none; }
+    .tabs button[data-tab="todo"] .t-n { background: var(--accent); color: var(--ink); }
+    #list { margin-top: 20px; }
+    .o-group { margin: 0 0 26px; }
+    .o-gh { display: flex; align-items: center; gap: 9px; font-size: 18px; font-weight: 700; line-height: 1.25; letter-spacing: -.01em; color: var(--navy); margin: 0 0 4px; }
+    .o-mine .o-gh::before { content: ''; width: 9px; height: 9px; flex: none; background: var(--accent); border: 1px solid var(--accent-dark); border-radius: 50%; }
+    details.o-group > summary { cursor: pointer; min-height: 44px; margin-bottom: 6px; }
+    .o-gs { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0 0 10px; }
+    .o-mine .o-n { background: var(--accent); color: var(--ink); }
+    .o-list { border: 1px solid var(--edge); border-radius: var(--r); overflow: hidden; background: var(--white); margin-top: 10px; box-shadow: var(--shadow); }
+    .o-mine .o-list { border-left: 5px solid var(--accent); }
+    .o-row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 13px 14px 13px 16px; border-bottom: 1px solid var(--rule); text-decoration: none; color: var(--navy); }
+    .o-row:last-child { border-bottom: 0; }
+    .o-row:hover { background: var(--hover); }
+    .o-row:focus-visible { outline-offset: -4px; }
+    .o-rb { flex: 1; min-width: 0; }
+    .o-rn { display: block; font-weight: 700; line-height: 1.45; }
+    .o-rm, .o-rw { display: block; color: var(--muted); font-size: 13px; line-height: 1.55; text-wrap: pretty; }
+    .o-late { background: var(--accent); color: var(--ink); border-radius: 4px; padding: 0 5px; font-weight: 700; white-space: nowrap; }
+    .o-arrow { flex: none; font-size: 24px; line-height: 1; color: #7b8698; }
+    #pl-foot .o-foot { margin: 6px 0 0; }
+
+    /* the board (computer): one column for each stage, one card for each person */
+    .bd, .bd-rest { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    .bd-col { min-width: 0; background: var(--col); border-radius: var(--r); border-top: 4px solid var(--ahead); padding: 12px 10px; }
+    .bd-col.mine { border-top-color: var(--accent); }
+    .bd-col.done { border-top-color: var(--navy); }
+    .bd-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 17px; margin: 0; padding: 0 4px; }
+    .bd-h span:first-child { min-width: 0; }
+    .bd-h .o-n { flex: none; background: var(--white); }
+    .bd-col.mine .bd-h .o-n { background: var(--accent); color: var(--ink); }
+    .bd-s { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin: 1px 0 0; padding: 0 4px; }
+    .bd-cards { display: grid; gap: 8px; margin-top: 10px; }
+    .bd-none { color: var(--muted); font-size: 13px; line-height: 1.5; text-align: center; padding: 6px 4px 8px; margin: 0; }
+    .bd-card.o-row, .bd-card.o-row:last-child { display: block; min-height: 0; padding: 11px 12px 12px; background: var(--white); border: 1px solid var(--edge); border-radius: var(--r-sm); box-shadow: 0 1px 2px rgba(17, 24, 39, .06); font-size: 15px; }
+    .bd-card.o-row:hover { background: var(--hover); border-color: #b6c2d3; }
+    .bd-card.o-row:focus-visible { outline-offset: 2px; }
+    .bd-card .o-rb { display: block; }
+    .bd-card .o-rm { text-wrap: balance; }                             /* a narrow card: no single word left alone on a line */
+    /* the two kinds of column that only ever grow (who is hired, who is set aside) scroll inside themselves, so the
+       stages that need him stay where the eye is; a card cut off at the bottom shows there is more */
+    .bd-col[data-col="hired"] .bd-cards, .bd-rest .bd-cards { max-height: 596px; overflow-y: auto; margin-inline: -3px; padding: 0 3px 3px; }
+    .bd-resth { font-size: 12px; font-weight: 700; line-height: 1.6; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin: 28px 0 8px; }
+    .bd-rest .bd-col { background: none; border: 1px solid var(--edge); padding: 10px; }
+    .bd-rest .bd-h { font-size: 15px; }
+    .bd-rest .bd-h .o-n { background: var(--navy-soft); }
+    .bd-rest .bd-cards { max-height: 320px; }
+
+    /* one person: who, and where it stands */
+    .o-back { margin: -6px 0 8px; font-size: 14px; font-weight: 700; }
+    .o-back a { display: inline-flex; align-items: center; min-height: 44px; padding-right: 14px; text-decoration: none; }
+    .o-back a:hover { text-decoration: underline; }
+    .o-top { margin: 0 0 6px; }
+    .o-pill { display: inline-block; border-radius: 999px; padding: 3px 12px; font-size: 12px; font-weight: 700; letter-spacing: .03em; }
+    .o-pill.you { background: var(--accent); color: var(--ink); }
+    .o-pill.wait { background: var(--navy-soft); color: var(--navy); }
+    .o-pill.ok { background: var(--ok-soft); color: var(--ok); }
+    .o-pill.off { background: var(--quiet); color: var(--muted); }
+    .o-meta { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0 0 4px; text-wrap: pretty; }
+    .o-track { list-style: none; margin: 18px 0 0; padding: 0; max-width: 640px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 6px; }
+    .o-track li { min-width: 0; }
+    .o-tb { display: block; height: 6px; margin-bottom: 8px; border-radius: 3px; background: var(--ahead); }
+    .o-track li.done .o-tb { background: var(--navy); }
+    .o-track li.now .o-tb { background: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-dark); }
+    .o-track.off li.done .o-tb { background: #8a94a6; }
+    .o-track b { display: block; font-size: 13px; line-height: 1.4; color: var(--muted); overflow-wrap: normal; }
+    .o-track li.done b, .o-track li.now b { color: var(--navy); }
+    .o-track small { display: block; font-size: 12px; line-height: 1.45; color: var(--muted); margin-top: 1px; }
+    .o-track li.now.mine small { color: var(--navy); font-weight: 700; }
+
+    /* cards; the next step is the first one */
+    .o-card { background: var(--white); border: 1px solid var(--edge); border-radius: var(--r); padding: 20px 18px 22px; margin: 20px 0 0; box-shadow: var(--shadow); }
+    .o-card.o-next { border-left: 5px solid var(--navy); scroll-margin-top: calc(var(--bar) + 16px); }
+    .o-card > p:not([class]), .o-in > p:not([class]) { max-width: 66ch; }
+    .o-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; line-height: 1.5; color: var(--accent-text); margin: 0 0 10px; }
+    .o-dot { width: 8px; height: 8px; flex: none; background: var(--accent); border: 1px solid var(--accent-dark); border-radius: 50%; }
+    .o-ch { font-size: 20px; margin: 0 0 12px; }
+    .o-form { margin: 12px 0 0; }
+    .o-btn, .o-btn2 { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; padding: 12px 20px; border-radius: var(--r-sm); font: 700 16px/1.4 var(--font); margin-top: 14px; text-decoration: none; }
+    .o-btn { background: var(--navy); border: 1.5px solid var(--navy); color: var(--white); }
+    .o-btn:hover:not(:disabled) { background: var(--navy-dark); border-color: var(--navy-dark); }
+    .o-btn2 { background: var(--white); border: 1.5px solid var(--navy); color: var(--navy); }
+    .o-btn2:hover:not(:disabled) { background: var(--navy-soft); }
+    .o-more { border-top: 1px solid var(--rule); margin: 16px 0 0; padding: 8px 0 0; }
+    .o-more > summary { cursor: pointer; display: flex; align-items: center; min-height: 44px; font-weight: 700; font-size: 15px; color: var(--navy); list-style: none; }
+    .o-more > summary::before { content: '+'; flex: none; width: 20px; font-size: 20px; font-weight: 700; line-height: 1; color: var(--accent-text); }
+    .o-more[open] > summary::before { content: '–'; }
+    .o-more > summary::-webkit-details-marker { display: none; }
+    .o-more.o-main { border-top: 0; padding-top: 0; }
+    .o-more.o-main > summary { justify-content: center; min-height: 48px; padding: 12px 20px; background: var(--navy); border: 1.5px solid var(--navy); border-radius: var(--r-sm); color: var(--white); font-size: 16px; }
+    .o-more.o-main > summary::before { content: none; }
+    .o-more.o-main > summary:hover { background: var(--navy-dark); border-color: var(--navy-dark); }
+    .o-more.o-main[open] > summary { background: var(--navy-soft); border-color: var(--navy-soft); color: var(--navy); }
+    .o-in { padding: 8px 0 2px; }
+
+    /* fields: visible edges, at least 48px */
+    .o-lab, .o-flabel { display: block; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--navy); margin: 16px 0 6px; }
+    .o-lab textarea, .o-lab select, .o-lab input, .o-field { display: block; width: 100%; min-width: 0; min-height: 48px; padding: 12px 13px; border: 1.5px solid var(--field); border-radius: var(--r-sm); background: var(--white); color: var(--ink); font: 400 16px/1.4 var(--font); margin-top: 6px; }
+    .o-lab textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
+    .o-flabel + .o-field { margin-top: 0; }
+    .o-choice { display: flex; align-items: flex-start; gap: 10px; min-height: 48px; padding: 11px 13px; margin: 8px 0 0; border: 1.5px solid var(--field); border-radius: var(--r-sm); background: var(--white); font-size: 15px; line-height: 1.5; cursor: pointer; }
+    .o-choice input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--navy); }
+    .o-choice:has(input:checked) { border-color: var(--navy); background: var(--navy-soft); }
+    .o-choice:has(select) { align-items: center; flex-wrap: wrap; }
+    .o-choice:has(select) input { margin-top: 0; }
+    .o-choice .o-inline { margin-top: 0; }
+    .o-inline { max-width: 100%; min-height: 40px; padding: 6px 8px; border: 1.5px solid var(--field); border-radius: var(--r-sm); background: var(--white); font: 400 15px/1.4 var(--font); margin-top: 6px; }
+    .o-pay { display: flex; align-items: center; gap: 8px; }
+    .o-pay .o-cur { font-size: 20px; font-weight: 700; line-height: 1; color: var(--navy); }
+    .o-pay .o-field { flex: 1; margin-top: 0; }
+    .o-hint { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 7px 0 0; }
+    .o-warn { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--r-sm) var(--r-sm) 0; color: var(--ink); font-size: 14px; line-height: 1.6; padding: 10px 12px; margin: 8px 0; }
+    .o-err { background: var(--stop-soft); border-left: 3px solid var(--stop); border-radius: 0 var(--r-sm) var(--r-sm) 0; color: var(--stop); font-size: 14px; font-weight: 600; line-height: 1.6; padding: 10px 12px; margin: 14px 0 0; }
+
+    /* how to reach someone: a card of its own colour, and buttons a thumb can hit */
+    .o-card.o-reach { background: var(--navy-soft); border-color: var(--navy-line); box-shadow: none; }
+    .o-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+    .o-act { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 62px; padding: 8px 14px; background: var(--white); border: 1.5px solid var(--navy); border-radius: var(--r-sm); color: var(--navy); font: 700 14px/1.4 var(--font); text-decoration: none; }
+    .o-act:hover { background: var(--hover); }
+    .o-reachnote { margin: 12px 0 0; font-size: 14px; font-weight: 700; }
+    .o-reachnote a { display: inline-flex; align-items: center; min-height: 44px; }
+
+    /* facts in rows, references, history */
+    .o-line { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.6; }
+    .o-line:last-child { border-bottom: 0; }
+    .o-ll { flex: 0 0 40%; color: var(--muted); }
+    .o-lv { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .o-st { font-weight: 700; color: var(--navy); }
+    .o-st.ok { color: var(--ok); }
+    .o-st.no { background: var(--accent); color: var(--ink); border-radius: 999px; padding: 1px 9px; }
+    .o-ref { border-top: 1px solid var(--rule); padding: 14px 0 4px; }
+    .o-ref:first-of-type { border-top: 0; padding-top: 0; }
+    .o-ref .o-acts { margin: 8px 0 6px; }
+    .o-card p.o-rt { margin: 0 0 2px; color: var(--navy); }
+    .o-dim { color: var(--muted); font-weight: 400; }
+    .o-card p.o-sub { font-weight: 700; font-size: 14px; color: var(--navy); margin: 16px 0 6px; }
+    .o-quote { background: #f9fafb; border: 1px solid var(--edge); border-left: 3px solid var(--ahead); border-radius: var(--r-sm); padding: 11px 13px; font-size: 14px; line-height: 1.65; }
+    .o-good { color: var(--ok); }
+    .o-watch { color: var(--ink); background: var(--accent); border-radius: 4px; padding: 0 5px; }
+    .o-log { display: flex; gap: 12px; font-size: 13px; line-height: 1.6; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+    .o-log:last-child { border-bottom: 0; }
+    .o-ld { flex: 0 0 54px; color: var(--muted); }
+    .o-lt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .o-flash { border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 12px 14px; font-size: 15px; line-height: 1.6; font-weight: 600; margin: 0 0 16px; }
+    .o-flash.good { background: var(--ok-soft); border-left: 3px solid var(--ok); color: #065f46; }
+    .o-flash.bad { background: var(--stop-soft); border-left: 3px solid var(--stop); color: var(--stop); }
+    .o-after { margin: -4px 0 18px; }
+    .o-after .o-btn2 { width: auto; display: inline-flex; margin-top: 0; }
+    .o-foot { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 26px 0 0; }
+
+    /* the way back up to the next step, once it has scrolled out of sight */
+    .o-jump { position: sticky; bottom: 0; z-index: 4; margin-top: 8px; padding: 12px 0 max(12px, env(safe-area-inset-bottom, 0px)); background: linear-gradient(to bottom, rgba(245, 247, 250, 0), var(--page) 42%); visibility: hidden; opacity: 0; transition: opacity .15s; }
+    .o-jump.is-on { visibility: visible; opacity: 1; }
+    .o-jump button { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 50px; padding: 10px 18px; background: var(--navy); border: 0; border-radius: var(--r-sm); color: var(--white); font: 700 15px/1.4 var(--font); box-shadow: 0 8px 22px rgba(8, 20, 40, .24); }
+    .o-jump button::before { content: ''; width: 9px; height: 9px; flex: none; background: var(--accent); border-radius: 50%; }
+    @media (prefers-reduced-motion: reduce) { .o-jump { transition: none; } }
+
+    /* a wider page: the person in two columns */
+    @container detail (min-width: 800px) {
+      .o-cols { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(300px, 1fr); column-gap: 26px; align-items: start; }
+      .o-main1 { grid-column: 1; grid-row: 1; min-width: 0; }
+      .o-main2 { grid-column: 1; grid-row: 2; min-width: 0; }
+      .o-side { grid-column: 2; grid-row: 1 / span 2; min-width: 0; position: sticky; top: calc(var(--bar) + 6px); }
+      .o-card { padding: 24px 24px 26px; }
+    }
+
+    @media (min-width: 700px) {
+      :root { --gut: 24px; }
+      .wrap { padding-block: 28px 56px; }
+      .tabs { justify-content: flex-start; gap: 0 30px; }
+      .o-card { padding: 22px 22px 24px; }
+    }
+
+    /* computer: the bar stays on top; everyone is shown as the board, on the whole width */
+    @media (min-width: 960px) {
+      :root { --bar: 68px; --gut: 28px; }
+      html { scroll-padding-top: calc(var(--bar) + 16px); }
+      .top { position: sticky; top: 0; z-index: 20; }
+      .top-in { min-height: 68px; }
+      .brand strong { font-size: 17px; }
+      .top-nav .here { display: inline-flex; align-items: center; min-height: 40px; border-bottom: 2px solid var(--accent); }
+      .pane-list { max-width: none; }
+      .pl-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+      .pl-head .o-startp { display: block; margin: 0 0 16px; }
+      .pl-find { max-width: 340px; }
+      .tabs, #list, #list-empty { display: none; }
+      #board { display: block; margin-top: 18px; }
+    }
+    @media (min-width: 960px) and (max-width: 1139.98px) {
+      .bd, .bd-rest { gap: 8px; }
+      .bd-col { padding: 10px 7px; }
+      .bd-card.o-row, .bd-card.o-row:last-child { padding: 9px 9px 10px; }
+      .bd-h { font-size: 15.5px; }
+    }
   </style>
 </head>
 <body>
 
 <header class="top">
-  <div class="inner">
-    <img src="assets/cgi-logo.png" alt="Camp Gan Israel Morristown">
-    <div>
-      <div class="brand">CGI Morristown</div>
-      <div class="sub">Camp office · Staff 2027</div>
-    </div>
+  <div class="top-in">
+    <a class="brand" href="office.html">
+      <img src="assets/crest-184.png" width="44" height="44" alt="Camp Gan Israel Morristown">
+      <span><strong>CGI Morristown</strong><small>Camp Office</small></span>
+    </a>
+    <nav class="top-nav" aria-label="Camp Office">
+      <span class="here">Staff hiring</span>
+      <a href="#" id="nav-out" data-signout="1" hidden>Sign out</a>
+    </nav>
   </div>
 </header>
 
 <main class="wrap">
   <div class="banner" id="trouble" hidden role="alert"></div>
-  <div id="root"><div class="spinner" aria-hidden="true"></div><p class="muted">Opening…</p></div>
+
+  <div id="signin" hidden>
+    <section class="si-card" aria-labelledby="si-title">
+      <img class="si-crest" src="assets/crest-184.png" width="76" height="88" alt="Camp Gan Israel Morristown">
+      <p class="o-eyebrow">CGI Morristown · Camp Office</p>
+      <h1 id="si-title">Sign in</h1>
+      <p class="si-intro">For the camp office. A six-digit code goes to your email address; there is no password.</p>
+      <form id="f-email">
+        <label class="o-lab" for="si-email" style="margin-top:0">Your email address</label>
+        <input class="o-field" type="email" id="si-email" autocomplete="email" required style="margin-top:0">
+        <button type="submit" class="o-btn">Send me a code</button>
+      </form>
+      <form id="f-code" hidden>
+        <p class="o-hint" id="si-sent" style="margin:0 0 6px"></p>
+        <label class="o-lab" for="si-code" style="margin-top:0">The six-digit code</label>
+        <input class="o-field" type="text" id="si-code" inputmode="numeric" pattern="[0-9 ]*" autocomplete="one-time-code" maxlength="7" required style="margin-top:0">
+        <button type="submit" class="o-btn">Sign in</button>
+        <p class="o-foot"><a href="#" id="si-again">Use another address, or send a new code</a></p>
+      </form>
+    </section>
+  </div>
+
+  <div class="office" id="office" data-view="home">
+    <section class="pane-list" id="pane-list" aria-label="Everyone in staff hiring">
+      <div class="pl-head">
+        <div class="pl-intro">
+          <p class="o-eyebrow">Staff hiring 2027</p>
+          <h1 class="o-h1" id="pl-sum"></h1>
+        </div>
+        <p class="o-startp" id="pl-start"></p>
+      </div>
+      <div class="pl-tools">
+        <label class="pl-find"><span class="vh">Find a name</span><input type="search" id="find" placeholder="Find a name" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
+        <div class="tabs" role="group" aria-label="Who to show">
+          <button type="button" data-tab="todo" aria-pressed="true">To do <span class="t-n" id="n-todo"></span></button>
+          <button type="button" data-tab="waiting" aria-pressed="false">Waiting <span class="t-n" id="n-waiting"></span></button>
+          <button type="button" data-tab="hired" aria-pressed="false">Hired <span class="t-n" id="n-hired"></span></button>
+          <button type="button" data-tab="all" aria-pressed="false">All</button>
+        </div>
+      </div>
+      <div id="list"></div>
+      <div id="board"></div>
+      <p class="o-empty" id="list-empty" hidden></p>
+      <div id="pl-foot"></div>
+    </section>
+    <section class="pane-detail" id="pane-detail">
+      <div id="root" tabindex="-1"><div class="spinner" aria-hidden="true"></div><p class="muted">Opening…</p></div>
+      <div class="o-jump" id="jump"><button type="button" tabindex="-1"><span></span> <span aria-hidden="true">↑</span></button></div>
+    </section>
+  </div>
 </main>
 
 <script src="config.js"></script>
 <script>
-// The frame for the camp office's pages. It asks the hiring backend for the content that belongs to the link
-// (action, id and the signed key k come from the email button), shows it, and sends the form on the page back
-// with fetch, so the answer ("Sent ✓") appears right here. [2026-11-18: pages served by Apps Script itself could
-// not show the answer after a button press.]
+// The frame of the Camp Office page. The backend sends each view as text that is ready to show; this script asks
+// for it, puts it in its place and sends every form on it back, so the answer appears right here.
+//   office.html                      everyone (needs the sign-in): the list on a phone, the board on a computer
+//   office.html?p=person&id=S27-002  one person (needs the sign-in, or &k= from a button in an office email)
+//   office.html?action=decide|offer  the single-step pages of emails sent on 2026-11-18 (still answered)
+// Moving between everyone and a person does not load the page again: the list stays as it is, the address changes,
+// and the browser's Back goes back.
 (function () {
   var BACKEND = (window.PORTAL_CONFIG && window.PORTAL_CONFIG.applyBackendUrl) || '';
-  var root = document.getElementById('root'), trouble = document.getElementById('trouble'), busy = false;
+  var $ = function (id) { return document.getElementById(id); };
+  var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
+  var office = $('office'), root = $('root'), listBox = $('list'), boardBox = $('board'), trouble = $('trouble'), signin = $('signin'), jump = $('jump'), find = $('find');
+  var q = new URLSearchParams(location.search), OLD = !!q.get('action'), K = q.get('k') || '';
+  var S_KEY = 'cgi-office-session', E_KEY = 'cgi-office-email';
+  var EMPTY = { todo: 'Nothing is waiting for your decision.', waiting: 'Nobody is waiting on their side right now.', hired: 'Nobody is hired yet. A person appears here on the day the agreement is signed.', all: 'Nobody is in the list yet.' };
+  // the board: the stages in the order a person goes through them [stage, heading, whose move, colour of the top edge]
+  var COLS = [['new', 'New', 'your decision', 'mine'], ['invited', 'Invited', 'to an interview', ''], ['interviewed', 'Interviewed', 'your decision', 'mine'], ['sent', 'Agreement sent', 'not signed yet', ''], ['hired', 'Hired', 'signed', 'done']];
+  var busy = false, turn = 0, hasList = false, homeTitle = 'Staff hiring 2027', tab = 'todo', tabPicked = false, current = '', people = {}, listY = 0, colY = {}, nextCard = null;
+  var wide = window.matchMedia('(min-width: 960px)');
+  function keep(key, v) { try { if (v) localStorage.setItem(key, v); else localStorage.removeItem(key); } catch (e) {} }
+  function kept(key) { try { return localStorage.getItem(key) || ''; } catch (e) { return ''; } }
+  function view() { return office.getAttribute('data-view'); }
+  function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text !== undefined) x.textContent = text; return x; }
+
+  // -- what is on the screen ---------------------------------------------------------------------------------
   function say(msg) { trouble.textContent = msg; trouble.hidden = !msg; if (msg) window.scrollTo(0, 0); }
-  function plain(title, msg) {
-    root.textContent = '';
-    var h = document.createElement('h2'), p = document.createElement('p');
-    h.style.margin = '0 0 10px'; h.textContent = title; p.textContent = msg; root.appendChild(h); root.appendChild(p);
+  function stage(signingIn) { document.body.classList.toggle('is-signin', signingIn); signin.hidden = !signingIn; office.hidden = signingIn; }
+  function backWord() {                            // the way back is named after what he comes back to
+    each(root.querySelectorAll('.o-back a'), function (a) { a.textContent = wide.matches ? '← Back to the board' : '← Back to the list'; });
   }
-  function show(j) {
-    root.innerHTML = j.html;                       // written by the backend (escaped values in fixed markup); reached only with a signed link
-    document.title = (j.title ? j.title + ' – ' : '') + 'Camp Office';
-    say(''); window.scrollTo(0, 0);
+  var DAYS = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|June|July|August|September|October|November|December) (\d{1,2})\b/g;
+  function tie(scope) {                            // short facts in a row, where they wrap: the dot between two facts stays at the end of its line; "Nov 19" and "1–7" stay in one piece
+    each(scope.querySelectorAll('.o-rm, .o-rw, .o-meta'), function (n) {
+      var walk = document.createTreeWalker(n, NodeFilter.SHOW_TEXT), t;
+      while ((t = walk.nextNode())) t.nodeValue = t.nodeValue.replace(/ · /g, '\u00a0· ').replace(DAYS, '$1\u00a0$2').replace(/(\d)–(\d)/g, '$1\u2060–\u2060$2');
+    });
+  }
+  function fill(html, title) {                     // written by the backend: fixed markup around escaped values
+    stage(false); root.innerHTML = html; backWord(); tie(root);
+    document.title = (title ? title + ' – ' : '') + 'Camp Office';
+    nextCard = root.querySelector('.o-next form') ? root.querySelector('.o-next') : null; watch();
+  }
+  function plain(title, msg) {
+    stage(false); office.setAttribute('data-view', 'person'); root.textContent = ''; nextCard = null; watch();
+    var h = document.createElement('h1'), p = document.createElement('p');
+    h.className = 'o-h1'; h.textContent = title; p.textContent = msg; root.appendChild(h); root.appendChild(p);
+  }
+  function working() { stage(false); root.innerHTML = '<div class="spinner" aria-hidden="true"></div><p class="muted">Opening…</p>'; nextCard = null; watch(); }
+  function showHome() {                            // everyone: the right-hand part is empty and out of sight
+    stage(false); root.textContent = ''; nextCard = null; watch();
+    document.title = homeTitle + ' – Camp Office'; paint();
+  }
+  function showSignin() {
+    stage(true); $('f-email').hidden = false; $('f-code').hidden = true;
+    if (!$('si-email').value) $('si-email').value = kept(E_KEY);
+    document.title = 'Sign in – Camp Office'; window.scrollTo(0, 0);
+  }
+  function signedOut() {                           // the session is gone: forget what was shown with it
+    keep(S_KEY, ''); hasList = false; people = {}; current = ''; colY = {};
+    listBox.textContent = ''; boardBox.textContent = ''; $('pl-start').textContent = ''; $('pl-foot').textContent = '';
+    office.classList.remove('has-list'); $('nav-out').hidden = true; showSignin();
   }
 
-  async function open() {
-    var q = new URLSearchParams(location.search);
-    if (!q.get('action') || !q.get('id') || !q.get('k')) return plain('Nothing to show here', 'This page opens from the buttons in the emails that the Staff Portal sends to the camp office.');
-    if (!BACKEND) return plain('Not connected', 'This page is not connected to the hiring system yet.');
-    q.set('via', 'page');
+  // -- everyone: the list as the backend sends it, and the board made from the same lines --------------------
+  function setList(j) {
+    if (typeof j.list !== 'string') return;
+    listBox.innerHTML = j.list; tie(listBox); hasList = true; office.classList.add('has-list'); $('nav-out').hidden = false;
+    $('pl-sum').innerHTML = j.sum || '';
+    var c = j.counts || {}, foot = listBox.querySelector('.o-foot'), first = listBox.querySelector('.o-group[data-tab="todo"] .o-row'), start = $('pl-start');
+    ['todo', 'waiting', 'hired'].forEach(function (k) { $('n-' + k).textContent = c[k] ? String(c[k]) : ''; });
+    $('pl-foot').textContent = ''; if (foot) $('pl-foot').appendChild(foot);          // who is signed in and the way to the sheet: under the list and under the board
+    start.textContent = '';
+    if (first) {                                   // on the board: one press to whoever has waited longest for him
+      var a = el('a', 'o-btn o-start'), nm = first.querySelector('.o-rn'), arrow = el('span', '', '→');
+      a.setAttribute('href', first.getAttribute('href')); arrow.setAttribute('aria-hidden', 'true');
+      a.appendChild(document.createTextNode('Start with ' + (nm && nm.firstChild ? nm.firstChild.textContent.trim() : 'the first one') + ' ')); a.appendChild(arrow); start.appendChild(a);
+    }
+    drawBoard();
+    if (!tabPicked) { tabPicked = true; tab = c.todo ? 'todo' : 'all'; }   // on arrival: what waits for him; with nothing waiting, everyone. After that the tab is his.
+    paint();
+  }
+  function drawBoard() {                           // one column for each stage; a card is the person's line from the list
+    var by = {}, names = {}, others = [], known = {};
+    COLS.forEach(function (c) { known[c[0]] = true; });
+    each(listBox.querySelectorAll('.o-group'), function (g) {
+      var k = g.getAttribute('data-stage') || 'other', h = g.querySelector('.o-gh');
+      if (!by[k]) { by[k] = []; names[k] = (h && h.firstChild ? h.firstChild.textContent.trim() : '') || 'Others'; if (!known[k]) others.push(k); }
+      each(g.querySelectorAll('.o-row'), function (r) { by[k].push(r); });
+    });
+    function column(tag, key, title, sub, cls) {
+      var col = el('section', ('bd-col ' + cls).trim()), h = el(tag, 'bd-h'), box = el('div', 'bd-cards');
+      col.setAttribute('data-col', key);
+      h.appendChild(el('span', '', title)); h.appendChild(el('span', 'o-n', '0')); col.appendChild(h);
+      if (sub) col.appendChild(el('p', 'bd-s', sub));
+      (by[key] || []).forEach(function (r) {
+        var a = r.cloneNode(true), arrow = a.querySelector('.o-arrow');
+        a.hidden = false; a.className = 'o-row bd-card'; if (arrow) arrow.parentNode.removeChild(arrow);
+        box.appendChild(a);
+      });
+      col.appendChild(box); col.appendChild(el('p', 'bd-none'));
+      return col;
+    }
+    var bd = el('div', 'bd');
+    COLS.forEach(function (c) { bd.appendChild(column('h2', c[0], c[1], c[2], c[3])); });
+    boardBox.textContent = ''; boardBox.appendChild(bd);
+    if (others.length) {                           // whoever is not on the way through the stages: on hold, not moving forward, no application yet
+      var rest = el('div', 'bd-rest');
+      others.forEach(function (k) { rest.appendChild(column('h3', k, names[k], '', '')); });
+      boardBox.appendChild(el('h2', 'bd-resth', 'Also in the list')); boardBox.appendChild(rest);
+    }
+  }
+  function paint() {                               // which tab, which name: the same answer for the list and for the board
+    var term = find.value.trim().toLowerCase(), any = false;
+    var hit = function (r) { var ok = !term || (r.getAttribute('data-q') || '').indexOf(term) !== -1; r.hidden = !ok; return ok; };
+    each(listBox.querySelectorAll('.o-group'), function (g) {
+      var inTab = term ? true : (tab === 'all' || g.getAttribute('data-tab') === tab), shown = 0;
+      each(g.querySelectorAll('.o-row'), function (r) { if (hit(r)) shown++; });
+      g.hidden = !(inTab && shown); if (inTab && shown) any = true;
+      if (term && shown && g.tagName === 'DETAILS') g.open = true;     // a name that is folded away is still found
+    });
+    each(boardBox.querySelectorAll('.bd-col'), function (c) {
+      var shown = 0, none = c.querySelector('.bd-none'), aside = c.parentNode.className === 'bd-rest';
+      each(c.querySelectorAll('.bd-card'), function (r) { if (hit(r)) shown++; });
+      c.querySelector('.o-n').textContent = String(shown);
+      none.hidden = shown > 0; none.textContent = term ? 'No match' : 'Nobody here';
+      if (aside) c.hidden = !shown;
+    });
+    var rest = boardBox.querySelector('.bd-rest');
+    if (rest) { var some = !!rest.querySelector('.bd-col:not([hidden])'); rest.hidden = !some; rest.previousSibling.hidden = !some; }
+    each(document.querySelectorAll('.tabs button'), function (b) { b.setAttribute('aria-pressed', (!term && b.getAttribute('data-tab') === tab) ? 'true' : 'false'); });
+    var none = $('list-empty'); none.hidden = any || !hasList;
+    if (!any) none.textContent = term ? 'Nobody in the list matches “' + find.value.trim() + '”.' : EMPTY[tab];
+  }
+  function inToDo(id) {
+    var found = false;
+    each(listBox.querySelectorAll('.o-group[data-tab="todo"] .o-row'), function (r) { if (r.getAttribute('data-id') === id) found = true; });
+    return found;
+  }
+  function pick(name) { tab = name; tabPicked = true; find.value = ''; paint(); }
+  function reveal(id) {                            // a person opened from somewhere else than the list: the list turns to the tab that person is under
+    var row = null; each(listBox.querySelectorAll('.o-row'), function (r) { if (r.getAttribute('data-id') === id) row = r; });
+    if (!row || find.value.trim()) return;
+    var g = row.closest('.o-group'), t = g.getAttribute('data-tab');
+    if (tab !== 'all' && tab !== t) tab = (t === 'other') ? 'all' : t;
+    if (g.tagName === 'DETAILS') g.open = true;
+    paint();
+  }
+  function noteCols() { colY = {}; each(boardBox.querySelectorAll('.bd-col'), function (c) { colY[c.getAttribute('data-col')] = c.querySelector('.bd-cards').scrollTop; }); }
+  function putCols() { each(boardBox.querySelectorAll('.bd-col'), function (c) { c.querySelector('.bd-cards').scrollTop = colY[c.getAttribute('data-col')] || 0; }); }
+
+  // -- talking to the backend --------------------------------------------------------------------------------
+  async function call(body) { var res = await fetch(BACKEND, { method: 'POST', body: body }); return await res.json(); }
+  function post(fields) {                          // one request, as the office page
+    var body = new URLSearchParams(fields); body.set('action', 'office');
+    if (kept(S_KEY)) body.set('s', kept(S_KEY)); if (K) body.set('k', K);
+    return call(body);
+  }
+  async function ask(fields) {                     // a request that only reads: tried three times before giving up
+    for (var attempt = 1; attempt <= 3; attempt++) {
+      try { return await post(fields); } catch (err) { if (attempt < 3) await new Promise(function (r) { setTimeout(r, 1200 * attempt); }); }
+    }
+    return null;
+  }
+  var NO_LINE = 'The page could not reach the hiring system. Check the connection and try again.';
+  var NO_PAGE = 'The hiring system did not send the page. Please try again.';
+
+  // -- going somewhere ---------------------------------------------------------------------------------------
+  function route() { var u = new URLSearchParams(location.search); return (u.get('p') === 'person' && u.get('id')) ? { v: 'person', id: u.get('id') } : { v: 'home' }; }
+  function remember(st) { try { history.pushState(st, '', st.v === 'person' ? 'office.html?p=person&id=' + encodeURIComponent(st.id) : 'office.html'); } catch (e) {} }
+  // how: 'click' (a new step in the browser's history), 'back' (Back or Forward), 'first' (the page was just opened)
+  function go(st, how) {
+    say('');
+    if (st.v === 'home') {
+      var fromPerson = view() === 'person' && how !== 'first';
+      if (how === 'click') remember(st);
+      current = ''; office.setAttribute('data-view', 'home');
+      if (!hasList) return loadHome();
+      showHome();
+      if (fromPerson) putCols();                                       // back where he was: down the page, and down a long column
+      window.scrollTo(0, fromPerson ? listY : 0);
+      return;
+    }
+    if (how === 'click') { if (view() === 'home') { listY = window.scrollY; noteCols(); } remember(st); }
+    current = st.id; office.setAttribute('data-view', 'person'); reveal(st.id);
+    if (how === 'back' && people[st.id]) { fill(people[st.id].html, people[st.id].title); window.scrollTo(0, 0); return; }
+    return loadPerson(st.id, how);
+  }
+  async function loadHome() {
+    var mine = ++turn; working();
+    var j = await ask({ p: 'home' });
+    if (mine !== turn) return;
+    if (!j) return plain('This did not open', NO_LINE);
+    if (j.signin) return signedOut();
+    if (typeof j.list !== 'string') return plain('This did not open', j.error ? String(j.error) : NO_PAGE);
+    homeTitle = j.title || homeTitle; setList(j);
+    if (view() === 'home') showHome();
+  }
+  async function loadPerson(id, how) {
+    var mine = ++turn, fields = { p: 'person', id: id }; working(); window.scrollTo(0, 0);
+    if (!hasList && kept(S_KEY)) fields.w = 'list';                    // the first thing opened is a person: bring the list along
+    var j = await ask(fields);
+    if (mine !== turn) return;
+    if (!j) return plain('This did not open', NO_LINE);
+    if (j.signin) return signedOut();
+    if (typeof j.html !== 'string') return plain('This did not open', j.error ? String(j.error) : NO_PAGE);
+    if (typeof j.list === 'string') { setList(j); reveal(id); }
+    people[id] = { html: j.html, title: j.title };
+    fill(j.html, j.title);
+    if (how === 'click') { try { root.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  async function openOld() {                       // a single-step page from an email of 2026-11-18
+    working(); office.setAttribute('data-view', 'person');
     for (var attempt = 1; attempt <= 3; attempt++) {
       try {
-        var res = await fetch(BACKEND + '?' + q.toString());
-        var j = await res.json();
-        if (j && typeof j.html === 'string') return show(j);
-        return plain('This did not open', (j && j.error) ? String(j.error) : 'The hiring system did not send the page. Please try the button in the email again.');
+        var old = new URLSearchParams(location.search); old.set('via', 'page');
+        var res = await fetch(BACKEND + '?' + old.toString()), j = await res.json();
+        if (j && typeof j.html === 'string') return fill(j.html, j.title);
+        return plain('This did not open', (j && j.error) ? String(j.error) : NO_PAGE);
       } catch (err) { if (attempt < 3) await new Promise(function (r) { setTimeout(r, 1200 * attempt); }); }
     }
-    plain('This did not open', 'The page could not reach the hiring system. Check the connection and open the button in the email again.');
+    plain('This did not open', NO_LINE);
+  }
+  function start() {
+    if (!BACKEND) return plain('Not connected', 'This page is not connected to the hiring system yet.');
+    if (OLD) return openOld();
+    var st = route(); try { history.scrollRestoration = 'manual'; history.replaceState(st, ''); } catch (e) {}   // where the page stands after Back is decided here: everyone where he left it, a person from the top
+    go(st, 'first');
   }
 
-  // Every form on these pages goes back to the backend, and its answer replaces the page.
+  // -- the next step stays within reach ----------------------------------------------------------------------
+  var ticking = false;
+  function watch() {
+    var on = false;
+    if (nextCard && view() === 'person') on = nextCard.getBoundingClientRect().bottom < 72;
+    if (on) jump.querySelector('span').textContent = 'Next step: ' + ((nextCard.querySelector('.o-ch') || {}).textContent || '');
+    jump.classList.toggle('is-on', on); jump.querySelector('button').tabIndex = on ? 0 : -1;
+  }
+  function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; watch(); }); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  jump.querySelector('button').addEventListener('click', function () { if (nextCard) nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  if (wide.addEventListener) wide.addEventListener('change', backWord); else if (wide.addListener) wide.addListener(backWord);
+
+  // -- every form inside a view goes back to the backend; its answer replaces the view ----------------------
+  function formTrouble(form, btn, msg) {           // said right where he is, above the button he pressed
+    var p = form.querySelector('.o-err');
+    if (!p) { p = document.createElement('p'); p.className = 'o-err'; p.setAttribute('role', 'alert'); form.insertBefore(p, btn || null); }
+    p.textContent = msg;
+    try { p.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+  }
+  function afterButton(wasHis) {                   // a decision is made: the next person who waits for him is one press away
+    if (!wasHis || !hasList || inToDo(current)) return;
+    var note = root.querySelector('.o-flash.good'), next = null; if (!note) return;
+    each(listBox.querySelectorAll('.o-group[data-tab="todo"] .o-row'), function (r) { if (!next) next = r; });
+    var p = document.createElement('p'); p.className = 'o-after';
+    if (next) {
+      var a = document.createElement('a'), nm = next.querySelector('.o-rn');
+      a.className = 'o-btn2'; a.href = next.getAttribute('href');
+      a.textContent = 'Next one waiting for you: ' + (nm && nm.firstChild ? nm.firstChild.textContent.trim() : 'open') + ' →'; p.appendChild(a);
+    } else { p.className = 'o-after o-meta'; p.textContent = 'That was the last one waiting for you.'; }
+    note.parentNode.insertBefore(p, note.nextSibling);
+  }
   root.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (busy) return;
-    var form = e.target, body = new URLSearchParams(new FormData(form)), btn = form.querySelector('button[type=submit]'), label = btn ? btn.textContent : '';
-    body.set('via', 'page');
-    busy = true; say(''); if (btn) { btn.disabled = true; btn.textContent = 'Working…'; }
+    var form = e.target, data = new FormData(form), body = new URLSearchParams(data), btn = form.querySelector('button[type=submit]'), label = btn ? btn.textContent : '';
+    var older = data.has('action'), wasHis = !older && inToDo(current), err = form.querySelector('.o-err');
+    if (older) body.set('via', 'page');            // a single-step page of an older email
+    else { body.set('action', 'office'); body.set('p', 'act'); if (hasList) body.set('w', 'list'); if (kept(S_KEY)) body.set('s', kept(S_KEY)); if (K) body.set('k', K); }
+    busy = true; say(''); if (err) err.remove(); if (btn) { btn.disabled = true; btn.textContent = 'Working…'; }
     try {
-      var res = await fetch(BACKEND, { method: 'POST', body: body });
-      var j = await res.json();
-      if (j && typeof j.html === 'string') show(j);
-      else if (j && j.error) { if (btn) { btn.disabled = false; btn.textContent = label; } say(String(j.error)); }   // a missing choice: the form stays as it was filled in
+      var j = await call(body);
+      if (j && j.signin) signedOut();
+      else if (j && typeof j.html === 'string') {
+        if (typeof j.list === 'string') setList(j);                    // the list and the board follow what was just done
+        if (!older && current) people[current] = { html: j.html, title: j.title };
+        fill(j.html, j.title); afterButton(wasHis); window.scrollTo(0, 0);
+      }
+      else if (j && j.error) { if (btn) { btn.disabled = false; btn.textContent = label; } formTrouble(form, btn, String(j.error)); }   // a missing choice: the form stays as it was filled in
       else throw new Error('no answer');
-    } catch (err) {
+    } catch (err2) {
       if (btn) { btn.disabled = false; btn.textContent = label; }
-      say('That did not go through (' + (err && err.message ? err.message : 'no connection') + '). Before you try again, open the row in Staff 2027 and look at the status: it may have gone out already.');
+      formTrouble(form, btn, 'That did not go through (' + (err2 && err2.message ? err2.message : 'no connection') + '). Before you try again, reload this page and look at what it shows: it may have gone out already.');
     }
     busy = false;
   });
 
-  open();
+  // -- what can be pressed outside a form ---------------------------------------------------------------------
+  document.addEventListener('click', function (e) {
+    var t = e.target; if (!t || !t.closest) return;
+    if (t.closest('[data-signout]')) { e.preventDefault(); post({ p: 'logout' }).catch(function () {}).then(signedOut); return; }
+    var b = t.closest('.tabs button'); if (b) { pick(b.getAttribute('data-tab')); return; }
+    var a = t.closest('a'); if (!a || signin.contains(a)) return;
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) === '#' && href.length > 1) {                    // a place further down this page, such as the box for a note
+      var el2 = document.getElementById(href.slice(1)); if (!el2) return;
+      e.preventDefault(); el2.scrollIntoView({ behavior: 'smooth', block: 'center' }); try { el2.focus({ preventScroll: true }); } catch (x) {}
+      return;
+    }
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target || OLD) return;
+    var m = /^office\.html(?:\?p=person&id=([^&#]+))?$/.exec(href); if (!m) return;
+    e.preventDefault(); go(m[1] ? { v: 'person', id: decodeURIComponent(m[1]) } : { v: 'home' }, 'click');
+  });
+  find.addEventListener('input', paint);
+  find.addEventListener('keydown', function (e) { if (e.key === 'Escape' && find.value) { find.value = ''; paint(); } });
+  window.addEventListener('popstate', function (e) { if (!OLD) go((e.state && e.state.v) ? e.state : route(), 'back'); });
+
+  // -- signing in: the address, then the code from the email -------------------------------------------------
+  $('f-email').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var email = $('si-email').value.trim(), btn = this.querySelector('button'); if (!email) return;
+    btn.disabled = true; say('');
+    try {
+      await post({ p: 'code', email: email }); keep(E_KEY, email);
+      $('si-sent').textContent = 'If ' + email + ' is on the office list, a code is on its way to it now. It works for 10 minutes.';
+      $('f-email').hidden = true; $('f-code').hidden = false; $('si-code').value = ''; $('si-code').focus();
+    } catch (err) { say('The code could not be requested. Check the connection and try again.'); }
+    btn.disabled = false;
+  });
+  $('f-code').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = this.querySelector('button'); btn.disabled = true; say('');
+    try {
+      var j = await post({ p: 'login', email: $('si-email').value.trim(), code: $('si-code').value });
+      if (j && j.ok && j.session) { keep(S_KEY, j.session); start(); }
+      else say((j && j.error) || 'That code did not work. Please try again.');
+    } catch (err) { say('The sign-in could not be checked. Check the connection and try again.'); }
+    btn.disabled = false;
+  });
+  $('si-again').addEventListener('click', function (e) { e.preventDefault(); say(''); $('f-code').hidden = true; $('f-email').hidden = false; $('si-email').focus(); });
+
+  start();
 })();
 </script>
 </body>
