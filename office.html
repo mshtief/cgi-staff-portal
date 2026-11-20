@@ -451,7 +451,7 @@
       <img class="si-crest" src="assets/crest-184.png" width="76" height="88" alt="Camp Gan Israel Morristown">
       <p class="o-eyebrow">CGI Morristown · Camp Office</p>
       <h1 id="si-title">Sign in</h1>
-      <p class="si-intro">For the camp office. A six-digit code goes to your email address; there is no password.</p>
+      <p class="si-intro">For the camp office. Type your email address and press the button. A new six-digit code comes to you by email each time, and you type it here. There is no password to remember.</p>
       <form id="f-email">
         <label class="o-lab" for="si-email" style="margin-top:0">Your email address</label>
         <input class="o-field" type="email" id="si-email" autocomplete="email" required style="margin-top:0">
@@ -462,6 +462,7 @@
         <label class="o-lab" for="si-code" style="margin-top:0">The six-digit code</label>
         <input class="o-field" type="text" id="si-code" inputmode="numeric" pattern="[0-9 ]*" autocomplete="one-time-code" maxlength="7" required style="margin-top:0">
         <button type="submit" class="o-btn">Sign in</button>
+        <p class="o-hint" id="si-stay" style="margin:10px 0 0">This browser then stays signed in for 7 days, or until you press “Sign out”.</p>
         <p class="o-foot"><a href="#" id="si-again">Use another address, or send a new code</a></p>
       </form>
     </section>
@@ -952,7 +953,7 @@
     btn.disabled = true; say('');
     try {
       await post({ p: 'code', email: email }); keep(E_KEY, email);
-      $('si-sent').textContent = 'If ' + email + ' is on the office list, a code is on its way to it now. It works for 10 minutes.';
+      $('si-sent').textContent = 'A code is on its way to ' + email + ', if that is one of the camp office\'s own addresses. It works for 10 minutes. No other address is sent anything.';
       $('f-email').hidden = true; $('f-code').hidden = false; $('si-code').value = ''; $('si-code').focus();
     } catch (err) { say('The code could not be requested. Check the connection and try again.'); }
     btn.disabled = false;
