@@ -10,7 +10,8 @@
   <link rel="icon" href="assets/crest-184.png">
   <link rel="apple-touch-icon" href="assets/crest-184.png">
   <style>
-    /* The Camp Office: the camp office's own page for staff hiring. This file is the frame, the look and the way
+    /* The Camp Office: the camp office's own page. Its first part is staff hiring; the other parts are in the menu
+       and open where they live today until they are built in here. This file is the frame, the look and the way
        around; what is shown comes from the hiring backend (backend/2027/Code.gs, block 8 "THE OFFICE") after a
        sign-in, or through a signed link from an office email.
 
@@ -20,16 +21,21 @@
        Text and the edges of controls are a little darker than on the application page, because here they are read
        and pressed all day.
 
-       The layout (2026-11-19, his choice among three he tried; reasons and sources: backend/DEPLOY-2027.md):
+       The layout (2026-11-19 and 11-20, his choices among layouts he tried; reasons and sources: backend/DEPLOY-2027.md):
+       - The menu stays on the screen ("I like the side bar. it makes it easy to navigate"). Computer: at the side,
+         also beside the board: names from 1240px, a drawing with a word under it below that. Phone and tablet: a bar
+         at the bottom with the first three parts and "More" (a bar holds five). It appears once he is signed in.
+       - The office's first page ("Office home"): what waits for him, then one line for each part and where it stands.
        - Phone and tablet: the list. A name search and four tabs (To do / Waiting / Hired / All), people grouped by
          what happens next; tap a name, that person, back to the list where it was.
-       - Computer (960px and wider): the board. One column for each stage, one card for each person, the whole
+       - Computer (1040px and wider): the board. One column for each stage, one card for each person, the whole
          pipeline in one look. A card opens that person on the whole page; Back returns to the board where it was.
          Cards are not dragged: every move sends an email, so it is done on the person's page, where he sees what
          goes out.
        - One person (the same on both): who it is, four marks for where it stands, then the next step first. Where
          the page is wide enough, how to reach them and what has gone out sit in a column on the right.
-       - Nothing is tucked behind a menu, and everything to press is at least 44px high. */
+       - On a computer nothing is tucked away; on a phone the last three parts are behind "More". Everything to
+         press is at least 44px high. */
     :root {
       --navy: #1e3a5f; --navy-dark: #142842; --navy-soft: #e8eef6; --navy-line: #cfd9e6;
       --accent: #f59e0b; --accent-dark: #d97706; --accent-text: #b45309; --accent-soft: #fff7e6; --mark: #fcd34d;
@@ -65,7 +71,6 @@
     .brand small { display: block; font-size: 12px; line-height: 1.4; margin-top: 1px; opacity: .85; }
     .brand:focus-visible, .top-nav a:focus-visible { outline-color: var(--accent); }
     .top-nav { display: flex; align-items: center; gap: 4px 24px; flex: none; font-size: 14px; font-weight: 600; }
-    .top-nav .here { display: none; }
     .top-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--white); text-decoration: none; }
     .top-nav a:hover { text-decoration: underline; }
 
@@ -82,9 +87,11 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } html { scroll-behavior: auto; } }
 
-    /* everyone, or one person: never both. (Before the list has come, only the right-hand part shows: the wait, or a
-       person opened through a link in an email.) */
-    .office:not(.has-list) .pane-list, .office.has-list[data-view="home"] .pane-detail, .office.has-list[data-view="person"] .pane-list { display: none; }
+    /* one thing at a time: the office's first page, a part that is not built yet, everyone in staff hiring, or one
+       person. (Before the list has come, only the last shows: the wait, or a person opened through a link in an email.) */
+    .hub, .part { display: none; }
+    .office.has-list[data-view="hub"] .hub, .office.has-list[data-view="part"] .part { display: block; }
+    .office:not(.has-list) .pane-list, .office.has-list:not([data-view="home"]) .pane-list, .office.has-list:not([data-view="person"]) .pane-detail { display: none; }
 
     /* signing in: a calm navy stage with one white card */
     body.is-signin { background: var(--navy); }
@@ -106,6 +113,71 @@
     .o-n { display: inline-block; min-width: 26px; text-align: center; background: var(--navy-soft); color: var(--navy); border-radius: 999px; padding: 0 9px; font: 700 13px/22px var(--font); letter-spacing: 0; }
     .o-tag { background: var(--accent); color: var(--ink); border-radius: 5px; padding: 1px 6px; font: 700 11px/1.5 var(--font); letter-spacing: .04em; vertical-align: 1px; }
     .o-empty { color: var(--muted); font-size: 15px; line-height: 1.6; padding: 26px 4px; margin: 0; text-align: center; }
+
+    /* small drawings, one for each part of the office */
+    .ic { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* the office's first page: what waits for him, then where each part stands. A part that is not built: a short page */
+    .hub, .part { max-width: 760px; margin-inline: auto; min-width: 0; overflow-wrap: anywhere; }
+    .hb-head { margin: 0 0 20px; }
+    .hb-head .o-h1 { margin: 0 0 6px; }
+    .hb-head .o-meta { margin: 0; }
+    .hb-h { display: flex; align-items: center; gap: 9px; font-size: 18px; margin: 0 0 10px; }
+    .hb-dot { width: 9px; height: 9px; flex: none; background: var(--accent); border: 1px solid var(--accent-dark); border-radius: 50%; }
+    .hb-todo { margin: 0 0 26px; }
+    .hb-tlist, .hb-grid { background: var(--white); border: 1px solid var(--edge); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+    .hb-tlist { border-left: 5px solid var(--accent); }
+    .td, .ar { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-items: center; min-height: 68px; padding: 10px 14px; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+    .ar { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "t n go" "s n go"; min-height: 62px; }
+    .td:last-child, .ar:last-child { border-bottom: 0; }
+    .td:hover, .ar:hover { background: var(--hover); }
+    .td:focus-visible, .ar:focus-visible { outline-offset: -4px; }
+    .td-b { min-width: 0; }
+    .td-b strong, .ar-t { display: block; color: var(--navy); font-weight: 700; line-height: 1.4; }
+    .td-b span, .ar-s { display: block; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .ar-t { grid-area: t; align-self: end; }
+    .ar-s { grid-area: s; align-self: start; }
+    .ar-n { grid-area: n; min-width: 26px; padding: 0 9px; border-radius: 999px; background: var(--accent); color: var(--ink); font: 700 13px/26px var(--font); text-align: center; }
+    .ar-go { grid-area: go; }
+    .td-go, .ar-go { color: #7b8698; font-size: 24px; line-height: 1; }
+    .ar.out .ar-go { font-size: 18px; }
+    .ar.no .ar-t { color: var(--muted); }
+    .hb-out { display: none; margin-top: 26px; }                       /* the links out of the office sit here only where the menu has no room for them */
+    .hb-out .bd-resth { margin: 0 0 8px; }
+    .hb-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+    .hb-links a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 16px; background: var(--white); border: 1.5px solid var(--navy-line); border-radius: 999px; color: var(--navy); font: 700 14px/1 var(--font); text-decoration: none; }
+    .hb-links a:hover { background: var(--hover); border-color: var(--navy); }
+    .part .o-card { margin-top: 14px; }
+    .part .o-card p:last-child { margin-bottom: 0; }
+
+    /* the menu that stays. One line of it: a drawing, the name (computer) or a short word (bar, narrow side), and in
+       amber how many things wait for him there */
+    .side { display: none; }
+    .sd { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; padding: 7px 2px 6px; background: none; border: 0; border-radius: 0; color: var(--muted); font: 600 11.5px/1.2 var(--font); text-decoration: none; }
+    .sd:focus-visible { outline-offset: -4px; }
+    .sd.on { color: var(--navy); font-weight: 700; }
+    .sd.on::before { content: ''; position: absolute; top: 0; left: 24%; right: 24%; height: 3px; border-radius: 0 0 3px 3px; background: var(--navy); }
+    .sd-l, .sd-x { display: none; }
+    .sd-n { position: absolute; top: 5px; left: calc(50% + 5px); min-width: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--ink); font: 700 11px/18px var(--font); text-align: center; }
+    .sd-h { margin: 8px 12px 2px; padding-top: 10px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .07em; line-height: 1.6; text-transform: uppercase; }
+    /* phone and tablet: a bar at the bottom; what does not fit is behind "More", in a sheet above the bar */
+    @media (max-width: 1039.98px) {
+      body.has-menu .side { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; display: flex; align-items: stretch; background: var(--white); border-top: 1px solid var(--navy-line); box-shadow: 0 -4px 18px rgba(8, 20, 40, .1); padding: 0 max(4px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(4px, env(safe-area-inset-left, 0px)); }
+      .sd-sheet { display: none; position: absolute; left: 8px; right: 8px; bottom: calc(100% + 8px); padding: 8px; background: var(--white); border: 1px solid var(--navy-line); border-radius: var(--r); box-shadow: 0 16px 40px rgba(8, 20, 40, .24); }
+      .side.is-open .sd-sheet { display: block; }
+      .side.is-open .sd-more, .sd-more.on { color: var(--navy); }
+      .sd-sheet .sd { flex-direction: row; justify-content: flex-start; gap: 12px; min-height: 48px; padding: 6px 12px; border-radius: var(--r-sm); color: var(--navy); font-size: 15px; }
+      .sd-sheet .sd:hover { background: var(--hover); }
+      .sd-sheet .sd.on { background: var(--navy-soft); }
+      .sd-sheet .sd.on::before { content: none; }
+      .sd-sheet .sd.no, .sd-sheet .sd-o { color: var(--muted); }
+      .sd-sheet .sd-l, .sd-sheet .sd-x { display: inline; }
+      .sd-sheet .sd-s { display: none; }
+      .sd-sheet .sd-n { position: static; margin-left: auto; }
+      .sd-sheet .sd-x { margin-left: auto; color: #7b8698; }
+      body.has-menu .wrap { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+      body.has-menu .o-jump { bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+    }
 
     /* everyone: the one line on top and the name search (both layouts) */
     .pl-intro { margin: 0 0 16px; }
@@ -296,30 +368,68 @@
       .o-card { padding: 22px 22px 24px; }
     }
 
-    /* computer: the bar stays on top; everyone is shown as the board, on the whole width */
-    @media (min-width: 960px) {
+    /* computer: the bar stays on top; the menu is at the side; everyone is shown as the board, on the whole width */
+    @media (min-width: 1040px) {
       :root { --bar: 68px; --gut: 28px; }
       html { scroll-padding-top: calc(var(--bar) + 16px); }
       .top { position: sticky; top: 0; z-index: 20; }
       .top-in { min-height: 68px; }
       .brand strong { font-size: 17px; }
-      .top-nav .here { display: inline-flex; align-items: center; min-height: 40px; border-bottom: 2px solid var(--accent); }
       .pane-list { max-width: none; }
       .pl-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
       .pl-head .o-startp { display: block; margin: 0 0 16px; }
       .pl-find { max-width: 340px; }
       .tabs, #list, #list-empty { display: none; }
       #board { display: block; margin-top: 18px; }
+      /* the menu at the side, narrow: every part with its drawing and a word; it stays while the page scrolls */
+      body.has-menu .wrap { display: grid; grid-template-columns: 76px minmax(0, 1fr); column-gap: 16px; align-items: start; }
+      body.has-menu .wrap > * { grid-column: 2; }
+      body.has-menu .wrap > .side { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: calc(var(--bar) + 18px); z-index: 3; display: flex; flex-direction: column; gap: 2px; padding: 6px; background: var(--white); border: 1px solid var(--edge); border-radius: var(--r); box-shadow: var(--shadow); }
+      .sd { flex: none; min-height: 58px; border-radius: var(--r-sm); color: var(--navy); }
+      .sd:hover { background: var(--hover); }
+      .sd.on { background: var(--navy-soft); }
+      .sd.on::before { top: 12px; bottom: 12px; left: 0; right: auto; width: 4px; height: auto; border-radius: 0 3px 3px 0; }
+      .sd.no { color: var(--muted); }
+      .sd-more, .sd-h, .sd-o { display: none; }
+      .sd-sheet { display: contents; }
+      .hub, .part { margin-inline: 0; max-width: 820px; }
+      .hb-out { display: block; }
     }
-    @media (min-width: 960px) and (max-width: 1139.98px) {
+    @media (min-width: 1040px) and (max-width: 1399.98px) {          /* beside the menu the board has less room: its columns are packed */
       .bd, .bd-rest { gap: 8px; }
       .bd-col { padding: 10px 7px; }
       .bd-card.o-row, .bd-card.o-row:last-child { padding: 9px 9px 10px; }
       .bd-h { font-size: 15.5px; }
     }
+    /* a wide computer: the menu with the names written out, and the links out of the office under them */
+    @media (min-width: 1240px) {
+      body.has-menu .wrap, body.has-menu .top-in { max-width: 1480px; }
+      body.has-menu .wrap { grid-template-columns: 232px minmax(0, 1fr); column-gap: 28px; }
+      body.has-menu .wrap > .side { padding: 10px; }
+      .sd { flex-direction: row; justify-content: flex-start; gap: 12px; min-height: 46px; padding: 6px 12px; font-size: 15px; }
+      .sd.on::before { top: 10px; bottom: 10px; }
+      .sd-l, .sd-x { display: inline; }
+      .sd-s { display: none; }
+      .sd-n { position: static; margin-left: auto; min-width: 24px; padding: 0 7px; font: 700 12.5px/22px var(--font); }
+      .sd-x { margin-left: auto; color: #7b8698; }
+      .sd-h { display: block; margin: 12px 12px 4px; padding-top: 12px; }
+      .sd-o { display: flex; min-height: 40px; color: var(--muted); }
+      .hb-out { display: none; }
+    }
   </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 24 24"><rect x="4" y="4" width="6.8" height="6.8" rx="1.6"/><rect x="13.2" y="4" width="6.8" height="6.8" rx="1.6"/><rect x="4" y="13.2" width="6.8" height="6.8" rx="1.6"/><rect x="13.2" y="13.2" width="6.8" height="6.8" rx="1.6"/></symbol>
+  <symbol id="i-hiring" viewBox="0 0 24 24"><circle cx="9.6" cy="8.3" r="3.3"/><path d="M3.4 19.4c0-3.3 2.7-5.7 6.2-5.7s6.2 2.4 6.2 5.7"/><path d="M19 5.8v5.4M16.3 8.5h5.4"/></symbol>
+  <symbol id="i-staff" viewBox="0 0 24 24"><rect x="5" y="4.6" width="14" height="16" rx="2.4"/><path d="M9.8 4.6V3h4.4v1.6"/><circle cx="12" cy="10.6" r="2.3"/><path d="M8.2 17c.5-1.8 1.9-2.8 3.8-2.8s3.3 1 3.8 2.8"/></symbol>
+  <symbol id="i-parents" viewBox="0 0 24 24"><path d="M3.8 11.4 12 4.4l8.2 7"/><path d="M6 9.8v9.4h12V9.8"/><path d="M10 19.2v-4.8h4v4.8"/></symbol>
+  <symbol id="i-photos" viewBox="0 0 24 24"><path d="M4.2 8.4h3l1.5-2.4h6.6l1.5 2.4h3A1.2 1.2 0 0 1 21 9.6v8.6a1.2 1.2 0 0 1-1.2 1.2H4.2A1.2 1.2 0 0 1 3 18.2V9.6a1.2 1.2 0 0 1 1.2-1.2Z"/><circle cx="12" cy="13.7" r="3.3"/></symbol>
+  <symbol id="i-campers" viewBox="0 0 24 24"><path d="M12 4.4 3.4 19.4h17.2L12 4.4Z"/><path d="M12 12 8.7 19.4M12 12l3.3 7.4"/></symbol>
+  <symbol id="i-summer" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.9"/><path d="M12 2.8v2.3M12 18.9v2.3M2.8 12h2.3M18.9 12h2.3M5.5 5.5l1.6 1.6M16.9 16.9l1.6 1.6M5.5 18.5l1.6-1.6M16.9 7.1l1.6-1.6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
+</svg>
 
 <header class="top">
   <div class="top-in">
@@ -327,8 +437,7 @@
       <img src="assets/crest-184.png" width="44" height="44" alt="Camp Gan Israel Morristown">
       <span><strong>CGI Morristown</strong><small>Camp Office</small></span>
     </a>
-    <nav class="top-nav" aria-label="Camp Office">
-      <span class="here">Staff hiring</span>
+    <nav class="top-nav" aria-label="Your sign-in">
       <a href="#" id="nav-out" data-signout="1" hidden>Sign out</a>
     </nav>
   </div>
@@ -358,7 +467,29 @@
     </section>
   </div>
 
-  <div class="office" id="office" data-view="home">
+  <nav class="side" id="side" aria-label="The parts of the Camp Office"></nav>
+
+  <div class="office" id="office" data-view="hub">
+    <section class="hub" id="hub" aria-labelledby="hub-title">
+      <header class="hb-head">
+        <p class="o-eyebrow">Camp Office</p>
+        <h1 class="o-h1" id="hub-title"></h1>
+        <p class="o-meta" id="hub-day"></p>
+      </header>
+      <section class="hb-todo" id="hub-todo" aria-label="Waiting for you" hidden>
+        <h2 class="hb-h"><span class="hb-dot" aria-hidden="true"></span>Waiting for you</h2>
+        <div class="hb-tlist" id="hub-tlist"></div>
+      </section>
+      <section aria-label="The parts of the office">
+        <h2 class="hb-h">Where things stand</h2>
+        <div class="hb-grid" id="hub-parts"></div>
+      </section>
+      <section class="hb-out" id="hub-out" aria-labelledby="hub-out-h">
+        <h2 class="bd-resth" id="hub-out-h">Outside the office, one press away</h2>
+        <p class="hb-links" id="hub-links"></p>
+      </section>
+    </section>
+    <section class="part" id="part"></section>
     <section class="pane-list" id="pane-list" aria-label="Everyone in staff hiring">
       <div class="pl-head">
         <div class="pl-intro">
@@ -392,23 +523,26 @@
 <script>
 // The frame of the Camp Office page. The backend sends each view as text that is ready to show; this script asks
 // for it, puts it in its place and sends every form on it back, so the answer appears right here.
-//   office.html                      everyone (needs the sign-in): the list on a phone, the board on a computer
+//   office.html                      the office's first page (needs the sign-in): what waits for him, where each part stands
+//   office.html?p=hiring             everyone in staff hiring (needs the sign-in): the list on a phone, the board on a computer
 //   office.html?p=person&id=S27-002  one person (needs the sign-in, or &k= from a button in an office email)
+//   office.html?p=part&is=staff      a part of the office that is not built yet: what it will be
 //   office.html?action=decide|offer  the single-step pages of emails sent on 2026-11-18 (still answered)
-// Moving between everyone and a person does not load the page again: the list stays as it is, the address changes,
-// and the browser's Back goes back.
+// Moving between these does not load the page again: the list stays as it is, the address changes, and the browser's
+// Back goes back. The menu, and which parts the office has, come from the backend with the list, after the sign-in.
 (function () {
   var BACKEND = (window.PORTAL_CONFIG && window.PORTAL_CONFIG.applyBackendUrl) || '';
   var $ = function (id) { return document.getElementById(id); };
   var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
-  var office = $('office'), root = $('root'), listBox = $('list'), boardBox = $('board'), trouble = $('trouble'), signin = $('signin'), jump = $('jump'), find = $('find');
+  var office = $('office'), root = $('root'), listBox = $('list'), boardBox = $('board'), trouble = $('trouble'), signin = $('signin'), jump = $('jump'), find = $('find'), side = $('side'), partBox = $('part');
   var q = new URLSearchParams(location.search), OLD = !!q.get('action'), K = q.get('k') || '';
   var S_KEY = 'cgi-office-session', E_KEY = 'cgi-office-email';
   var EMPTY = { todo: 'Nothing is waiting for your decision.', waiting: 'Nobody is waiting on their side right now.', hired: 'Nobody is hired yet. A person appears here on the day the agreement is signed.', all: 'Nobody is in the list yet.' };
   // the board: the stages in the order a person goes through them [stage, heading, whose move, colour of the top edge]
   var COLS = [['new', 'New', 'your decision', 'mine'], ['invited', 'Invited', 'to an interview', ''], ['interviewed', 'Interviewed', 'your decision', 'mine'], ['sent', 'Agreement sent', 'not signed yet', ''], ['hired', 'Hired', 'signed', 'done']];
   var busy = false, turn = 0, hasList = false, homeTitle = 'Staff hiring 2027', tab = 'todo', tabPicked = false, current = '', people = {}, listY = 0, colY = {}, nextCard = null;
-  var wide = window.matchMedia('(min-width: 960px)');
+  var parts = [], outside = [], campDays = 0, partKey = '';       // the parts of the office and the links out of it, as the backend names them; which part is open
+  var wide = window.matchMedia('(min-width: 1040px)');
   function keep(key, v) { try { if (v) localStorage.setItem(key, v); else localStorage.removeItem(key); } catch (e) {} }
   function kept(key) { try { return localStorage.getItem(key) || ''; } catch (e) { return ''; } }
   function view() { return office.getAttribute('data-view'); }
@@ -418,7 +552,7 @@
   function say(msg) { trouble.textContent = msg; trouble.hidden = !msg; if (msg) window.scrollTo(0, 0); }
   function stage(signingIn) { document.body.classList.toggle('is-signin', signingIn); signin.hidden = !signingIn; office.hidden = signingIn; }
   function backWord() {                            // the way back is named after what he comes back to
-    each(root.querySelectorAll('.o-back a'), function (a) { a.textContent = wide.matches ? '← Back to the board' : '← Back to the list'; });
+    each(root.querySelectorAll('.o-back a'), function (a) { a.textContent = wide.matches ? '← Back to the board' : '← Back to the list'; a.setAttribute('href', 'office.html?p=hiring'); });
   }
   var DAYS = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|June|July|August|September|October|November|December) (\d{1,2})\b/g;
   function tie(scope) {                            // short facts in a row, where they wrap: the dot between two facts stays at the end of its line; "Nov 19" and "1–7" stay in one piece
@@ -438,9 +572,26 @@
     h.className = 'o-h1'; h.textContent = title; p.textContent = msg; root.appendChild(h); root.appendChild(p);
   }
   function working() { stage(false); root.innerHTML = '<div class="spinner" aria-hidden="true"></div><p class="muted">Opening…</p>'; nextCard = null; watch(); }
-  function showHome() {                            // everyone: the right-hand part is empty and out of sight
+  function showHome() {                            // everyone in staff hiring: a person's part is empty and out of sight
     stage(false); root.textContent = ''; nextCard = null; watch();
     document.title = homeTitle + ' – Camp Office'; paint();
+  }
+  function showHub() {                             // the office's first page
+    stage(false); root.textContent = ''; nextCard = null; watch();
+    document.title = 'Camp Office';
+  }
+  function showPart(key) {                         // a part that is not built yet: what it will be
+    var p = null; parts.forEach(function (x) { if (x.k === key) p = x; });
+    stage(false); root.textContent = ''; nextCard = null; watch(); partBox.textContent = '';
+    var back = el('p', 'o-back'), a = el('a', '', '← Office home'), card = el('section', 'o-card'), label = el('p', 'o-label');
+    a.setAttribute('href', 'office.html'); back.appendChild(a); partBox.appendChild(back);
+    partBox.appendChild(el('p', 'o-eyebrow', 'Camp Office')); partBox.appendChild(el('h1', 'o-h1', p ? p.name : 'Not in the office'));
+    label.appendChild(el('span', 'o-dot')); label.appendChild(document.createTextNode(p && p.kind === 'no' ? 'Not built yet' : 'Not found'));
+    card.appendChild(label); card.appendChild(el('h2', 'o-ch', p ? 'What this part will be' : 'This part is not in the office'));
+    card.appendChild(el('p', '', p ? (p.more || p.what || '') : 'The menu shows every part there is.'));
+    if (p) card.appendChild(el('p', 'o-hint', 'Until it is built, nothing can be done here.'));
+    partBox.appendChild(card);
+    document.title = (p ? p.name + ' – ' : '') + 'Camp Office';
   }
   function showSignin() {
     stage(true); $('f-email').hidden = false; $('f-code').hidden = true;
@@ -450,7 +601,89 @@
   function signedOut() {                           // the session is gone: forget what was shown with it
     keep(S_KEY, ''); hasList = false; people = {}; current = ''; colY = {};
     listBox.textContent = ''; boardBox.textContent = ''; $('pl-start').textContent = ''; $('pl-foot').textContent = '';
+    parts = []; outside = []; side.textContent = ''; side.classList.remove('is-open'); document.body.classList.remove('has-menu');
     office.classList.remove('has-list'); $('nav-out').hidden = true; showSignin();
+  }
+
+  // -- the menu and the office's first page, from what the backend says the office has ----------------------
+  function icon(key) {
+    var NS = 'http://www.w3.org/2000/svg', s = document.createElementNS(NS, 'svg'), u = document.createElementNS(NS, 'use');
+    s.setAttribute('class', 'ic'); s.setAttribute('aria-hidden', 'true'); s.setAttribute('focusable', 'false'); u.setAttribute('href', '#i-' + key); s.appendChild(u);
+    return s;
+  }
+  function arrow(cls, ch) { var x = el('span', cls, ch); x.setAttribute('aria-hidden', 'true'); return x; }
+  function outLink(a, href) { a.setAttribute('href', href); a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); }
+  function partLink(a, p) {                        // where a part leads: into this page, to the tool that exists today (a new tab), or to the page that says it is not built
+    if (p.kind === 'out') outLink(a, p.href);
+    else a.setAttribute('href', p.kind === 'in' ? 'office.html?p=' + encodeURIComponent(p.k) : 'office.html?p=part&is=' + encodeURIComponent(p.k));
+  }
+  function setParts(j) {
+    if (!Array.isArray(j.parts)) return;           // a backend that knows staff hiring only: no menu, as before
+    var safe = function (x) { return x && typeof x.name === 'string' && (x.kind !== 'out' || /^https:\/\//.test(String(x.href))); };
+    parts = j.parts.filter(function (p) { return safe(p) && typeof p.k === 'string'; });
+    outside = (Array.isArray(j.outside) ? j.outside : []).filter(function (o) { return o && typeof o.name === 'string' && /^https:\/\//.test(String(o.href)); });
+    campDays = (j.camp && j.camp.days > 0) ? j.camp.days : 0;
+    drawMenu(); drawHub(); document.body.classList.toggle('has-menu', parts.length > 0); mark();
+  }
+  function drawMenu() {
+    var line = function (key, name, short, wait) {
+      var a = el('a', 'sd'); a.setAttribute('data-part', key);
+      a.appendChild(icon(key)); a.appendChild(el('span', 'sd-l', name)); a.appendChild(el('span', 'sd-s', short || name));
+      if (wait > 0) { var n = el('span', 'sd-n', String(wait)); n.setAttribute('aria-label', wait + ' waiting for you'); a.appendChild(n); }
+      return a;
+    };
+    var home = line('home', 'Office home', 'Home', 0), sheet = el('div', 'sd-sheet'), more = el('button', 'sd sd-more');
+    side.textContent = ''; side.classList.remove('is-open');
+    home.setAttribute('href', 'office.html'); side.appendChild(home);
+    parts.forEach(function (p, i) {
+      var a = line(p.k, p.name, p.short, p.wait); partLink(a, p);
+      if (p.kind === 'out') a.appendChild(arrow('sd-x', '↗'));
+      if (p.kind === 'no') a.classList.add('no');
+      (i < 3 ? side : sheet).appendChild(a);       // a bar holds five: the office's first page, three parts, and "More" for the rest
+    });
+    more.type = 'button'; more.id = 'side-more'; more.setAttribute('aria-expanded', 'false'); more.setAttribute('aria-controls', 'side-sheet');
+    more.appendChild(icon('more')); more.appendChild(el('span', 'sd-s', 'More')); side.appendChild(more);
+    if (outside.length) sheet.appendChild(el('p', 'sd-h', 'Outside the office'));
+    outside.forEach(function (o) { var a = el('a', 'sd sd-o'); outLink(a, o.href); a.appendChild(el('span', 'sd-l', o.name)); a.appendChild(arrow('sd-x', '↗')); sheet.appendChild(a); });
+    sheet.id = 'side-sheet'; side.appendChild(sheet);
+  }
+  function drawHub() {
+    var waits = parts.filter(function (p) { return p.wait > 0; }), sum = 0, h = $('hub-title'), tl = $('hub-tlist'), box = $('hub-parts'), links = $('hub-links');
+    waits.forEach(function (p) { sum += p.wait; });
+    h.textContent = '';
+    if (sum) { h.appendChild(el('b', '', sum + (sum === 1 ? ' thing' : ' things'))); h.appendChild(document.createTextNode(sum === 1 ? ' is waiting for you' : ' are waiting for you')); }
+    else h.textContent = 'Nothing is waiting for you';
+    $('hub-day').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + (campDays ? ' · ' + campDays + (campDays === 1 ? ' day' : ' days') + ' to camp' : '');
+    tl.textContent = '';
+    waits.forEach(function (p) {                   // one line for each part that has something for him; staff hiring names who to start with
+      var a = el('a', 'td'), b = el('span', 'td-b'), first = p.k === 'hiring' ? listBox.querySelector('.o-group[data-tab="todo"] .o-row .o-rn') : null;
+      partLink(a, p); b.appendChild(el('strong', '', p.waits || (p.wait + ' waiting for you')));
+      b.appendChild(el('span', '', p.name + (first && first.firstChild ? ' · start with ' + first.firstChild.textContent.trim() : '')));
+      a.appendChild(b); a.appendChild(arrow('td-go', '›')); tl.appendChild(a);
+    });
+    $('hub-todo').hidden = !waits.length;
+    box.textContent = '';
+    parts.forEach(function (p) {
+      var a = el('a', 'ar' + (p.kind === 'out' ? ' out' : p.kind === 'no' ? ' no' : '')); partLink(a, p);
+      a.appendChild(el('strong', 'ar-t', p.name)); a.appendChild(el('span', 'ar-s', p.stand || p.what || ''));
+      if (p.wait > 0) a.appendChild(el('span', 'ar-n', String(p.wait)));
+      a.appendChild(arrow('ar-go', p.kind === 'out' ? '↗' : '›')); box.appendChild(a);
+    });
+    links.textContent = '';
+    outside.forEach(function (o) { var a = el('a', '', o.name + ' '); outLink(a, o.href); a.appendChild(arrow('', '↗')); links.appendChild(a); });
+    $('hub-out').hidden = !outside.length;
+  }
+  function mark() {                                // the menu says where he is
+    var v = view(), key = v === 'hub' ? 'home' : v === 'part' ? partKey : 'hiring', more = $('side-more'), inMore = false;
+    each(side.querySelectorAll('.sd[data-part]'), function (a) {
+      var on = a.getAttribute('data-part') === key; a.classList.toggle('on', on);
+      if (on) { a.setAttribute('aria-current', 'page'); if (a.parentNode !== side) inMore = true; } else a.removeAttribute('aria-current');
+    });
+    if (more) more.classList.toggle('on', inMore);
+  }
+  function sheet(open) {                           // what is behind "More" on a phone
+    var more = $('side-more'); side.classList.toggle('is-open', !!open);
+    if (more) more.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
   // -- everyone: the list as the backend sends it, and the board made from the same lines --------------------
@@ -469,7 +702,7 @@
     }
     drawBoard();
     if (!tabPicked) { tabPicked = true; tab = c.todo ? 'todo' : 'all'; }   // on arrival: what waits for him; with nothing waiting, everyone. After that the tab is his.
-    paint();
+    paint(); setParts(j);
   }
   function drawBoard() {                           // one column for each stage; a card is the person's line from the list
     var by = {}, names = {}, others = [], known = {};
@@ -557,23 +790,32 @@
   var NO_PAGE = 'The hiring system did not send the page. Please try again.';
 
   // -- going somewhere ---------------------------------------------------------------------------------------
-  function route() { var u = new URLSearchParams(location.search); return (u.get('p') === 'person' && u.get('id')) ? { v: 'person', id: u.get('id') } : { v: 'home' }; }
-  function remember(st) { try { history.pushState(st, '', st.v === 'person' ? 'office.html?p=person&id=' + encodeURIComponent(st.id) : 'office.html'); } catch (e) {} }
+  // where the address points: v = 'hub' (the office's first page), 'home' (everyone in staff hiring), 'person', 'part' (a part that is not built)
+  function route() {
+    var u = new URLSearchParams(location.search), p = u.get('p');
+    if (p === 'person' && u.get('id')) return { v: 'person', id: u.get('id') };
+    if (p === 'hiring') return { v: 'home' };
+    if (p === 'part' && u.get('is')) return { v: 'part', k: u.get('is') };
+    return { v: 'hub' };
+  }
+  function address(st) { return st.v === 'person' ? 'office.html?p=person&id=' + encodeURIComponent(st.id) : st.v === 'home' ? 'office.html?p=hiring' : st.v === 'part' ? 'office.html?p=part&is=' + encodeURIComponent(st.k) : 'office.html'; }
+  function remember(st) { try { history.pushState(st, '', address(st)); } catch (e) {} }
+  function showView() { var v = view(); if (v === 'hub') showHub(); else if (v === 'part') showPart(partKey); else if (v === 'home') showHome(); }
   // how: 'click' (a new step in the browser's history), 'back' (Back or Forward), 'first' (the page was just opened)
   function go(st, how) {
-    say('');
-    if (st.v === 'home') {
-      var fromPerson = view() === 'person' && how !== 'first';
-      if (how === 'click') remember(st);
-      current = ''; office.setAttribute('data-view', 'home');
-      if (!hasList) return loadHome();
-      showHome();
-      if (fromPerson) putCols();                                       // back where he was: down the page, and down a long column
-      window.scrollTo(0, fromPerson ? listY : 0);
+    say(''); sheet(false);
+    if (st.v !== 'person') {
+      var fromPerson = view() === 'person' && how !== 'first', toList = st.v === 'home';
+      if (how === 'click') { if (view() === 'home') { listY = window.scrollY; noteCols(); } remember(st); }
+      current = ''; partKey = st.v === 'part' ? String(st.k || '') : ''; office.setAttribute('data-view', st.v === 'home' || st.v === 'part' ? st.v : 'hub'); mark();
+      if (!hasList) return loadHome();                                 // the list brings the menu and the office's first page with it
+      showView();
+      if (toList && fromPerson) putCols();                             // back where he was: down the page, and down a long column
+      window.scrollTo(0, toList && fromPerson ? listY : 0);
       return;
     }
     if (how === 'click') { if (view() === 'home') { listY = window.scrollY; noteCols(); } remember(st); }
-    current = st.id; office.setAttribute('data-view', 'person'); reveal(st.id);
+    current = st.id; partKey = ''; office.setAttribute('data-view', 'person'); mark(); reveal(st.id);
     if (how === 'back' && people[st.id]) { fill(people[st.id].html, people[st.id].title); window.scrollTo(0, 0); return; }
     return loadPerson(st.id, how);
   }
@@ -585,7 +827,10 @@
     if (j.signin) return signedOut();
     if (typeof j.list !== 'string') return plain('This did not open', j.error ? String(j.error) : NO_PAGE);
     homeTitle = j.title || homeTitle; setList(j);
-    if (view() === 'home') showHome();
+    if (!parts.length && view() !== 'home') {                          // a backend that knows staff hiring only: that is the first page
+      office.setAttribute('data-view', 'home'); try { history.replaceState({ v: 'home' }, '', 'office.html?p=hiring'); } catch (e) {}
+    }
+    mark(); showView();
   }
   async function loadPerson(id, how) {
     var mine = ++turn, fields = { p: 'person', id: id }; working(); window.scrollTo(0, 0);
@@ -681,6 +926,8 @@
   document.addEventListener('click', function (e) {
     var t = e.target; if (!t || !t.closest) return;
     if (t.closest('[data-signout]')) { e.preventDefault(); post({ p: 'logout' }).catch(function () {}).then(signedOut); return; }
+    if (t.closest('#side-more')) { sheet(!side.classList.contains('is-open')); return; }
+    if (!t.closest('#side-sheet') || t.closest('a')) sheet(false);    // "More" closes on a press anywhere else, and on a choice
     var b = t.closest('.tabs button'); if (b) { pick(b.getAttribute('data-tab')); return; }
     var a = t.closest('a'); if (!a || signin.contains(a)) return;
     var href = a.getAttribute('href') || '';
@@ -690,9 +937,10 @@
       return;
     }
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target || OLD) return;
-    var m = /^office\.html(?:\?p=person&id=([^&#]+))?$/.exec(href); if (!m) return;
-    e.preventDefault(); go(m[1] ? { v: 'person', id: decodeURIComponent(m[1]) } : { v: 'home' }, 'click');
+    var m = /^office\.html(?:\?p=(?:person&id=([^&#]+)|part&is=([^&#]+)|(hiring)))?$/.exec(href); if (!m) return;
+    e.preventDefault(); go(m[1] ? { v: 'person', id: decodeURIComponent(m[1]) } : m[2] ? { v: 'part', k: decodeURIComponent(m[2]) } : m[3] ? { v: 'home' } : { v: 'hub' }, 'click');
   });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') sheet(false); });
   find.addEventListener('input', paint);
   find.addEventListener('keydown', function (e) { if (e.key === 'Escape' && find.value) { find.value = ''; paint(); } });
   window.addEventListener('popstate', function (e) { if (!OLD) go((e.state && e.state.v) ? e.state : route(), 'back'); });
